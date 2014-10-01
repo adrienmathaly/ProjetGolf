@@ -1,0 +1,38 @@
+/*COULEURS*/
+/*Fond de page beige = #F1DDA8*/
+/*Gris foncé dominant = #626063*/
+/*Marron foncé ombre = #C2AC88*/
+
+body
+{
+	background-image:url(images/burmy-sandy.jpg);
+	background-attachment:fixed;
+	background-repeat: no-repeat;
+	background-position:top left;
+	background-size: 105%;
+	background-color: #F1DDA8;
+}
+
+#title_page
+{
+	color : #F1DDA8;
+	/*font-size: 25px;*/
+	font-family: Verdana;
+}
+
+.navbar-default
+{
+  background-color: #626063;
+  border-color : transparent;
+}
+
+#left_layout
+{
+	/*background-color: red;*/
+	background-size: 30%;
+}
+
+span.glyphicon-question-sign
+{
+    font-size: 1.3em;
+}

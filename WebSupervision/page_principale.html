@@ -1,0 +1,188 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+
+	<head>
+		<title>Website Supervision</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+		<script src="jquery-2.1.1.js"></script>
+		<script src="fonctions.js"></script>
+		
+        <link rel="icon" 		href="logos/app-map-icon.png"/>
+		<link rel="stylesheet" 	href="bootstrap/css/bootstrap.css">
+		<link rel="stylesheet" 	href="bootstrap-responsive.css">
+		<link rel="stylesheet" 	href="rendering.css">
+		<link rel="stylesheet"  href="bootstrap.js">	
+
+	</head>
+
+	<body onload="initialiser()">
+
+		<nav class="navbar navbar-default" role="navigation">
+		  	<div class="container-fluid">
+			    <div class="navbar-header">
+			    	<a class="navbar-brand" id="title_page">Website Supervision</a>
+			    </div>
+
+			    <!-- Collect the nav links, forms, and other content for toggling -->
+			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+			      	<form class="navbar-form navbar-left" role="connection">
+					    <div class="input-group">
+					      	<input type="text" class="form-control" placeholder="172.0.0.1:8080">
+					      	<span class="input-group-btn">
+					        	<button class="btn btn-info" id="connect" type="button" onclick="connect_to_server()">Connect</button>
+					      	</span>
+					 	</div>
+			      	</form>
+
+			      	<ul class="nav navbar-nav navbar-right" role="help">
+				 		<li>
+							<a title="Need help ?"><span class="glyphicon glyphicon-question-sign"></span></a>
+				 		</li>
+			      	</ul>
+			    </div>
+		  	</div>
+		</nav>
+
+
+		<div class="container-fluid">
+			<div class="row-fluid">
+			    <div class="col-md-3">
+					<div>
+						<table class="table" style="overflow:scroll;">
+							<thead style="color:#626063; font-size: 14px">
+							   	<tr>
+							    	<th>Users</th>
+							    	<th>Latitude</th> 
+							    	<th>Longitude</th>
+							  	</tr>
+							</thead>
+
+							<tbody style="color:#626063; font-size: 10px">
+							  	<tr>
+							    	<td>Bob</td> 
+							    	<td>0</td>
+							    	<td>0</td>
+							  	</tr>
+							 	<tr>
+							    	<td>Babar</td>
+							    	<td>0</td>
+							    	<td>0</td>
+							  	</tr>
+							  	<tr>
+							    	<td>Toto</td>
+							    	<td>0</td>
+							    	<td>0</td>
+							  	</tr>
+							</tbody>
+						</table> 
+					</div>
+			    </div>
+
+
+
+			    <div class="col-md-6">
+			    	<div id="carte" style="width:100%; height:80%"></div>
+					    <div class="input-group">
+					      	<input type="text" class="form-control" placeholder="Latitude - Longitude">
+					      	<span class="input-group-btn">
+					        	<button class="btn btn-info" id="search" type="button" onclick="search_position()">
+					        		<div>Search
+					        			<span class="glyphicon glyphicon-search">
+					        		</div>
+					        	</button>
+					      	</span>
+					 	</div>
+			    </div>
+
+
+			    <div class="col-md-3">
+					<div>
+						<table class="table" style="overflow:scroll;">
+							<thead style="color:#626063; font-size: 14px">
+							   	<tr>
+							    	<th>Users</th>
+							    	<th>Distance</th> 
+							  	</tr>
+							</thead>
+
+							<tbody style="color:#626063; font-size: 10px">
+							  	<tr>
+							    	<td>Bob</td> 
+							    	<td>0</td>
+							  	</tr>
+							 	<tr>
+							    	<td>Babar</td>
+							    	<td>0</td>
+							  	</tr>
+							  	<tr>
+							    	<td>Toto</td>
+							    	<td>0</td>
+							  	</tr>
+							</tbody>
+						</table> 
+					</div>
+			    </div>
+			</div>
+		</div>
+
+		<!--<div class="navbar navbar-fixed_right">
+			<div class="content">
+				<div class="nav navbar-inner">
+					<ul class="unstyled  span12" id="information">
+
+						<div class="text">Connected users :
+							<div id="number_users_connected">
+								<strong>0</strong>
+							</div>
+						</div>
+						
+						<div>
+							<table class="table table-condensed" style="width:100%">
+								<thead style="color:#626063; font-size: 18px">
+								   	<tr>
+								    	<th>Users</th>
+								    	<th>Distance</th>
+								    	<th>Latitude</th> 
+								    	<th>Longitude</th>
+								    	<th>Last POI</th>
+								  	</tr>
+								</thead>
+
+								<tbody style="color:#626063; font-size: 14px">
+								  	<tr>
+								    	<td>Bob</td> 
+								    	<td>0</td>
+								    	<td>0</td>
+								    	<td>0</td>
+								    	<td>Unknown</td>
+								  	</tr>
+								 	<tr>
+								    	<td>Babar</td>
+								    	<td>0</td>
+								    	<td>0</td>
+								    	<td>0</td>
+								    	<td>Unknown</td>
+								  	</tr>
+								  	<tr>
+								    	<td>Toto</td>
+								    	<td>0</td>
+								    	<td>0</td>
+								    	<td>0</td>
+								    	<td>Unknown</td>
+								  	</tr>
+								</tbody>
+							</table>
+						</div>
+					</ul>
+				</div>
+			</div>
+		</div>-->
+
+
+		<!--<div id="carte" style="width:100%; height:100%"></div>-->
+
+	</body>
+</html>
