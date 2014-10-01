@@ -128,3 +128,10 @@ function search_position()
 		}
 	}
 }
+
+function go_home()
+{
+	var latlng_IMERIR = new google.maps.LatLng(42.674520, 2.847786);
+	my_map.setCenter(latlng_IMERIR);
+	my_map.setZoom(16);
+}
