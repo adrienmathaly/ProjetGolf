@@ -6,6 +6,9 @@ var number_users = "/users/number";
 var location_users = "/users/location";
 var distance_travelled = "/users/distance_ball";
 
+//MAPPING VARIABLES
+var my_map;
+
 //FONCTION DE REQUETAGE GET
 function HttpGET(request)
 {
@@ -44,7 +47,7 @@ function initialiser()
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	  
-	var carte = new google.maps.Map(document.getElementById("carte"), options);
+	my_map = new google.maps.Map(document.getElementById("my_map"), options);
 }
 
 //FONCTIONS DE CONNEXION / DECONNEXION
@@ -111,15 +114,17 @@ function search_position()
 				}
 				else
 				{
-					//SEARCH AND RELOCALIZE
-					alert("Valid coordinates");
+					//CREATE A MARKER FOR THE NEW POINT SEARCHED
+					var mark = new google.maps.Marker({
+					position: new google.maps.LatLng(latitude, longitude),
+					map: my_map
+					});
 
-
+					//POINT THE MAP ON THE NEW MARKER
+					my_map.setCenter(new google.maps.LatLng(latitude, longitude));
+					my_map.setZoom(15);
 				}
 			}
 		}
 	}
-
-	
-
 }
