@@ -41,6 +41,10 @@ C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\Clien
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\img\logo.png \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\js\index.js \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\plugins\org.apache.cordova.device \
+C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\plugins\org.apache.cordova.network-information \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\plugins\org.apache.cordova.device\www \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\plugins\org.apache.cordova.device\www\device.js \
+C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\plugins\org.apache.cordova.network-information\www \
+C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\plugins\org.apache.cordova.network-information\www\Connection.js \
+C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\plugins\org.apache.cordova.network-information\www\network.js \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\ant-build\AndroidManifest.xml \
