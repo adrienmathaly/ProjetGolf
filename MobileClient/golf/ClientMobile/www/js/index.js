@@ -32,7 +32,8 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
         document.addEventListener("online", this.onOnline, false);
         document.addEventListener("offline", this.onOffline, false);
-        
+        document.addEventListener("resume", this.onGeolocalisationNeeded, false); 
+        document.addEventListener("pause", this.onGeolocalisationNoNeeded, false);    
     },
     // deviceready Event Handler
     //
@@ -87,6 +88,12 @@ var app = {
 
         listeningElement.setAttribute('style', 'display:block;');
         receivedElement.setAttribute('style', 'display:none;');
+    },
+    onGeolocalisationNeeded: function(){
+        checkLocalisation(true);
+    },
+    onGeolocalisationNoNeeded: function(){
+        checkLocalisation(false);
     }
 };
 
