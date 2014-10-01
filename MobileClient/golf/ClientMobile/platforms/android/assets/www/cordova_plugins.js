@@ -27,7 +27,8 @@ module.exports.metadata =
 // TOP OF METADATA
 {
     "org.apache.cordova.device": "0.2.12",
-    "org.apache.cordova.network-information": "0.2.12"
+    "org.apache.cordova.network-information": "0.2.12",
+    "org.apache.cordova.geolocation": "0.3.10"
 }
 // BOTTOM OF METADATA
 });
