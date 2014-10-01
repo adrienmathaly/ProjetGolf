@@ -1,0 +1,86 @@
+package http;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+
+public class HTTPGolfMobileServer {
+
+	ArrayList<CommunicationManager> communications;
+	boolean active;
+	HTTPResponseHeaderBuilder headers;
+	
+	public HTTPGolfMobileServer() {
+		active=true;
+		headers=new HTTPResponseHeaderBuilder(new File(""));
+		communications=new ArrayList<CommunicationManager>();
+		try {
+			int port = 2500;
+			ServerSocket serverSocket;
+			serverSocket = new ServerSocket(port);
+			while (active) {
+				Socket clientSocket = serverSocket.accept();
+				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+				String header="";
+				while ((header = header+"\n"+in.readLine()) != null) {
+					if (header.isEmpty()) {
+						break;
+					}
+				}
+				
+				switch(analyzeClient(header)){
+					case TypesOfConnection.MOBILE:launchMobileCommunication(clientSocket,in,out);
+					case TypesOfConnection.SUPERVISION:launchSupervisionCommunication(clientSocket,in,out);
+					default:rejectCommunication(clientSocket,in,out);			
+				}
+			}
+			serverSocket.close();
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private int analyzeClient(String header){
+		int type=0;
+		if(header.contains("Origin:MOBILE")){
+			type=TypesOfConnection.MOBILE;
+		}else{
+			if(header.contains("Origin:SUPERVISION")){
+				type=TypesOfConnection.SUPERVISION;
+			}
+		}
+		return type;
+	}
+	
+	private void launchMobileCommunication(Socket clientSocket, BufferedReader in ,BufferedWriter out){
+		MobileManager mm = new MobileManager(clientSocket,in ,out);
+		communications.add(mm);
+		Thread t = new Thread(mm);
+		t.start();
+	}
+	
+	private void launchSupervisionCommunication(Socket clientSocket, BufferedReader in ,BufferedWriter out){
+		SupervisionManager sm = new SupervisionManager(clientSocket,in ,out);
+		communications.add(sm);
+		Thread t = new Thread(sm);
+		t.start();
+	}
+	
+	private void rejectCommunication(Socket clientSocket, BufferedReader in, BufferedWriter out){
+		try{
+			out.write(headers.getHeaderOf("409"));
+			out.close();
+			in.close();
+			clientSocket.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+}

@@ -1,0 +1,30 @@
+package configuration;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+
+public class ConfLoader {
+	
+	public static HashMap<String,String> loadConfigFile(){
+		HashMap<String,String> entries = new HashMap<String,String>();
+		FileReader fr;
+		try {
+			fr = new FileReader(new File("Config.conf"));
+			BufferedReader bf = new BufferedReader(fr);
+			String line;
+			while((line = bf.readLine())!=null){
+				entries.put(line.split("=")[0], line.split("=")[1]);
+			}
+			bf.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return entries;
+	}
+}

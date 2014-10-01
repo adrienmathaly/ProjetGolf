@@ -1,0 +1,51 @@
+package launcher;
+
+import java.io.FileWriter;
+import java.io.IOException;
+
+import logger.Logger;
+import http.HTTPGolfMobileServer;
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//HTTPGolfMobileServer httpServer = new HTTPGolfMobileServer();
+		Logger l = new Logger("LoggerTest","C:/Users/Adri/Desktop/DL/LoggerTest.log",200);
+		l.addLogToBeWritten("Coucou");
+		l.addLogToBeWritten("C'est nous");
+		l.addLogToBeWritten("les");
+		l.addLogToBeWritten("DopiDop");
+		
+		Thread t = new Thread(l);
+		t.start();
+		l.addLogToBeWritten("I'll be Bach");
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		l.addLogToBeWritten("I'm Batman");
+/*		
+		FileWriter writer = null;
+		String texte = "texte à insérer à la fin du fichier";
+		try{
+		     writer = new FileWriter("C:/Users/Adri/Desktop/DL/LoggerTest.log", true);
+		     writer.write(texte,0,texte.length());
+		}catch(IOException ex){
+		    ex.printStackTrace();
+		}finally{
+		  if(writer != null){
+		     try {
+				writer.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+		}*/
+		//l.stopLogger();
+	}
+
+}

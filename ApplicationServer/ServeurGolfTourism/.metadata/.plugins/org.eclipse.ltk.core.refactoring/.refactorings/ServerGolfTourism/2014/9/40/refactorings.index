@@ -1,0 +1,8 @@
+1412001899155	Encapsulate field 'frequency'
+1412082273167	Rename type 'Connection'
+1412083877038	Encapsulate field 'clientSocket'
+1412086154152	Encapsulate field 'in'
+1412086157352	Encapsulate field 'out'
+1412106816469	Delete element
+1412106981599	Delete element
+1412107345640	Rename package 'jsonBuilder'

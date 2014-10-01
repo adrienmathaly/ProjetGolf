@@ -1,0 +1,67 @@
+package logger;
+
+import java.util.ArrayList;
+
+public class Logger {
+	
+	private String loggerName;
+	private String path;
+	private ArrayList<String> logsToBeWritten;
+	private boolean loggerActive;
+	private long interval;
+	
+	public Logger(String loggerName, String path, long interval){
+		this.loggerName=loggerName;
+		this.path=path;
+		this.logsToBeWritten=new ArrayList<String>();
+		this.loggerActive=false;
+		this.interval=interval;
+	}
+	
+	public void startLogger(){
+		long timestampPrec=System.currentTimeMillis();
+		long timestampCurr;
+		
+		while(loggerActive){
+			timestampCurr=System.currentTimeMillis();
+			if(interval >= (timestampCurr-timestampPrec)){
+				
+			}
+			timestampPrec=timestampCurr;
+		}
+	}
+	
+	private void writeAwaitingLog(){
+		
+	}
+	
+	
+	public void addLogToBeWritten(String log){
+		this.logsToBeWritten.add(log);
+	}
+
+	public String getLoggerName() {
+		return loggerName;
+	}
+
+	public void setLoggerName(String loggerName) {
+		this.loggerName = loggerName;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+		
+	public boolean isLoggerActive() {
+		return loggerActive;
+	}
+
+	public void setLoggerActive(boolean loggerActive) {
+		this.loggerActive = loggerActive;
+	}
+
+}

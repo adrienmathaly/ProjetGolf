@@ -1,0 +1,12 @@
+package launcher;
+
+import logger.Logger;
+import http.HTTPGolfMobileServer;
+
+public class Main {
+
+	public static void main(String[] args) {
+		HTTPGolfMobileServer httpServer = new HTTPGolfMobileServer();
+		Logger l = new Logger("LoggerTest","",200);
+	}
+}

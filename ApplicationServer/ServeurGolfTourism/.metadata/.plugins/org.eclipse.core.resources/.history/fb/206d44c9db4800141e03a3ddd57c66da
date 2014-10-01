@@ -1,0 +1,15 @@
+package communications;
+
+import http.HTTPGETRequestManager;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.net.Socket;
+
+public class SupervisionManager extends HTTPGETRequestManager{
+
+	public SupervisionManager(Socket clientSocket, BufferedReader in, BufferedWriter out) {
+		super(clientSocket, in, out);
+	}
+
+}
