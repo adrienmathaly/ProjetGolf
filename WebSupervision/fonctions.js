@@ -79,6 +79,6 @@ function search_position()
 	//LONGITUDE (VERTICAL)
 	var longitude;
 
-	//LatLng
+	/*FONCTION SPLIT*/
 
 }
