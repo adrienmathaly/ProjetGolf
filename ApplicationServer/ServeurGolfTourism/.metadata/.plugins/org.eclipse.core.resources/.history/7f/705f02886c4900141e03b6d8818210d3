@@ -40,7 +40,10 @@ public class DatabaseManager {
 
 	    try
 	    {
-	        BufferedReader s = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+	        BufferedReader s = new BufferedReader(
+	                              new InputStreamReader(
+	                                  connection.getInputStream()));
 	        line = s.readLine();
 	      while (line != null)
 	      {

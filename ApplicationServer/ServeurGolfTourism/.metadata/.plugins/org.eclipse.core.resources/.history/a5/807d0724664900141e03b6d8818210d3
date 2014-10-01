@@ -1,0 +1,47 @@
+package http;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class DatabaseManager {
+	
+	private URL url;
+	private String port;
+	private HttpURLConnection connection;
+	
+	public DatabaseManager(String URL,String PORT){
+		try {
+			url = new URL(URL);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void connect(){ 
+		try {
+			connection=(HttpURLConnection) url.openConnection();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public URL getUrl() {
+		return url;
+	}
+
+	public void setUrl(URL url) {
+		this.url = url;
+	}
+
+	public String getPort() {
+		return port;
+	}
+
+	public void setPort(String port) {
+		this.port = port;
+	}
+	
+	
+}

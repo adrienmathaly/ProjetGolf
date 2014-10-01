@@ -40,14 +40,21 @@ public class DatabaseManager {
 
 	    try
 	    {
-	        BufferedReader s = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-	        line = s.readLine();
+	      System.out.println("Avant");
+	      System.out.println(connection.getResponseCode());
+	      System.out.println(connection.getInputStream());
+	    // InputStreamReader ipsr =  new InputStreamReader();
+	     System.out.println("Au milieu");
+	    // BufferedReader s = new BufferedReader(ipsr);
+	      System.out.println("Après");
+	/*      line = s.readLine();
+	      
 	      while (line != null)
 	      {
 	        System.out.println(line);
 	        line = s.readLine();
 	      }
-	      s.close();
+	      s.close();*/
 	    }
 	    catch(Exception e)
 	    {
