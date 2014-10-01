@@ -36,3 +36,25 @@ span.glyphicon-question-sign
 {
     font-size: 1.3em;
 }
+
+div.modal-body
+{
+	color : #626063;
+	background-color: #F1DDA8;
+	border-color : transparent;
+}
+
+div.modal-footer
+{
+	color : #626063;
+	background-color: #F1DDA8;
+	border-color : transparent;
+}
+
+div.modal-header
+{
+	background-color: #626063;
+	color : #F1DDA8;
+	font-family: Verdana;
+	border-color : transparent;
+}
