@@ -1,4 +1,3 @@
-/*COULEURS*/
 /*Fond de page beige = #F1DDA8*/
 /*Gris foncé dominant = #626063*/
 /*Marron foncé ombre = #C2AC88*/
@@ -36,3 +35,27 @@ span.glyphicon-question-sign
 {
     font-size: 1.3em;
 }
+
+div.modal-body, div.modal-footer
+{
+	color : #626063;
+	background-color: #F1DDA8;
+	border-color : transparent;
+}
+
+div.modal-header
+{
+	background-color: #626063;
+	color : #F1DDA8;
+	font-family: Verdana;
+	border-color : transparent;
+}
+
+/*.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th
+{
+   background-color: #C2AC88;
+   border : 3px solid black;
+   opacity: 0.95;
+   font-size : 12px;
+}*/

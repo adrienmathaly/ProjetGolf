@@ -30,7 +30,7 @@
 
 			      	<form class="navbar-form navbar-left" role="connection">
 					    <div class="input-group">
-					      	<input type="text" class="form-control" placeholder="172.0.0.1:8080">
+					      	<input type="text" class="form-control" placeholder="ex : 172.0.0.1:8080" value="172.31.1.191:2500">
 					      	<span class="input-group-btn">
 					        	<button class="btn btn-info" id="connect" type="button" onclick="connect_to_server()">Connect</button>
 					      	</span>
@@ -49,20 +49,22 @@
 
 		<div class="container-fluid">
 			<div class="row-fluid">
-			    <div class="col-md-3">
+			    <div class="col-md-5">
 					<div>
-						<table class="table" style="overflow:scroll;">
-							<thead style="color:#626063; font-size: 14px">
+						<table class="table table-striped" style="border-color:transparent;">
+							<thead>
 							   	<tr>
 							    	<th>Users</th>
 							    	<th>Latitude</th> 
 							    	<th>Longitude</th>
+							    	<th>Distance</th>
 							  	</tr>
 							</thead>
 
-							<tbody style="color:#626063; font-size: 10px">
+							<tbody style="color:#626063; font-size: 10px;">
 							  	<tr>
 							    	<td>Bob</td> 
+							    	<td>0</td>
 							    	<td>0</td>
 							    	<td>0</td>
 							  	</tr>
@@ -70,9 +72,11 @@
 							    	<td>Babar</td>
 							    	<td>0</td>
 							    	<td>0</td>
+							    	<td>0</td>
 							  	</tr>
 							  	<tr>
 							    	<td>Toto</td>
+							    	<td>0</td>
 							    	<td>0</td>
 							    	<td>0</td>
 							  	</tr>
@@ -83,83 +87,47 @@
 
 
 
-			    <div class="col-md-6">
+			    <div class="col-md-7">
+				    <div class="input-group">
+					    <span class="input-group-btn">
+				        	<button class="btn btn-info" id="button_home" type="button" onclick="go_home()">
+				        		<div>Home
+				        			<span class="glyphicon glyphicon-home">
+				        		</div>
+				        	</button>
+				      	</span>				    	
+				      	<input type="text" class="form-control" placeholder="Latitude/Longitude" id="search">
+				      	<span class="input-group-btn">
+				        	<button class="btn btn-info" id="button_search" type="button" onclick="search_position()">
+				        		<div>Search
+				        			<span class="glyphicon glyphicon-search">
+				        		</div>
+				        	</button>
+				      	</span>
+				 	</div>
 			    	<div id="my_map" style="width:100%; height:80%"></div>
-					    <div class="input-group">
-						    <span class="input-group-btn">
-					        	<button class="btn btn-info" id="button_home" type="button" onclick="go_home()">
-					        		<div>Home
-					        			<span class="glyphicon glyphicon-home">
-					        		</div>
-					        	</button>
-					      	</span>				    	
-					      	<input type="text" class="form-control" placeholder="Latitude / Longitude" id="search">
-					      	<span class="input-group-btn">
-					        	<button class="btn btn-info" id="button_search" type="button" onclick="search_position()">
-					        		<div>Search
-					        			<span class="glyphicon glyphicon-search">
-					        		</div>
-					        	</button>
-					      	</span>
-					 	</div>
-			    </div>
-
-
-			    <div class="col-md-3">
-					<div>
-						<table class="table" style="overflow:scroll;">
-							<thead style="color:#626063; font-size: 14px">
-							   	<tr>
-							    	<th>Users</th>
-							    	<th>Distance</th> 
-							  	</tr>
-							</thead>
-
-							<tbody style="color:#626063; font-size: 10px">
-							  	<tr>
-							    	<td>Bob</td> 
-							    	<td>0</td>
-							  	</tr>
-							 	<tr>
-							    	<td>Babar</td>
-							    	<td>0</td>
-							  	</tr>
-							  	<tr>
-							    	<td>Toto</td>
-							    	<td>0</td>
-							  	</tr>
-							</tbody>
-						</table> 
-					</div>
 			    </div>
 			</div>
 		</div>
 
 
-		<!--MODAL
-		<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-		  <div class="modal-dialog modal-lg">
-		    <div class="modal-content">
-		      Need help ?
-		    </div>
-		  </div>
-		</div>-->
-
+		<!--MODAL WINDOW-->
 		<div class="modal fade bs-example-modal-lg">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		        <h4 class="modal-title">Modal title</h4>
-		      </div>
-		      <div class="modal-body">
-		        <p>One fine body&hellip;</p>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		      </div>
-		    </div>
-		  </div>
+		  	<div class="modal-dialog">
+			    <div class="modal-content">
+			      	<div class="modal-header">
+			        	<h4 class="modal-title">You need help ?</h4>
+			      	</div>
+			      	<div class="modal-body">
+			        	<p>
+			        	Contenu de l'aide
+			        	</p>
+			      	</div>
+			    <div class="modal-footer">
+			        <button type="button" class="btn btn-info" data-dismiss="modal">Thanks !</button>
+			    </div>
+			    </div>
+		  	</div>
 		</div>
 
 	</body>

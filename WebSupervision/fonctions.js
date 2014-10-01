@@ -39,11 +39,11 @@ function parse(response)
 
 function initialiser()
 {
-	var latlng = new google.maps.LatLng(42.674520, 2.847786);
+	var latlng = new google.maps.LatLng(42.686400, 2.887967);
 	
 	var options = {
 		center: latlng,
-		zoom: 16,
+		zoom: 12,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	  
