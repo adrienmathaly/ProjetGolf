@@ -78,11 +78,9 @@ var app = {
         receivedElement.setAttribute('style', 'display:none;');
     },
     onGeolocationSuccess: function(position) {
-        alert("Position");
         app.receivedEvent('onGPSConnection');
     },
     onGeolocationError: function(error) {
-        alert("Error");
         var parentElement = document.getElementById('onGPSConnection');
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
