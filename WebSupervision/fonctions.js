@@ -1,6 +1,9 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
 
+//MAPPING VARIABLES
+var my_map;
+
 //VARIABLES DE REQUETAGE
 var number_users = "/users/number";
 var location_users = "/users/location";
@@ -44,7 +47,7 @@ function initialiser()
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	  
-	var carte = new google.maps.Map(document.getElementById("carte"), options);
+	var my_map = new google.maps.Map(document.getElementById("my_map"), options);
 }
 
 //FONCTIONS DE CONNEXION / DECONNEXION
@@ -73,12 +76,64 @@ function disconnect_to_server()
 
 function search_position()
 {
-	//LATTITUDE (HORIZONTAL)
-	var latitude;
+	var latitude = null;		//VERTICAL
+	var longitude = null;		//HORIZONTAL
+	var LatLng = null;
 
-	//LONGITUDE (VERTICAL)
-	var longitude;
+	//SPLIT
+	LatLng = $("#search").val();
 
-	//LatLng
+	//COORDINATES SECURITY
+	if (LatLng == "")
+	{
+		alert("Empty text area");
+	}
+	else
+	{
+		var arrayOfCoordinates = LatLng.split("/");
 
+		if (arrayOfCoordinates.length != 2)
+		{
+			alert("Invalid coordinates");			
+		}
+		else
+		{
+			latitude = arrayOfCoordinates[0];
+			longitude = arrayOfCoordinates[1];
+			
+			if (latitude > 90 || latitude < -90)
+			{
+				alert("Latitude problem");
+			}
+			else
+			{
+				if (longitude > 180 || longitude < -180)
+				{
+					alert("Longitude problem");
+				}
+				else
+				{
+					alert("Valid coordinates ("+latitude+";"+longitude+")");
+					//CREATE A MARKER FOR THE NEW POINT SEARCHED
+					var mark = new google.maps.Marker({
+					position: new google.maps.LatLng(latitude, longitude),
+					map: my_map
+					});
+
+					//POINT THE MAP ON THE NEW MARKER
+					my_map.setCenter(new google.maps.LatLng(latitude, longitude));
+					my_map.setZoom(15);
+					alert("out");
+				}
+			}
+		}
+	}
+}
+
+
+function go_home()
+{
+	var latlng_IMERIR = new google.maps.LatLng(42.674520, 2.847786);
+	my_map.setCenter(latlng_IMERIR);
+	my_map.setZoom(16);
 }

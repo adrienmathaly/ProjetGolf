@@ -8,12 +8,12 @@
 
 		<script src="jquery-2.1.1.js"></script>
 		<script src="fonctions.js"></script>
+		<script src="bootstrap/js/bootstrap.js"></script>
 		
         <link rel="icon" 		href="logos/app-map-icon.png"/>
 		<link rel="stylesheet" 	href="bootstrap/css/bootstrap.css">
 		<link rel="stylesheet" 	href="bootstrap-responsive.css">
 		<link rel="stylesheet" 	href="rendering.css">
-		<link rel="stylesheet"  href="bootstrap.js">	
 
 	</head>
 
@@ -39,7 +39,7 @@
 
 			      	<ul class="nav navbar-nav navbar-right" role="help">
 				 		<li>
-							<a title="Need help ?"><span class="glyphicon glyphicon-question-sign"></span></a>
+							<a title="Need help ?" data-toggle="modal" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-question-sign"></span></a>
 				 		</li>
 			      	</ul>
 			    </div>
@@ -84,11 +84,18 @@
 
 
 			    <div class="col-md-6">
-			    	<div id="carte" style="width:100%; height:80%"></div>
+			    	<div id="my_map" style="width:100%; height:80%"></div>
 					    <div class="input-group">
-					      	<input type="text" class="form-control" placeholder="Latitude - Longitude">
+						    <span class="input-group-btn">
+					        	<button class="btn btn-info" id="button_home" type="button" onclick="go_home()">
+					        		<div>Home
+					        			<span class="glyphicon glyphicon-home">
+					        		</div>
+					        	</button>
+					      	</span>				    	
+					      	<input type="text" class="form-control" placeholder="Latitude / Longitude" id="search">
 					      	<span class="input-group-btn">
-					        	<button class="btn btn-info" id="search" type="button" onclick="search_position()">
+					        	<button class="btn btn-info" id="button_search" type="button" onclick="search_position()">
 					        		<div>Search
 					        			<span class="glyphicon glyphicon-search">
 					        		</div>
@@ -128,61 +135,32 @@
 			</div>
 		</div>
 
-		<!--<div class="navbar navbar-fixed_right">
-			<div class="content">
-				<div class="nav navbar-inner">
-					<ul class="unstyled  span12" id="information">
 
-						<div class="text">Connected users :
-							<div id="number_users_connected">
-								<strong>0</strong>
-							</div>
-						</div>
-						
-						<div>
-							<table class="table table-condensed" style="width:100%">
-								<thead style="color:#626063; font-size: 18px">
-								   	<tr>
-								    	<th>Users</th>
-								    	<th>Distance</th>
-								    	<th>Latitude</th> 
-								    	<th>Longitude</th>
-								    	<th>Last POI</th>
-								  	</tr>
-								</thead>
-
-								<tbody style="color:#626063; font-size: 14px">
-								  	<tr>
-								    	<td>Bob</td> 
-								    	<td>0</td>
-								    	<td>0</td>
-								    	<td>0</td>
-								    	<td>Unknown</td>
-								  	</tr>
-								 	<tr>
-								    	<td>Babar</td>
-								    	<td>0</td>
-								    	<td>0</td>
-								    	<td>0</td>
-								    	<td>Unknown</td>
-								  	</tr>
-								  	<tr>
-								    	<td>Toto</td>
-								    	<td>0</td>
-								    	<td>0</td>
-								    	<td>0</td>
-								    	<td>Unknown</td>
-								  	</tr>
-								</tbody>
-							</table>
-						</div>
-					</ul>
-				</div>
-			</div>
+		<!--MODAL
+		<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      Need help ?
+		    </div>
+		  </div>
 		</div>-->
 
-
-		<!--<div id="carte" style="width:100%; height:100%"></div>-->
+		<div class="modal fade bs-example-modal-lg">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		        <h4 class="modal-title">Modal title</h4>
+		      </div>
+		      <div class="modal-body">
+		        <p>One fine body&hellip;</p>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 
 	</body>
 </html>
