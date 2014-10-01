@@ -16,6 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+var timer = null;
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -27,6 +30,9 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener("online", this.onOnline, false);
+        document.addEventListener("offline", this.onOffline, false);
+        
     },
     // deviceready Event Handler
     //
@@ -34,7 +40,7 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
-        checkDevice();
+        checkLocalisation(true);
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -44,6 +50,45 @@ var app = {
 
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
+    },
+    onOnline: function() {
+        var networkState = navigator.connection.type;
+
+        var states = {};
+        states[Connection.UNKNOWN]  = 'Unknown connection';
+        states[Connection.ETHERNET] = 'Ethernet connection';
+        states[Connection.WIFI]     = 'WiFi connection';
+        states[Connection.CELL_2G]  = 'Cell 2G connection';
+        states[Connection.CELL_3G]  = 'Cell 3G connection';
+        states[Connection.CELL_4G]  = 'Cell 4G connection';
+        states[Connection.CELL]     = 'Cell generic connection';
+        states[Connection.NONE]     = 'No network connection';
+
+        var element = document.getElementById('connectionType');
+        element.innerHTML = states[networkState];
+        
+        app.receivedEvent('onOnline');
+    },
+    onOffline: function() {
+        var parentElement = document.getElementById('onOnline');
+        var listeningElement = parentElement.querySelector('.listening');
+        var receivedElement = parentElement.querySelector('.received');
+
+        listeningElement.setAttribute('style', 'display:block;');
+        receivedElement.setAttribute('style', 'display:none;');
+    },
+    onGeolocationSuccess: function(position) {
+        alert("Position");
+        app.receivedEvent('onGPSConnection');
+    },
+    onGeolocationError: function(error) {
+        alert("Error");
+        var parentElement = document.getElementById('onGPSConnection');
+        var listeningElement = parentElement.querySelector('.listening');
+        var receivedElement = parentElement.querySelector('.received');
+
+        listeningElement.setAttribute('style', 'display:block;');
+        receivedElement.setAttribute('style', 'display:none;');
     }
 };
 
@@ -56,5 +101,17 @@ function checkDevice(){
                         'Device Version: '  + device.version;
 }
 
+function checkLocalisation(bool){
+    if (bool){
+        timer = setInterval(function () {getLocation()}, 6000);       
+    }
+    else{
+        clearInterval(timer);
+    }
+}
+
+function getLocation(){
+    navigator.geolocation.getCurrentPosition(app.onGeolocationSuccess, app.onGeolocationError, { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true });
+}
 
 app.initialize();
