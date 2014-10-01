@@ -1,0 +1,28 @@
+package launcher;
+
+import logger.Logger;
+import http.HTTPGolfMobileServer;
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//HTTPGolfMobileServer httpServer = new HTTPGolfMobileServer();
+		Logger l = new Logger("LoggerTest","C:/Users/Adri/Desktop/DL/LoggerTest.log",200);
+		l.addLogToBeWritten("Coucou");
+		l.addLogToBeWritten("C'est nous");
+		l.addLogToBeWritten("les");
+		l.addLogToBeWritten("DopiDop");
+		
+	//	l.startLogger();
+		l.addLogToBeWritten("I'll be Bach");
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		l.addLogToBeWritten("I'm Batman");
+	}
+
+}

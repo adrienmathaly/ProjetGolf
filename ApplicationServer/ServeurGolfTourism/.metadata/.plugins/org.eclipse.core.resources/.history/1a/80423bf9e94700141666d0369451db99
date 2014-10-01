@@ -1,0 +1,42 @@
+package logger;
+
+import java.util.ArrayList;
+
+public class Logger {
+	
+	private String loggerName;
+	private String path;
+	private ArrayList<String> logsToBeWritten;
+	
+	public Logger(String loggerName, String path){
+		this.loggerName=loggerName;
+		this.path=path;
+		this.logsToBeWritten=new ArrayList<String>();
+	}
+	
+	public void addLogToBeWritten(String log){
+		this.logsToBeWritten.add(log);
+	}
+
+	public String getLoggerName() {
+		return loggerName;
+	}
+
+	public void setLoggerName(String loggerName) {
+		this.loggerName = loggerName;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
+	
+	
+	
+
+	
+}

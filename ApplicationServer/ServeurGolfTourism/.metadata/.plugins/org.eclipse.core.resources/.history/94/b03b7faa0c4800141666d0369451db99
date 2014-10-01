@@ -1,0 +1,12 @@
+package launcher;
+
+import http.HTTPGolfMobileServer;
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		HTTPGolfMobileServer httpServer = new HTTPGolfMobileServer();
+	}
+
+}

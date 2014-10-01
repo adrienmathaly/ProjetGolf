@@ -1,0 +1,111 @@
+package logger;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
+
+public class Logger implements Runnable{
+
+	private String loggerName;
+	private String path;
+	private LinkedList<String> logsToBeWritten;
+	private boolean loggerActive;
+	private long interval;
+	private FileWriter out;
+
+	public Logger(String loggerName, String path, long interval) {
+		this.loggerName = loggerName;
+		this.path = path;
+		this.logsToBeWritten = new LinkedList<String>();
+		this.loggerActive = false;
+		this.interval = interval;
+	}
+
+	public void startLogger() {
+		// long timestampPrec=System.currentTimeMillis();
+		// long timestampCurr;
+		if (!loggerActive) {
+			
+			try {
+				out = new FileWriter(path,true);
+				loggerActive = true;
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			while (loggerActive) {
+				// timestampCurr=System.currentTimeMillis();
+				// (interval >= (timestampCurr-timestampPrec)) &&
+				if ((!logsToBeWritten.isEmpty())) {
+					writeAwaitingLog();
+					//out.write("test");//.print("A");
+				}
+				
+				// timestampPrec=timestampCurr;
+				try {
+					Thread.sleep(interval);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void stopLogger() {
+		try {
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		setLoggerActive(false);
+	}
+
+	private void writeAwaitingLog() {
+		String currentDate = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(new Date());
+		//System.out.println("[" + loggerName + "] " + currentDate + " "+ logsToBeWritten.poll());
+		try {
+			out.write("[" + loggerName + "] " + currentDate + " "+ logsToBeWritten.poll());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void addLogToBeWritten(String log) {
+		this.logsToBeWritten.add(log);
+	}
+
+	public String getLoggerName() {
+		return loggerName;
+	}
+
+	public void setLoggerName(String loggerName) {
+		this.loggerName = loggerName;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public boolean isLoggerActive() {
+		return loggerActive;
+	}
+
+	public void setLoggerActive(boolean loggerActive) {
+		this.loggerActive = loggerActive;
+	}
+
+	@Override
+	public void run() {
+		startLogger();
+	}
+
+}
