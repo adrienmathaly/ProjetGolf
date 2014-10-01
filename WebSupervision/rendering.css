@@ -27,7 +27,6 @@ body
 
 #left_layout
 {
-	/*background-color: red;*/
 	background-size: 30%;
 }
 
@@ -49,6 +48,13 @@ div.modal-header
 	color : #F1DDA8;
 	font-family: Verdana;
 	border-color : transparent;
+}
+
+.table-striped
+{
+	border-color:transparent;
+	font-size:14px;
+	text-align:center;
 }
 
 /*.table-striped>tbody>tr:nth-child(odd)>td,
