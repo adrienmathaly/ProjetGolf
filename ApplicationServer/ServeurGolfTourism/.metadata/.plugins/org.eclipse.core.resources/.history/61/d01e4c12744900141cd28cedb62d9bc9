@@ -60,4 +60,14 @@ public class DatabaseManager {
 	public void setUrl(URL url) {
 		this.url = url;
 	}
+
+	public static void main(String argv[]){
+		DatabaseManager dbm = new DatabaseManager("http://172.31.1.26/www/GolfProject/DatabaseServer/");
+		dbm.connect("GET");
+		try {
+			dbm.displayResponse();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
