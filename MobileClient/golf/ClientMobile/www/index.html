@@ -32,11 +32,17 @@
             <h1>Apache Cordova</h1>
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
+                <p class="event received">Device is Ready</p><br/>
+            </div>           
+            <div id="onOnline" class="blink">
+                <p class="event listening">Waiting for an internet connection...</p>
+                <p class="event received" id="connectionType"></p><br/>
             </div>
-            <div>
-                <p id="deviceProperties">Loading device properties...</p>
+            <div id="onGPSConnection" class="blink">
+                <p class="event listening">Wainting for a GPS connection...</p>
+                <p class="event received">GPS connection valid</p><br/>
             </div>
+            <img src='img/help_button.png' alt='helper' class='helper' onclick='helper()'></img>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
