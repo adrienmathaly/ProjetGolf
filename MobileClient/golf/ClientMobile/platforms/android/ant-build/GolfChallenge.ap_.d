@@ -37,6 +37,7 @@ C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\Clien
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\js \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\plugins \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\css\index.css \
+C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\img\help_button.png \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\img\logo.png \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\js\index.js \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\plugins\org.apache.cordova.device \
