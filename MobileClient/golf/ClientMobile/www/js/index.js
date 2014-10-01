@@ -17,79 +17,91 @@
  * under the License.
  */
 
+//Timer used to make a loop of geolocalisation
 var timer = null;
 
+//Remember in this scope use 'this' to function access, otherwise use 'app'
 var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
     },
     // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
+        //Event when Cordova is full loading
         document.addEventListener('deviceready', this.onDeviceReady, false);
-        document.addEventListener("online", this.onOnline, false);
-        document.addEventListener("offline", this.onOffline, false);
-        
+        //Event when a internet connection is found
+        document.addEventListener('online', this.onOnline, false);
+        //Event when the internet connection is lost
+        document.addEventListener('offline', this.onOffline, false);
+        //Event when the application is resumed/come of the background
+        document.addEventListener('resume', this.onGeolocalisationNeeded, false);
+        //Event when the application is paused/put in the background
+        document.addEventListener('pause', this.onGeolocalisationNoNeeded, false);    
     },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
+    // deviceready Event Handler  
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+        app.receivedEvent('deviceready', true);
         checkLocalisation(true);
     },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
+    // Update DOM on a Received Event, display 'received' class and hide 'listening' class OR the opposite
+    receivedEvent: function(id, received) {
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+        if(received){    
+            listeningElement.setAttribute('style', 'display:none;');
+            receivedElement.setAttribute('style', 'display:block;'); 
+        }
+        else{
+            listeningElement.setAttribute('style', 'display:block;');
+            receivedElement.setAttribute('style', 'display:none;'); 
+        }
     },
+    // online Event Handler, update the connection name
     onOnline: function() {
         var networkState = navigator.connection.type;
 
         var states = {};
+        //Two firsts are not usefull but if display something wrong is happen :D
         states[Connection.UNKNOWN]  = 'Unknown connection';
+        states[Connection.NONE]     = 'No network connection';
         states[Connection.ETHERNET] = 'Ethernet connection';
         states[Connection.WIFI]     = 'WiFi connection';
         states[Connection.CELL_2G]  = 'Cell 2G connection';
         states[Connection.CELL_3G]  = 'Cell 3G connection';
         states[Connection.CELL_4G]  = 'Cell 4G connection';
         states[Connection.CELL]     = 'Cell generic connection';
-        states[Connection.NONE]     = 'No network connection';
 
         var element = document.getElementById('connectionType');
         element.innerHTML = states[networkState];
         
-        app.receivedEvent('onOnline');
+        app.receivedEvent('onOnline', true);
     },
+    // offline Event Handler
     onOffline: function() {
-        var parentElement = document.getElementById('onOnline');
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:block;');
-        receivedElement.setAttribute('style', 'display:none;');
+        app.receivedEvent('onOnline', false);
     },
+    // localisation Event Handler
     onGeolocationSuccess: function(position) {
-        app.receivedEvent('onGPSConnection');
+        app.receivedEvent('onGPSConnection', true);
     },
+    // error of localisation Event Handler
     onGeolocationError: function(error) {
-        var parentElement = document.getElementById('onGPSConnection');
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:block;');
-        receivedElement.setAttribute('style', 'display:none;');
+        app.receivedEvent('onGPSConnection', false);
+    },
+    // resume the localisation Event Handler,
+    onGeolocalisationNeeded: function(){
+        checkLocalisation(true);
+    },
+    // pause the localisation Event Handler,
+    onGeolocalisationNoNeeded: function(){
+        checkLocalisation(false);
     }
 };
 
+//Start or stop the loop of localisation
 function checkLocalisation(bool){
     if (bool){
         timer = setInterval(function () {getLocation()}, 6000);       
@@ -99,10 +111,12 @@ function checkLocalisation(bool){
     }
 }
 
+//Request the current location (not use watchPosition because of no stable on android)
 function getLocation(){
     navigator.geolocation.getCurrentPosition(app.onGeolocationSuccess, app.onGeolocationError, { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true });
 }
 
+//Display an alert with some information
 function helper(){
     alert('Device Name: '     + device.name     + '\n' +
           'Device Cordova: '  + device.cordova  + '\n' +
