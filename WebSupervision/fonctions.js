@@ -1,5 +1,6 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
+var ip_Server_navbar = null;
 
 //MAPPING VARIABLES
 var my_map;
@@ -25,6 +26,7 @@ function HttpGET(request)
 			{
 				if ((xmlHttp.status == 200 || xmlHttp.status == 0))
 				{
+					alert("Connexion successful");
 					parse(xmlHttp.responseText);
 				}
 			}
@@ -35,6 +37,7 @@ function HttpGET(request)
 //PARSING DU RESULTAT DES REQUETES
 function parse(response)
 {
+	alert("JSON response : " + response);
 }
 
 function initialiser()
@@ -53,26 +56,31 @@ function initialiser()
 //FONCTIONS DE CONNEXION / DECONNEXION
 function connect_to_server()
 {
+	//alert("IP SERVEUR : "+$("#ipServer").val());
+
     if(connected == 1)
     {
- 		disconnect_to_server();
+ 		connected = 0;
+		$("#connect").removeClass("btn-danger");
+		$("#connect").addClass("btn-info");
+		$("#connect").html("Connection");
+		document.getElementById('ipServer').disabled = false;
 	}
 	else
 	{
-		connected = 1;
-		$("#connect").removeClass("btn-info");
-		$("#connect").addClass("btn-danger");
-		$("#connect").html("Disconnection");
+		if ($("#ipServer").val() == "")
+			window.alert("Empty Server adress");
+		else
+		{
+			connected = 1;
+			$("#connect").removeClass("btn-info");
+			$("#connect").addClass("btn-danger");
+			$("#connect").html("Disconnection");
+			document.getElementById('ipServer').disabled = true;
+		}
 	}
 }
 
-function disconnect_to_server()
-{
-	connected = 0;
-	$("#connect").removeClass("btn-danger");
-	$("#connect").addClass("btn-info");
-	$("#connect").html("Connection");
-}
 
 function search_position()
 {
