@@ -90,15 +90,6 @@ var app = {
     }
 };
 
-function checkDevice(){
-    var element = document.getElementById('deviceProperties');
-    element.innerHTML = 'Device Name: '     + device.name     + '<br />' +
-                        'Device Cordova: '  + device.cordova  + '<br />' +
-                        'Device Platform: ' + device.platform + '<br />' +
-                        'Device UUID: '     + device.uuid     + '<br />' +
-                        'Device Version: '  + device.version;
-}
-
 function checkLocalisation(bool){
     if (bool){
         timer = setInterval(function () {getLocation()}, 6000);       
@@ -110,6 +101,17 @@ function checkLocalisation(bool){
 
 function getLocation(){
     navigator.geolocation.getCurrentPosition(app.onGeolocationSuccess, app.onGeolocationError, { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true });
+}
+
+function helper(){
+    alert('Device Name: '     + device.name     + '\n' +
+          'Device Cordova: '  + device.cordova  + '\n' +
+          'Device Platform: ' + device.platform + '\n' +
+          'Device UUID: '     + device.uuid     + '\n' +
+          'Device Version: '  + device.version  + '\n' +
+          'Application version: 0.1'            + '\n\n' +
+          'In order to start the application all information of the page must be green' + '\n\n' +
+          'GolfChallenge require an internet and GPS connection' + '\n');
 }
 
 app.initialize();
