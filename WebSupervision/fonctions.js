@@ -73,12 +73,53 @@ function disconnect_to_server()
 
 function search_position()
 {
-	//LATTITUDE (HORIZONTAL)
-	var latitude;
+	//VARIABLES
+	var latitude = null;		//VERTICAL
+	var longitude = null;		//HORIZONTAL
+	var LatLng = null;
 
-	//LONGITUDE (VERTICAL)
-	var longitude;
+	//SPLIT
+	LatLng = $("#search").val();
 
-	/*FONCTION SPLIT*/
+	//COORDINATES SECURITY
+	if (LatLng == "")
+	{
+		alert("Empty text area");
+	}
+	else
+	{
+		var arrayOfCoordinates = LatLng.split("/");
+
+		if (arrayOfCoordinates.length != 2)
+		{
+			alert("Invalid coordinates");			
+		}
+		else
+		{
+			latitude = arrayOfCoordinates[0];
+			longitude = arrayOfCoordinates[1];
+			
+			if (latitude > 90 || latitude < -90)
+			{
+				alert("Latitude problem");
+			}
+			else
+			{
+				if (longitude > 180 || longitude < -180)
+				{
+					alert("Longitude problem");
+				}
+				else
+				{
+					//SEARCH AND RELOCALIZE
+					alert("Valid coordinates");
+
+
+				}
+			}
+		}
+	}
+
+	
 
 }
