@@ -47,7 +47,7 @@ function initialiser()
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	  
-	var my_map = new google.maps.Map(document.getElementById("my_map"), options);
+	my_map = new google.maps.Map(document.getElementById("my_map"), options);
 }
 
 //FONCTIONS DE CONNEXION / DECONNEXION
@@ -113,7 +113,6 @@ function search_position()
 				}
 				else
 				{
-					alert("Valid coordinates ("+latitude+";"+longitude+")");
 					//CREATE A MARKER FOR THE NEW POINT SEARCHED
 					var mark = new google.maps.Marker({
 					position: new google.maps.LatLng(latitude, longitude),
@@ -123,7 +122,6 @@ function search_position()
 					//POINT THE MAP ON THE NEW MARKER
 					my_map.setCenter(new google.maps.LatLng(latitude, longitude));
 					my_map.setZoom(15);
-					alert("out");
 				}
 			}
 		}
