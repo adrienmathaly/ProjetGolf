@@ -26,6 +26,9 @@ var connectedToInternet = false;
 var connectedToGPS      = false;
 var connectedToServer   = false;
 
+//The id is delivery by the server when the first connection
+var gameID = null;
+
 //Remember in this scope use 'this' to function access, otherwise use 'app'
 var app = {
     // Application Constructor
@@ -87,7 +90,9 @@ var app = {
         
         connectedToInternet = true;
         app.receivedEvent('onOnline', true);
-        getIDConnection();
+        if(gameID === null){
+            getIDConnection(saveID);
+        }
         requestStartingGame();
     },
     // offline Event Handler
@@ -146,8 +151,20 @@ function helper(){
 //Check if the device is ready to start the game
 function requestStartingGame(){
     if(connectedToDevice && connectedToInternet && connectedToGPS && connectedToServer){
-        location.replace("boardGame.html");
+        location.replace('boardGame.html');
     }
 }
+
+//Check if the device is ready to start the game
+function saveID(id){
+    var element = document.getElementById('userConnection');
+    element.innerHTML = 'id: ' + id;
+    gameID = id;
+    connectedToServer = true;
+    app.receivedEvent('onServerConnection', true);
+    requestStartingGame();
+
+}
+
 
 app.initialize();

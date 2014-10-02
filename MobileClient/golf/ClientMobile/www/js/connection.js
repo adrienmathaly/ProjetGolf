@@ -20,20 +20,18 @@ function getXMLHttpRequest() {
 	return xhr;
 }
 
-//Create a connection
-var xhr = getXMLHttpRequest();
 
 //Ask for an ID
-function getIDConnection(){
-	alert("Connection...");
+function getIDConnection(callback){
+	//Create a connection
+	var xhr = getXMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-			alert(xhr.responseText);
-			//callback(xhr.responseText);
+			callback(xhr.responseText);
 		}
 	};
 	
-	xhr.open("GET", "http://172.131.191:8081/token", true);
+	xhr.open("GET", "http://172.31.1.191:8081/token", true);
 	xhr.send(null);
 }
 
