@@ -12,7 +12,7 @@ class Db{
 
         $this->host = "localhost";
         $this->user = "root";
-        $this->password = "admin";
+        $this->password = "";
         $this->bd_name = "DB_GLF";
 
 		$this->link = mysql_connect( $this->host , $this->user, $this->password) or die ("Connexion MYSQL => PROBLEME");
