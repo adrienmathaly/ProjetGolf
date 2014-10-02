@@ -47,6 +47,7 @@ var app = {
     },
     // deviceready Event Handler  
     onDeviceReady: function() {
+        connectedToDevice = true;
         app.receivedEvent('deviceready', true);
         checkLocalisation(true);
         requestStartingGame();
