@@ -2,44 +2,61 @@
 var connected = 0;
 var ip_Server_navbar = null;
 var connected_users = 0;
+var JSON_response = null;
+var timer;
+
 
 //MAPPING VARIABLES
 var my_map;
+
 
 //VARIABLES DE REQUETAGE
 var number_users = "/users/number";
 var location_users = "/users/location";
 var distance_travelled = "/users/distance_ball";
+var amount_of_users = "/amountOfUsers";
+
+
 
 //FONCTION DE REQUETAGE GET
 function HttpGET(request)
 {
-	var xmlHttp = null;
-
 	//SECURITE DU FORMAT DE L'ADRESSE
 	if ($("#ipServer").val() == null)
 		window.alert("Adresse vide");
 	else
 	{
-		xmlHttp = new XMLHttpRequest();
-		xmlHttp.open("GET","http://"+$("#ipServer").val()+request, true);
+		//VARIABLES CREATION AND INITIALIZATION 
+		var URI = "http://"+$("#ipServer").val()+request;
+		var xmlHttp = new XMLHttpRequest();
+
+		//CONNECTION OPENING
+		xmlHttp.open("GET",URI, true);
+		xmlHttp.setRequestHeader("Origin", "*");
+
+		//FUNCTION PREPARATION
 		xmlHttp.onreadystatechange = function()
 			{
 				if ((xmlHttp.status == 200 || xmlHttp.status == 0))
 				{
-					alert("Connexion successful");
-					parse(xmlHttp.responseText);
+					show_response_on_textarea(xmlHttp.responseText);
 				}
+				else
+					console.log("Connection failed");
 			}
+
+		//REQUEST SENDING AND ANALYSING
+		console.log("URI : "+URI);
 		xmlHttp.send();
 	}
 }
 
-//PARSING DU RESULTAT DES REQUETES
-function parse(response)
+function show_response_on_textarea(response)
 {
-	alert("JSON response : " + response);
+	if (response != "")
+		document.getElementById("textarea_submit").innerHTML = response;
 }
+
 
 function initialiser()
 {
@@ -57,15 +74,16 @@ function initialiser()
 //FONCTIONS DE CONNEXION / DECONNEXION
 function connect_to_server()
 {
-	//alert("IP SERVEUR : "+$("#ipServer").val());
-
     if(connected == 1)
     {
  		connected = 0;
 		$("#connect").removeClass("btn-danger");
 		$("#connect").addClass("btn-info");
-		$("#connect").html("Connection");
+		$("#connect").html("Connect");
 		document.getElementById('ipServer').disabled = false;
+
+		//STOP THE TIMER
+		clearInterval(timer);
 	}
 	else
 	{
@@ -76,8 +94,11 @@ function connect_to_server()
 			connected = 1;
 			$("#connect").removeClass("btn-info");
 			$("#connect").addClass("btn-danger");
-			$("#connect").html("Disconnection");
+			$("#connect").html("Disconnect");
 			document.getElementById('ipServer').disabled = true;
+
+			//START THE TIMER
+			timer = setInterval( function() {HttpGET(amount_of_users)}, 500);
 		}
 	}
 }
@@ -144,7 +165,6 @@ function go_home()
 	my_map.setCenter(latlng_IMERIR);
 	my_map.setZoom(16);
 }
-
 
 function clean_table(table)
 {

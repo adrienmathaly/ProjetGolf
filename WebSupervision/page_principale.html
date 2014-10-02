@@ -30,7 +30,7 @@
 
 			      	<form class="navbar-form navbar-left" role="connection">
 					    <div class="input-group">
-					      	<input type="text" class="form-control" placeholder="172.0.0.1:8080" id="ipServer">
+					      	<input type="text" class="form-control" placeholder="172.0.0.1:8080" id="ipServer" value="172.31.1.191:8082">
 					      	<span class="input-group-btn">
 					        	<button class="btn btn-info" id="connect" type="button" onclick="connect_to_server()">Connect</button>
 					      	</span>
@@ -66,14 +66,7 @@
 						</table> 
 					</div>
 					<div>
-						<textarea id="textarea_submit" rows="4" cols="60" placeholder="JSON request here ...">[
-{"idToken" : "A", "lg" : "1.000000000000", "lt" : "5.000000000000"},
-{"idToken" : "B", "lg" : "2.000000000000", "lt" : "4.000000000000"},
-{"idToken" : "C", "lg" : "3.000000000000", "lt" : "3.000000000000"},
-{"idToken" : "D", "lg" : "4.000000000000", "lt" : "2.000000000000"},
-{"idToken" : "E", "lg" : "5.000000000000", "lt" : "1.000000000000"}
-]
-						</textarea>
+						<textarea disabled id="textarea_submit" rows="7" cols="60" placeholder="Waiting a JSON request ..."></textarea>
 			        	<button class="btn btn-default" id="button_submit" type="button" onclick="submit()">
 			        		<div>Submit</div>
 			        	</button>

@@ -30,6 +30,11 @@ body
 	background-size: 30%;
 }
 
+#textarea_submit
+{
+	color :#626063;
+}
+
 span.glyphicon-question-sign
 {
     font-size: 1.3em;
