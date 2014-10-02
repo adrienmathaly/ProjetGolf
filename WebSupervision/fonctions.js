@@ -21,7 +21,7 @@ function HttpGET(request)
 	else
 	{
 		xmlHttp = new XMLHttpRequest();
-		xmlHttp.open("GET","http://"+$("#ipServer").val()+cmd, true);
+		xmlHttp.open("GET","http://"+$("#ipServer").val()+request, true);
 		xmlHttp.onreadystatechange = function()
 			{
 				if ((xmlHttp.status == 200 || xmlHttp.status == 0))
@@ -144,16 +144,58 @@ function go_home()
 	my_map.setZoom(16);
 }
 
+
+function parse(jsontxt){
+		var obj = jQuery.parseJSON(jsontxt);
+		if(obj.name!="posxy"){
+			if(obj.name=="gyro"){
+				obj.value=((parseInt(obj.value)%360));
+				gyro=obj.value;
+				obj.value=obj.value;
+			}
+			$("#"+obj.name).html(obj.value);
+		}else{
+			var coords = obj.value.split(":"); 
+			x=parseInt(coords[1])/2;
+			y=parseInt(coords[0])/2;
+		}
+	};
+
 function submit()
 {
 	//VARIABLES INITIALIZATION
 	var JSON_string;
 	var JSON_objet;
+	var my_table;
 
 	//ASSIGNATION
-	JSON_string = $("#textarea_submit").val();
-	JSON_objet = eval("(function(){return " + JSON_string + ";})()");
+	my_table = document.getElementById("table_infos");
 
-	//FIRST CELL MODIFICATION
-	document.getElementById('total_users').innerHTML = "Users \n ("+JSON_objet.numberOfConnected+")";
+	/*var amountOfUserObjet = { amountOfUser : 5 };
+	console.log(amountOfUserObjet["amountOfUser"]);*/
+
+	parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")"); // String json to json format
+	//console.log(parsed_JSON_objet);
+	//console.log(parsed_JSON_objet[1]);
+
+	var i = 0;
+	parsed_JSON_objet.forEach(function(row)
+	{
+		//CREATE A NEW ROW
+		var new_row = my_table.insertRow(i+1);
+
+		//CREATE NEW CELLS
+		var cell_user = new_row.insertCell(0);
+		var cell_lat = new_row.insertCell(1);
+		var cell_lng = new_row.insertCell(2);
+
+		//INSERT VALUES
+		cell_user.innerHTML = row["idToken"];
+		cell_lat.innerHTML = row["lt"];
+		cell_lng.innerHTML = row["lg"];
+
+		i++;
+	});
+
+	document.getElementById("total_users").innerHTML = "Users (" + i + ")";
 }
