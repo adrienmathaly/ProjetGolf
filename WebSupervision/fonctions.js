@@ -46,7 +46,7 @@ function initialiser()
 	
 	var options = {
 		center: latlng,
-		zoom: 12,
+		zoom: 2,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	  
@@ -145,54 +145,70 @@ function go_home()
 }
 
 
-function parse(jsontxt){
-		var obj = jQuery.parseJSON(jsontxt);
-		if(obj.name!="posxy"){
-			if(obj.name=="gyro"){
-				obj.value=((parseInt(obj.value)%360));
-				gyro=obj.value;
-				obj.value=obj.value;
-			}
-			$("#"+obj.name).html(obj.value);
-		}else{
-			var coords = obj.value.split(":"); 
-			x=parseInt(coords[1])/2;
-			y=parseInt(coords[0])/2;
+function clean_table(table)
+{
+	var length = table.rows.length;
+
+	if (length > 1)
+	{
+		for (var j=1;j<length;j++)
+		{
+			table.deleteRow(1);
 		}
-	};
+	}
+}
+
+function add_marker(_lat,_lng)
+{
+	var marker = new google.maps.Marker
+	(
+		{
+    		position: new google.maps.LatLng(_Lat,_Lng),
+    		map: my_map
+		}
+	);
+
+	marker.setMap(my_map)
+}
 
 function submit()
 {
 	//VARIABLES INITIALIZATION
-	var JSON_string;
-	var JSON_objet;
+	var parsed_JSON_objet;
 	var my_table;
+	var i;
 
 	//ASSIGNATION
 	my_table = document.getElementById("table_infos");
+	parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")");
 
+	
 	/*var amountOfUserObjet = { amountOfUser : 5 };
 	console.log(amountOfUserObjet["amountOfUser"]);*/
 
-	parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")"); // String json to json format
-	//console.log(parsed_JSON_objet);
-	//console.log(parsed_JSON_objet[1]);
+	clean_table(my_table);
 
-	var i = 0;
+	i = 0;
 	parsed_JSON_objet.forEach(function(row)
 	{
+		//LOCAL VARIABLES
+		var new_row;
+		var cell_user, cell_lat, cell_lng;
+
 		//CREATE A NEW ROW
-		var new_row = my_table.insertRow(i+1);
+		new_row = my_table.insertRow(i+1);
 
 		//CREATE NEW CELLS
-		var cell_user = new_row.insertCell(0);
-		var cell_lat = new_row.insertCell(1);
-		var cell_lng = new_row.insertCell(2);
+		cell_user = new_row.insertCell(0);
+		cell_lat = new_row.insertCell(1);
+		cell_lng = new_row.insertCell(2);
 
 		//INSERT VALUES
 		cell_user.innerHTML = row["idToken"];
 		cell_lat.innerHTML = row["lt"];
 		cell_lng.innerHTML = row["lg"];
+
+		add_marker(cell_lat.innerHTML,cell_lng.innerHTML)
 
 		i++;
 	});
