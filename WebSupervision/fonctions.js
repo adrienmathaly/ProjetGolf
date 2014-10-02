@@ -1,6 +1,7 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
 var ip_Server_navbar = null;
+var connected_users = 0;
 
 //MAPPING VARIABLES
 var my_map;
@@ -158,19 +159,6 @@ function clean_table(table)
 	}
 }
 
-function add_marker(_lat,_lng)
-{
-	var marker = new google.maps.Marker
-	(
-		{
-    		position: new google.maps.LatLng(_Lat,_Lng),
-    		map: my_map
-		}
-	);
-
-	marker.setMap(my_map)
-}
-
 function submit()
 {
 	//VARIABLES INITIALIZATION
@@ -194,6 +182,9 @@ function submit()
 		//LOCAL VARIABLES
 		var new_row;
 		var cell_user, cell_lat, cell_lng;
+		var marker;
+		var lat;
+		var lng;
 
 		//CREATE A NEW ROW
 		new_row = my_table.insertRow(i+1);
@@ -204,14 +195,54 @@ function submit()
 		cell_lng = new_row.insertCell(2);
 
 		//INSERT VALUES
-		cell_user.innerHTML = row["idToken"];
+		//cell_user.innerHTML = row["idToken"];
+		cell_user.innerHTML = "Anonymous#"+(i+1);
 		cell_lat.innerHTML = row["lt"];
 		cell_lng.innerHTML = row["lg"];
 
-		add_marker(cell_lat.innerHTML,cell_lng.innerHTML)
+		//INSERT A MARKER FOR EACH USER
+		lat = cell_lat.innerHTML;
+		lng = cell_lng.innerHTML;
+		marker = new google.maps.Marker({
+    		position: new google.maps.LatLng(lat,lng),
+    		map: my_map
+		});
+
+		marker.setMap(my_map);
 
 		i++;
 	});
 
-	document.getElementById("total_users").innerHTML = "Users (" + i + ")";
+	connected_users = i;
+	document.getElementById("total_users").innerHTML = "Users (" + connected_users + ")";
+
+	//resize_map(my_table);
+}
+
+function resize_map(table)
+{
+	//IF THE TABLE IS COMPLETED BY DATA
+	if (table.rows.length > 1)
+	{
+		//LOCAL VARIABLES
+		var sum_lat = 0;
+		var sum_lng = 0;
+		var average_lat = 0;
+		var average_lng = 0;
+
+		for (var j=1;j<table.rows.length;j++)
+		{
+			sum_lat += parseFloat(table.rows[j].cells[1].innerHTML);
+			sum_lng += parseFloat(table.rows[j].cells[2].innerHTML);
+		}
+
+		average_lat = sum_lat / connected_users;
+		average_lng = sum_lng / connected_users;
+
+		//CENTER THE MAP ON THE GOOD COORDINATES
+		my_map.setCenter(new google.maps.LatLng(average_lat,average_lng));
+
+		//REZOOM
+		my_map.setZoom(6);
+	}
 }
