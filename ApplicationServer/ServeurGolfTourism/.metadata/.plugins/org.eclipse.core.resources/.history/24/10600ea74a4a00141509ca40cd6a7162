@@ -1,0 +1,35 @@
+package http.handlers;
+
+import http.SetOfUsers;
+import http.User;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.UUID;
+
+import logger.Logger;
+
+import com.sun.net.httpserver.HttpExchange;
+
+public class BindTokenId extends CustomizedHandler {
+
+	public BindTokenId(HashMap<String, Logger> loggers) {
+		super(loggers);
+	}
+
+	@Override
+	public void handle(HttpExchange t) throws IOException {
+	      String response = generateUID();
+	      SetOfUsers.addUser(response, new User());
+	      t.sendResponseHeaders(200, response.length());
+	      OutputStream os = t.getResponseBody();
+	      os.write(response.getBytes());
+	      os.close();
+	}
+	
+	private String generateUID(){
+		return UUID.randomUUID().toString().replaceAll("-", "");
+	}
+	
+}

@@ -1,7 +1,6 @@
 package http;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import configuration.ConfLoader;
@@ -10,11 +9,13 @@ import logger.Logger;
 
 public class HTTPGolfServersLauncher {
 
-
 	private boolean active;
 	private HTTPResponseHeaderBuilder headers;
 	private HashMap<String,Logger> loggers;
 	private HTTPGolfMobileServer mobileServer;
+	private HTTPGolfSupervisionServer supvServer;
+
+	
 	public HTTPGolfServersLauncher() {
 		ConfLoader.loadConfigFile();
 		launchLoggers();
@@ -23,6 +24,8 @@ public class HTTPGolfServersLauncher {
 		headers=new HTTPResponseHeaderBuilder(new File(ConfLoader.getEntry("headersDirectory")));
 		mobileServer = new HTTPGolfMobileServer(loggers,"[MOBILE]", ConfLoader.getEntry("serverPortMobile"));
 		mobileServer.launchMePlease();
+		supvServer = new HTTPGolfSupervisionServer(loggers,"[SUPERVISION]", ConfLoader.getEntry("serverPortSupervision"));
+		supvServer.launchMePlease();
 		while(active){
 			try {
 				Thread.sleep(100);
@@ -52,5 +55,13 @@ public class HTTPGolfServersLauncher {
 		for(Entry<String,Logger> e : loggers.entrySet()){
 			e.getValue().stopLogger();
 		}
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

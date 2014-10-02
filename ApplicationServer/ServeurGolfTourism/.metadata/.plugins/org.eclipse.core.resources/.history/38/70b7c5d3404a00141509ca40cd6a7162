@@ -1,0 +1,21 @@
+package http;
+
+import java.util.HashMap;
+
+public class SetOfUsers {
+	
+	
+	private static HashMap<String,User> users;
+	
+	public static void addUser(String token,User user){
+		users.put(token,user);
+	}
+	
+	public static void disconnectuser(String token){
+		users.get(token).setConnected(false);
+	}
+	
+	public static void removeUser(String token){
+		users.remove(token);
+	}
+}

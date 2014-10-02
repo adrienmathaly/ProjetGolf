@@ -1,0 +1,46 @@
+package http;
+
+public class User {
+
+	
+	private boolean connected;
+	private float longitude;
+	private float latitude;
+	private float travelledDistance;
+	
+	public User(){
+		this.setConnected(true);
+	}
+
+	public boolean isConnected() {
+		return connected;
+	}
+
+	public void setConnected(boolean connected) {
+		this.connected = connected;
+	}
+
+	public float getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(float longitude) {
+		this.longitude = longitude;
+	}
+
+	public float getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(float latitude) {
+		this.latitude = latitude;
+	}
+
+	public float getTravelledDistance() {
+		return travelledDistance;
+	}
+
+	public void setTravelledDistance(float travelledDistance) {
+		this.travelledDistance = travelledDistance;
+	}
+}

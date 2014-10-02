@@ -13,3 +13,11 @@
 1412238256798	Encapsulate field 'loggers'
 1412241872618	Delete element
 1412241881196	Delete element
+1412255578000	Rename type 'AmountOfConnected'
+1412259861031	Encapsulate field 'connected'
+1412259865212	Encapsulate field 'longitude'
+1412259870312	Encapsulate field 'latitude'
+1412259874272	Encapsulate field 'travelledDistance'
+1412261171826	Encapsulate field 'latitude'
+1412261175923	Encapsulate field 'longitude'
+1412263168514	Encapsulate field 'fullyCreated'

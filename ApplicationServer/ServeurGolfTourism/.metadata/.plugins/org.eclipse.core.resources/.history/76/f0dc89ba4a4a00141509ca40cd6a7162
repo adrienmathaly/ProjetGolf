@@ -1,0 +1,19 @@
+package http.handlers;
+
+import java.io.IOException;
+import java.util.HashMap;
+import com.sun.net.httpserver.HttpExchange;
+
+import logger.Logger;
+
+public class NearestPOIFromCoords extends CustomizedHandler {
+
+	public NearestPOIFromCoords(HashMap<String, Logger> loggers) {
+		super(loggers);
+	}
+
+	@Override
+	public void handle(HttpExchange arg0) throws IOException {		
+	}
+
+}

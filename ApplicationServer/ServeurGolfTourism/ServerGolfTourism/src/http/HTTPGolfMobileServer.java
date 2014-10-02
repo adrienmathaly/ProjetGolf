@@ -1,7 +1,11 @@
 package http;
 
 import http.handlers.BindTokenId;
+import http.handlers.NearestPOIFromCoords;
+import http.handlers.Shot;
+
 import java.util.HashMap;
+
 import logger.Logger;
 
 public class HTTPGolfMobileServer extends HTTPGolfServer{
@@ -13,6 +17,7 @@ public class HTTPGolfMobileServer extends HTTPGolfServer{
 	@Override
 	protected void createMultiEntriesContext() {
 		getServer().createContext("/token", new BindTokenId(getLoggers()));
-		
+		getServer().createContext("/poi/nearest", new NearestPOIFromCoords(getLoggers()));
+		getServer().createContext("/shot", new Shot(getLoggers()));
 	}
 }
