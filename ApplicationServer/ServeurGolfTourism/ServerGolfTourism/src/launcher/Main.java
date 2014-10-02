@@ -1,10 +1,10 @@
 package launcher;
 
-import http.HTTPGolfMobileServer;
+import http.HTTPGolfServersLauncher;
 
 public class Main {
 
 	public static void main(String[] args) {
-		HTTPGolfMobileServer httpServer = new HTTPGolfMobileServer();
+		HTTPGolfServersLauncher httpServer = new HTTPGolfServersLauncher();
 	}
 }

@@ -1,0 +1,25 @@
+package http;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import com.sun.net.httpserver.HttpServer;
+
+import configuration.ConfLoader;
+
+public class HTTPGolfMobileServer{
+
+	private HttpServer serverMobile;
+	
+	public HTTPGolfMobileServer(){
+		try {
+			serverMobile = HttpServer.create(new InetSocketAddress(Integer.parseInt(ConfLoader.getEntry("serverPortMobile"))), 0);
+		 //   serverMobile.createContext("/get", );
+		    serverMobile.setExecutor(null);
+		    serverMobile.start();
+		} catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+}

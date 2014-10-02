@@ -28,7 +28,6 @@ public class DatabaseManager {
 		    connection.setRequestMethod(method);
 		    connection.setRequestProperty("Content-type","JSON");
 		    connection.connect();
-		 //   System.out.println(connection.g);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -37,7 +36,6 @@ public class DatabaseManager {
 	  public void displayResponse() throws Exception
 	  {
 	    String line;
-
 	    try
 	    {
 	        BufferedReader s = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -61,15 +59,5 @@ public class DatabaseManager {
 
 	public void setUrl(URL url) {
 		this.url = url;
-	}
-
-	public static void main(String argv[]){
-		DatabaseManager dbm = new DatabaseManager("http://172.31.1.26/www/GolfProject/DatabaseServer/");
-		dbm.connect("GET");
-		try {
-			dbm.displayResponse();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

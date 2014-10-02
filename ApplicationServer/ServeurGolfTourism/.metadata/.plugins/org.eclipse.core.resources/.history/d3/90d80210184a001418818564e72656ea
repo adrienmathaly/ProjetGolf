@@ -1,0 +1,37 @@
+package http;
+
+import http.handlers.BindTokenId;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.HashMap;
+
+import logger.Logger;
+
+import com.sun.net.httpserver.HttpServer;
+
+import configuration.ConfLoader;
+
+public class HTTPGolfMobileServer{
+
+	private HttpServer serverMobile;
+	private HashMap<String,Logger> loggers;
+	
+	public HTTPGolfMobileServer(HashMap<String,Logger> loggers){
+		this.loggers=loggers;
+		try {
+			serverMobile = HttpServer.create(new InetSocketAddress(Integer.parseInt(ConfLoader.getEntry("serverPortMobile"))), 0);
+		    serverMobile.createContext("/token", new BindTokenId(loggers));
+		    serverMobile.setExecutor(null);
+		    serverMobile.start();
+		    loggers.get("Events").addLogToBeWritten("[Mobile] - Server launched");
+		} catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void killMePlease(){
+		serverMobile.stop(0);
+	}
+}

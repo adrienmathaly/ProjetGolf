@@ -3,3 +3,13 @@
 1412165748298	Encapsulate field 'connection'
 1412165958995	Encapsulate field 'url'
 1412165963165	Encapsulate field 'port'
+1412172097446	Encapsulate field 'loggers'
+1412172101659	Encapsulate field 'databaseManager'
+1412176740579	Delete element
+1412176749475	Delete element
+1412176770466	Delete element
+1412179010916	Delete element
+1412235374890	Rename type 'HTTPGolfMobileServer'
+1412238256798	Encapsulate field 'loggers'
+1412241872618	Delete element
+1412241881196	Delete element

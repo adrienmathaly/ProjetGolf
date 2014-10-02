@@ -1,0 +1,9 @@
+package http;
+
+public class HTTPGolfSupervisionServer implements Runnable{
+
+	@Override
+	public void run() {
+	}
+
+}

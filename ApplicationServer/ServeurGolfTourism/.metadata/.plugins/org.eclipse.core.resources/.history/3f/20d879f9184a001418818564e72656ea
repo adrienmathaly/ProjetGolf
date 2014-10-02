@@ -1,0 +1,24 @@
+package http;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
+import com.sun.net.httpserver.HttpServer;
+
+import configuration.ConfLoader;
+
+public class HTTPGolfSupervisionServer {
+
+	
+	public HTTPGolfSupervisionServer(){
+		try {
+			HttpServer serverSupervision = HttpServer.create(new InetSocketAddress(Integer.parseInt(ConfLoader.getEntry("serverPortSupervision"))), 0);
+		} catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void killMePlease(){
+		serverMobile.stop(0);
+	}
+}
