@@ -42,9 +42,16 @@
                 <p class="event listening">Wainting for a GPS connection...</p>
                 <p class="event received">GPS connection valid</p><br/>
             </div>
-            <img src='img/help_button.png' alt='helper' class='helper' onclick='helper()'></img>
+            <div id="onServerConnection" class="blink">
+                <p class="event listening">Wainting for the server connection...</p>
+                <p class="event received" id="userConnection"></p><br/>
+            </div>
+            <div>
+                <img src='img/help_button.png' alt='helper' class='helper' onclick='helper()'></img>
+            </div>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/connection.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>
