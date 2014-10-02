@@ -143,3 +143,17 @@ function go_home()
 	my_map.setCenter(latlng_IMERIR);
 	my_map.setZoom(16);
 }
+
+function submit()
+{
+	//VARIABLES INITIALIZATION
+	var JSON_string;
+	var JSON_objet;
+
+	//ASSIGNATION
+	JSON_string = $("#textarea_submit").val();
+	JSON_objet = eval("(function(){return " + JSON_string + ";})()");
+
+	//FIRST CELL MODIFICATION
+	document.getElementById('total_users').innerHTML = "Users \n ("+JSON_objet.numberOfConnected+")";
+}

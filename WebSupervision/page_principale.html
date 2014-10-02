@@ -54,7 +54,7 @@
 						<table class="table table-condensed">
 							<thead>
 							   	<tr>
-							    	<th>Users</th>
+							    	<th id="total_users">Users (0)</th>
 							    	<th>Latitude</th> 
 							    	<th>Longitude</th>
 							    	<th>Distance</th>
@@ -80,15 +80,16 @@
 							    	<td>0</td>
 							    	<td>0</td>
 							  	</tr>
-							  	<tr>
-							    	<td>3</td>
-							    	<td></td>
-							    	<td></td>
-							    	<td>0</td>
-							  	</tr>
 							</tbody>
 						</table> 
 					</div>
+					<div>
+						<textarea id="textarea_submit" rows="4" cols="60" placeholder="JSON request here ..."></textarea>
+			        	<button class="btn btn-default" id="button_submit" type="button" onclick="submit()">
+			        		<div>Submit</div>
+			        	</button>
+					</div>
+
 			    </div>
 
 
