@@ -8,7 +8,10 @@ var timer;
 
 //MAPPING VARIABLES
 var my_map;
+var my_table;
 var marker_array = [];
+var lat_array = [];
+var lng_array = [];
 
 
 //VARIABLES DE REQUETAGE
@@ -159,7 +162,6 @@ function search_position()
 	}
 }
 
-
 function go_home()
 {
 	var latlng_IMERIR = new google.maps.LatLng(42.674520, 2.847786);
@@ -184,7 +186,6 @@ function submit()
 {
 	//VARIABLES INITIALIZATION
 	var parsed_JSON_objet;
-	var my_table;
 	var i;
 
 	//ASSIGNATION
@@ -233,7 +234,7 @@ function submit()
 	connected_users = i;
 	document.getElementById("total_users").innerHTML = "Users (" + connected_users + ")";
 
-	//resize_map(my_table);
+	//resize_map();
 }
 
 function add_marker(_lat,_lng)
@@ -251,33 +252,90 @@ function add_marker(_lat,_lng)
 function delete_all_markers()
 {
 	for (var i=0;i<marker_array.length;i++)
-		marker_array[0].setMap(null);
+		marker_array[i].setMap(null);
 }
 
-function resize_map(table)
+function resize_map()
 {
+	var table = my_table;
+	var min_lat, max_lat, min_lng, max_lng;
+	var center_lat, center_lng;
+	var distance_lat,distance_lng;
+
 	//IF THE TABLE IS COMPLETED BY DATA
 	if (table.rows.length > 1)
 	{
-		//LOCAL VARIABLES
-		var sum_lat = 0;
-		var sum_lng = 0;
-		var average_lat = 0;
-		var average_lng = 0;
-
+		//ARRAY LAT ET LNG INSERTION
 		for (var j=1;j<table.rows.length;j++)
 		{
-			sum_lat += parseFloat(table.rows[j].cells[1].innerHTML);
-			sum_lng += parseFloat(table.rows[j].cells[2].innerHTML);
-		}
+			lat_array.push(parseFloat(table.rows[j].cells[1].innerHTML));
+			lng_array.push(parseFloat(table.rows[j].cells[2].innerHTML));
+		}	
 
-		average_lat = sum_lat / connected_users;
-		average_lng = sum_lng / connected_users;
+		min_lat = min(lat_array);
+		max_lat = max(lat_array);
+		min_lng = min(lng_array);
+		max_lng = max(lng_array);
+
+		distance_lat = max(lat_array) - min(lat_array);
+		distance_lng = max(lng_array) - min(lng_array);
+
+		center_lat = (min_lat + max_lat)/2
+		center_lng = (min_lng + max_lng)/2
 
 		//CENTER THE MAP ON THE GOOD COORDINATES
-		my_map.setCenter(new google.maps.LatLng(average_lat,average_lng));
+		console.log("Center : (" + center_lat + ":" + center_lng + ")");
+		console.log("Distance lat : " + distance_lat);
+		console.log("Distance lng : " + distance_lng);
+
+		my_map.setCenter(new google.maps.LatLng(center_lat,center_lng));
 
 		//REZOOM
+		var array_distance = [distance_lat,distance_lng];
+		var max_distance = parseFloat(max(array_distance)).toFixed(2);
+
+		console.log("max distance : " + max_distance);
 		my_map.setZoom(6);
+
 	}
+}
+
+function min(array)
+{
+	var minimum;
+
+	if (array.length > 0)
+	{
+		minimum = array[0];
+
+		for (var i=1;i<array.length;i++)
+		{
+			if (array[i] < minimum)
+				minimum = array[i];
+		}
+	}
+	else
+		return array[0];
+
+	return minimum;
+}
+
+function max(array)
+{
+	var maximum;
+
+	if (array.length > 0)
+	{
+		maximum = array[0];
+
+		for (var i=1;i<array.length;i++)
+		{
+			if (array[i] > maximum)
+				maximum = array[i];
+		}
+	}
+	else
+		return array[0];
+
+	return maximum;
 }
