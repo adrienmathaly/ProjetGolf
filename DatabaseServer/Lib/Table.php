@@ -2,14 +2,14 @@
 
 abstract class Table{
 
-	protected $bd;
-	protected $nom;
+	protected $db;
+	protected $name;
 	protected $fields;
 	
 	public function getAll(){
 
-		$query = "SELECT * FROM ".$this->nom;
-		$allRows = $this->bd->getResponse($query);
+		$query = "SELECT * FROM ".$this->name;
+		$allRows = $this->db->getResponse($query);
 		
 		return $allRows;
 	}
@@ -39,9 +39,9 @@ abstract class Table{
 		
 		$where = substr_replace($where, "", -5, 5).";";
 		
-		$query = "SELECT * FROM ".$this->nom." WHERE ".$where;
+		$query = "SELECT * FROM ".$this->name." WHERE ".$where;
 		
-		$rows = $this->bd->getResponse($query);
+		$rows = $this->db->getResponse($query);
         
 		return $rows;
 	
@@ -55,7 +55,7 @@ abstract class Table{
 	 */
 	public function insertRow($valeurs){
 	
-		$queryInsertRow = "INSERT INTO ".$this->nom."(";
+		$queryInsertRow = "INSERT INTO ".$this->name."(";
 		
 		$allField = array_keys($this->fields);
 		
@@ -68,10 +68,10 @@ abstract class Table{
 		$queryInsertRow = substr_replace($queryInsertRow, "", -1, 1);
 		$queryInsertRow .= ") VALUES(".$valeurs.");";
 		
-		$this->bd->getResponse($queryInsertRow);
+		$this->db->getResponse($queryInsertRow);
 		
 		// Retourne l'id de la ligne insere
-		$resultQuery = $this->bd->executeQuery("SELECT  LAST_INSERT_ID()");
+		$resultQuery = $this->db->executeQuery("SELECT  LAST_INSERT_ID()");
 		
 		while( $row = mysql_fetch_assoc($resultQuery) ){
 			
@@ -84,7 +84,7 @@ abstract class Table{
 	
 	public function deleteRow($cond){
 	
-		$queryDeleteRow = "DELETE FROM ".$this->nom." WHERE ";
+		$queryDeleteRow = "DELETE FROM ".$this->name." WHERE ";
 		
 		$where ="";
 		
@@ -102,7 +102,7 @@ abstract class Table{
 		
 		$queryDeleteRow = substr_replace($queryDeleteRow, "", -5, 5).";";
 		
-		$this->bd->getResponse($queryDeleteRow);
+		$this->db->getResponse($queryDeleteRow);
 		
 		return 0;
 		
@@ -110,7 +110,7 @@ abstract class Table{
 	
 	public function updateRow($newValue, $cond){
 	
-		$queryUpdateRow = "UPDATE ".$this->nom." SET ";
+		$queryUpdateRow = "UPDATE ".$this->name." SET ";
 		
 		reset($newValue);
 		while (list($key, $val) = each($newValue)) {
@@ -140,12 +140,12 @@ abstract class Table{
 		
 		$queryUpdateRow = substr_replace($queryUpdateRow, "", -5, 5).";";
 				
-		$this->bd->getResponse($queryUpdateRow);
+		$this->db->getResponse($queryUpdateRow);
 	}
 
     public function deconnect(){
 
-        $this->bd->deconnect();
+        $this->db->deconnect();
     }
 	
 }
