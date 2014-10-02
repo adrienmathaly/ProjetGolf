@@ -64,9 +64,9 @@ body {
     .app {
         background-position:left center;
         padding-top: 10px;
-        padding-right: 0px;
-        padding-bottom: 0px;
-        padding-left: 0px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
         margin:0px 0px 0px 0px;  /* offset vertical: half of image height */
                                       /* offset horizontal: half of image width and text area width */
     } 

@@ -19,8 +19,17 @@ function initializeCarto() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
       	};
     var divMap = document.getElementById("map-canvas");
-    divMap.style.width = screen.width - 10 + "px";
-    divMap.style.height = screen.height -10 + "px";
+
+    //get element upper and botton the map to set the dimmension
+    var upperElement = document.getElementById("upper_map");
+    var bottomElement = document.getElementById("bottom_map");
+
+    //height of map = height of screen - height of data upper - height of data bottom - 25px because of action bar
+    var displayHeight = screen.height - upperElement.offsetHeight - bottomElement.offsetHeight - 25;
+    
+    divMap.style.width = screen.width + "px";
+    divMap.style.height = displayHeight + "px";
+
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 }
 
@@ -28,7 +37,7 @@ function initializeCarto() {
 var onLocaliseSuccess = function(position) {
 	alert("Changement de localisation \n Latitude: " + position.coords.latitude + " \n Longitude: " + position.coords.longitude);
 	map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-	map.setZoom(17);
+	map.setZoom(10);
 
 	var marker = new google.maps.Marker({
       position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
@@ -47,4 +56,6 @@ function onLocaliseError(error) {
 function localiseOnMap() {
 	navigator.geolocation.getCurrentPosition(onLocaliseSuccess, onLocaliseError);
 }
+
+localiseOnMap();
 
