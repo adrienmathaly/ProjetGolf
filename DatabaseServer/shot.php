@@ -10,10 +10,10 @@
 
 // Récupération des données depuis json envoyé
 $id_token        = 1245;
-$longitude_token;
-$latitude_token  ; 
-$longitude_balle ; 
-$latitude_balle  ; 
+$longitude_token = 42,435;
+$latitude_token  = 2,2564; 
+$longitude_balle = 42,435; 
+$latitude_balle  = 2,2564;  
 
 
 echo "<br><br>";
