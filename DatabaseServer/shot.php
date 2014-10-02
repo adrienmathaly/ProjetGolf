@@ -1,17 +1,20 @@
 <?php
 
 /**
-* \file nearest.php
+* \file shot.php
 * \author Loïc TRICJAUD
 * \version 1.0
 * \date 01/10/2014
 * \brief Apres tir
 */
 
-// Récupération des données dans l'url (longitude et latitude) + affichage
-$longitude = $_GET['lg'];
-$latitude  = $_GET['lt'];
-//echo "Longitude : " . $longitude ."  - Latitude : ".$latitude;
+// Récupération des données depuis json envoyé
+$id_token        = 1245;
+$longitude_token;
+$latitude_token  ; 
+$longitude_balle ; 
+$latitude_balle  ; 
+
 
 echo "<br><br>";
 $host = "localhost";
