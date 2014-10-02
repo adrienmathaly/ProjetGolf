@@ -1,0 +1,15 @@
+package http.handlers;
+
+import java.io.IOException;
+
+import com.sun.net.httpserver.HttpExchange;
+
+public class BindTokenId extends CustomizedHandler {
+
+	@Override
+	public void handle(HttpExchange t) throws IOException {
+		
+		
+	}
+
+}

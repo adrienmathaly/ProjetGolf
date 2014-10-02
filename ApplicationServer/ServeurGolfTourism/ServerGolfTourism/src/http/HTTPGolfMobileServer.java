@@ -1,55 +1,18 @@
 package http;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
+import http.handlers.BindTokenId;
 import java.util.HashMap;
-import java.util.Map.Entry;
-import configuration.ConfLoader;
 import logger.Logger;
 
-public class HTTPGolfMobileServer {
+public class HTTPGolfMobileServer extends HTTPGolfServer{
 
-
-	private boolean active;
-	private HTTPResponseHeaderBuilder headers;
-	private HashMap<String,Logger> loggers;
-	
-	public HTTPGolfMobileServer() {
-		ConfLoader.loadConfigFile();
-		launchLoggers();
-		loggers.get("Events").addLogToBeWritten(ConfLoader.getEntry("onStartMsg"));
-		active=true;
-		headers=new HTTPResponseHeaderBuilder(new File(ConfLoader.getEntry("headersDirectory")));
-
-		int port = Integer.parseInt(ConfLoader.getEntry("serverPort"));
-
-		while (active) {
-			loggers.get("Events").addLogToBeWritten(ConfLoader.getEntry("onConnectMsg"));
-		}
-
-		killLoggers();
+	public HTTPGolfMobileServer(HashMap<String, Logger> loggers, String name ,String port) {
+		super(loggers, name, port);
 	}
-	
-	private void launchLoggers(){
-		loggers = new HashMap<String,Logger>();
-		loggers.put(ConfLoader.getEntry("loggerEventsName"), new Logger(ConfLoader.getEntry("loggerEventsName"), ConfLoader.getEntry("loggerEventsPath"),10));
-		loggers.put(ConfLoader.getEntry("loggerErrorsName"), new Logger(ConfLoader.getEntry("loggerErrorsName"), ConfLoader.getEntry("loggerErrorsPath"),10));
-		for(Entry<String,Logger> e : loggers.entrySet()){
-			Thread t = new Thread(e.getValue());
-			t.start();
-		}
-	}
-	
-	private void killLoggers(){
-		for(Entry<String,Logger> e : loggers.entrySet()){
-			e.getValue().stopLogger();
-		}
+
+	@Override
+	protected void createMultiEntriesContext() {
+		getServer().createContext("/token", new BindTokenId(getLoggers()));
+		
 	}
 }

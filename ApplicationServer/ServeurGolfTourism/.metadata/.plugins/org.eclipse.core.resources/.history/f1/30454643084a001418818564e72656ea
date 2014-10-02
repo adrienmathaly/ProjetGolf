@@ -1,0 +1,11 @@
+package http;
+
+public class HTTPGolfMobileServer implements Runnable {
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

@@ -1,0 +1,7 @@
+package http.handlers;
+
+import com.sun.net.httpserver.HttpHandler;
+
+abstract class CustomizedHandler implements HttpHandler{
+
+}

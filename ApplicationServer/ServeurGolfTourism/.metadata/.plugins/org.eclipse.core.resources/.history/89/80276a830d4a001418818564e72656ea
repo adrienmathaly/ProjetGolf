@@ -1,0 +1,24 @@
+package http.handlers;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.UUID;
+
+import com.sun.net.httpserver.HttpExchange;
+
+public class BindTokenId extends CustomizedHandler {
+
+	@Override
+	public void handle(HttpExchange t) throws IOException {
+	      String response = generateUID();
+	      t.sendResponseHeaders(200, response.length());
+	      OutputStream os = t.getResponseBody();
+	      os.write(response.getBytes());
+	      os.close();
+	}
+	
+	private String generateUID(){
+		return UUID.randomUUID().toString().replaceAll("-", "");
+	}
+
+}
