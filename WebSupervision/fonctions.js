@@ -1,6 +1,7 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
 var ip_Server_navbar = null;
+var connected_users = 0;
 
 //MAPPING VARIABLES
 var my_map;
@@ -46,7 +47,7 @@ function initialiser()
 	
 	var options = {
 		center: latlng,
-		zoom: 12,
+		zoom: 2,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	  
@@ -145,57 +146,103 @@ function go_home()
 }
 
 
-function parse(jsontxt){
-		var obj = jQuery.parseJSON(jsontxt);
-		if(obj.name!="posxy"){
-			if(obj.name=="gyro"){
-				obj.value=((parseInt(obj.value)%360));
-				gyro=obj.value;
-				obj.value=obj.value;
-			}
-			$("#"+obj.name).html(obj.value);
-		}else{
-			var coords = obj.value.split(":"); 
-			x=parseInt(coords[1])/2;
-			y=parseInt(coords[0])/2;
+function clean_table(table)
+{
+	var length = table.rows.length;
+
+	if (length > 1)
+	{
+		for (var j=1;j<length;j++)
+		{
+			table.deleteRow(1);
 		}
-	};
+	}
+}
 
 function submit()
 {
 	//VARIABLES INITIALIZATION
-	var JSON_string;
-	var JSON_objet;
+	var parsed_JSON_objet;
 	var my_table;
+	var i;
 
 	//ASSIGNATION
 	my_table = document.getElementById("table_infos");
+	parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")");
 
+	
 	/*var amountOfUserObjet = { amountOfUser : 5 };
 	console.log(amountOfUserObjet["amountOfUser"]);*/
 
-	parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")"); // String json to json format
-	//console.log(parsed_JSON_objet);
-	//console.log(parsed_JSON_objet[1]);
+	clean_table(my_table);
 
-	var i = 0;
+	i = 0;
 	parsed_JSON_objet.forEach(function(row)
 	{
+		//LOCAL VARIABLES
+		var new_row;
+		var cell_user, cell_lat, cell_lng;
+		var marker;
+		var lat;
+		var lng;
+
 		//CREATE A NEW ROW
-		var new_row = my_table.insertRow(i+1);
+		new_row = my_table.insertRow(i+1);
 
 		//CREATE NEW CELLS
-		var cell_user = new_row.insertCell(0);
-		var cell_lat = new_row.insertCell(1);
-		var cell_lng = new_row.insertCell(2);
+		cell_user = new_row.insertCell(0);
+		cell_lat = new_row.insertCell(1);
+		cell_lng = new_row.insertCell(2);
 
 		//INSERT VALUES
-		cell_user.innerHTML = row["idToken"];
+		//cell_user.innerHTML = row["idToken"];
+		cell_user.innerHTML = "Anonymous#"+(i+1);
 		cell_lat.innerHTML = row["lt"];
 		cell_lng.innerHTML = row["lg"];
+
+		//INSERT A MARKER FOR EACH USER
+		lat = cell_lat.innerHTML;
+		lng = cell_lng.innerHTML;
+		marker = new google.maps.Marker({
+    		position: new google.maps.LatLng(lat,lng),
+    		map: my_map
+		});
+
+		marker.setMap(my_map);
 
 		i++;
 	});
 
-	document.getElementById("total_users").innerHTML = "Users (" + i + ")";
+	connected_users = i;
+	document.getElementById("total_users").innerHTML = "Users (" + connected_users + ")";
+
+	//resize_map(my_table);
+}
+
+function resize_map(table)
+{
+	//IF THE TABLE IS COMPLETED BY DATA
+	if (table.rows.length > 1)
+	{
+		//LOCAL VARIABLES
+		var sum_lat = 0;
+		var sum_lng = 0;
+		var average_lat = 0;
+		var average_lng = 0;
+
+		for (var j=1;j<table.rows.length;j++)
+		{
+			sum_lat += parseFloat(table.rows[j].cells[1].innerHTML);
+			sum_lng += parseFloat(table.rows[j].cells[2].innerHTML);
+		}
+
+		average_lat = sum_lat / connected_users;
+		average_lng = sum_lng / connected_users;
+
+		//CENTER THE MAP ON THE GOOD COORDINATES
+		my_map.setCenter(new google.maps.LatLng(average_lat,average_lng));
+
+		//REZOOM
+		my_map.setZoom(6);
+	}
 }
