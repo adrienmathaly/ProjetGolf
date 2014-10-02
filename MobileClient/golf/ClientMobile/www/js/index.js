@@ -20,6 +20,12 @@
 //Timer used to make a loop of geolocalisation
 var timer = null;
 
+//Bolean use to check if the game can begin
+var connectedToDevice   = false;
+var connectedToInternet = false;
+var connectedToGPS      = false;
+var connectedToServer   = false;
+
 //Remember in this scope use 'this' to function access, otherwise use 'app'
 var app = {
     // Application Constructor
@@ -43,6 +49,7 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready', true);
         checkLocalisation(true);
+        requestStartingGame();
     },
     // Update DOM on a Received Event, display 'received' class and hide 'listening' class OR the opposite
     receivedEvent: function(id, received) {
@@ -77,18 +84,24 @@ var app = {
         var element = document.getElementById('connectionType');
         element.innerHTML = states[networkState];
         
+        connectedToInternet = true;
         app.receivedEvent('onOnline', true);
+        requestStartingGame();
     },
     // offline Event Handler
     onOffline: function() {
+        connectedToInternet = false;
         app.receivedEvent('onOnline', false);
     },
     // localisation Event Handler
     onGeolocationSuccess: function(position) {
+        connectedToGPS = true;
         app.receivedEvent('onGPSConnection', true);
+        requestStartingGame();
     },
     // error of localisation Event Handler
     onGeolocationError: function(error) {
+        connectedToGPS = true;
         app.receivedEvent('onGPSConnection', false);
     },
     // resume the localisation Event Handler,
@@ -126,6 +139,13 @@ function helper(){
           'Application version: 0.1'            + '\n\n' +
           'In order to start the application all information of the page must be green' + '\n\n' +
           'GolfChallenge require an internet and GPS connection' + '\n');
+}
+
+//Check if the device is ready to start the game
+function requestStartingGame(){
+    if(connectedToDevice && connectedToInternet && connectedToGPS /*&& connectedToServer*/){
+        location.replace("boardGame.html");
+    }
 }
 
 app.initialize();
