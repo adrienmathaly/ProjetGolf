@@ -9,43 +9,14 @@
 */
 
 
-$host = "localhost";
-$user = "root";
-$bdd  = "Ville";
-$pwd  = "";
+require_once("Lib/User.php");
 
-mysql_connect($host, $user, $pwd) or die("Erreur de connexion au serveur");
-mysql_select_db($bdd) or die("Erreur de connexion a la base de donnees");
-mysql_query("SET NAMES UTF8");
+$user = new User();
+$totalDistance = $user->totalDistance();
+$user->deconnect();
 
+$totalDistance_json = json_encode($totalDistance);
+echo ($totalDistance_json);
 
-$query = "SELECT sum(distance_parcourue) as 'sum' FROM t_token";
-
-$result = mysql_query($query);
-
-$array_sum_distance = array();
-while($donnees = mysql_fetch_assoc($result)) {
-     
-    $sum = array(
-        "sum_distance" => $donnees["sum"]
-    );
-
-    array_push($array_sum_distance, $sum);
-}
-
-$array_liste_sum_json = json_encode($array_sum_distance);
-echo ($array_liste_sum_json);
-
-
-
-mysql_close();
-
-
-
-function print_rr( $array ){
-    echo "<pre>";
-    print_r($array);
-    echo "</pre>";
-}
 
 ?>
