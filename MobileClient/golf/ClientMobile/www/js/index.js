@@ -87,6 +87,7 @@ var app = {
         
         connectedToInternet = true;
         app.receivedEvent('onOnline', true);
+        getIDConnection();
         requestStartingGame();
     },
     // offline Event Handler
@@ -144,7 +145,7 @@ function helper(){
 
 //Check if the device is ready to start the game
 function requestStartingGame(){
-    if(connectedToDevice && connectedToInternet && connectedToGPS /*&& connectedToServer*/){
+    if(connectedToDevice && connectedToInternet && connectedToGPS && connectedToServer){
         location.replace("boardGame.html");
     }
 }
