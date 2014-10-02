@@ -50,18 +50,22 @@ div.modal-header
 	border-color : transparent;
 }
 
-.table-striped
+table
 {
-	border-color:transparent;
-	font-size:14px;
 	text-align:center;
+	opacity : 0.95;
+	color:#F1DDA8;
+	background-color:#626063;
+	border-color:transparent;
 }
 
-/*.table-striped>tbody>tr:nth-child(odd)>td,
-.table-striped>tbody>tr:nth-child(odd)>th
+table>thead
 {
-   background-color: #C2AC88;
-   border : 3px solid black;
-   opacity: 0.95;
-   font-size : 12px;
-}*/
+	font-size:14px;
+}
+
+table>tbody
+{
+	font-size:12px;
+}
+
