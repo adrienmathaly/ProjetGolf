@@ -197,8 +197,8 @@ function submit()
 		//INSERT VALUES
 		//cell_user.innerHTML = row["idToken"];
 		cell_user.innerHTML = "Anonymous#"+(i+1);
-		cell_lat.innerHTML = row["lt"];
-		cell_lng.innerHTML = row["lg"];
+		cell_lat.innerHTML = parseFloat(row["lt"]).toFixed(3);
+		cell_lng.innerHTML = parseFloat(row["lg"]).toFixed(3);
 
 		//INSERT A MARKER FOR EACH USER
 		lat = cell_lat.innerHTML;
