@@ -1,5 +1,17 @@
+//To remember we can access to position   
+    /*alert('Latitude: '        + position.coords.latitude          + '\n' +
+          'Longitude: '         + position.coords.longitude         + '\n' +
+          'Altitude: '          + position.coords.altitude          + '\n' +
+          'Accuracy: '          + position.coords.accuracy          + '\n' +
+          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+          'Heading: '           + position.coords.heading           + '\n' +
+          'Speed: '             + position.coords.speed             + '\n' +
+          'Timestamp: '         + position.timestamp                + '\n');*/
+
+//Variable to access to the map
 var map = null;
 
+//When the body is full loaded initialize carto on France
 function initializeCarto() {
     var mapOptions = {
         center: { lat: 46.5643202, lng: 2.5282764},
@@ -12,7 +24,8 @@ function initializeCarto() {
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 }
 
-var onSuccess = function(position) {
+// onSucess localisation zoom on it and mark the position
+var onLocaliseSuccess = function(position) {
 	alert("Changement de localisation \n Latitude: " + position.coords.latitude + " \n Longitude: " + position.coords.longitude);
 	map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
 	map.setZoom(17);
@@ -22,25 +35,16 @@ var onSuccess = function(position) {
       map: map,
       title: 'Je te vois :D'
   });
-    
-    /*alert('Latitude: '          + position.coords.latitude          + '\n' +
-          'Longitude: '         + position.coords.longitude         + '\n' +
-          'Altitude: '          + position.coords.altitude          + '\n' +
-          'Accuracy: '          + position.coords.accuracy          + '\n' +
-          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-          'Heading: '           + position.coords.heading           + '\n' +
-          'Speed: '             + position.coords.speed             + '\n' +
-          'Timestamp: '         + position.timestamp                + '\n');*/
 };
 
 // onError Callback receives a PositionError object
-//
-function onError(error) {
+function onLocaliseError(error) {
     alert('code: '    + error.code    + '\n' +
           'message: ' + error.message + '\n');
 }
 
-function localise() {
-	navigator.geolocation.getCurrentPosition(onSuccess, onError);
+//Localise the mobile
+function localiseOnMap() {
+	navigator.geolocation.getCurrentPosition(onLocaliseSuccess, onLocaliseError);
 }
 
