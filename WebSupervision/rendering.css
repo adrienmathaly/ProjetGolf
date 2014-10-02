@@ -27,7 +27,6 @@ body
 
 #left_layout
 {
-	/*background-color: red;*/
 	background-size: 30%;
 }
 
@@ -51,11 +50,22 @@ div.modal-header
 	border-color : transparent;
 }
 
-/*.table-striped>tbody>tr:nth-child(odd)>td,
-.table-striped>tbody>tr:nth-child(odd)>th
+table
 {
-   background-color: #C2AC88;
-   border : 3px solid black;
-   opacity: 0.95;
-   font-size : 12px;
-}*/
+	text-align:center;
+	opacity : 0.8;
+	color:#F1DDA8;
+	background-color:#626063;
+	border-color:transparent;
+}
+
+table>thead
+{
+	font-size:14px;
+}
+
+table>tbody
+{
+	font-size:11px;
+}
+
