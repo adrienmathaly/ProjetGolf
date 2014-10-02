@@ -8,6 +8,7 @@ var timer;
 
 //MAPPING VARIABLES
 var my_map;
+var marker_array = [];
 
 
 //VARIABLES DE REQUETAGE
@@ -15,7 +16,6 @@ var number_users = "/users/number";
 var location_users = "/users/location";
 var distance_travelled = "/users/distance_ball";
 var amount_of_users = "/amountOfUsers";
-
 
 
 //FONCTION DE REQUETAGE GET
@@ -81,6 +81,7 @@ function connect_to_server()
 		$("#connect").addClass("btn-info");
 		$("#connect").html("Connect");
 		document.getElementById('ipServer').disabled = false;
+		document.getElementById('button_submit').disabled = false;
 
 		//STOP THE TIMER
 		clearInterval(timer);
@@ -96,13 +97,13 @@ function connect_to_server()
 			$("#connect").addClass("btn-danger");
 			$("#connect").html("Disconnect");
 			document.getElementById('ipServer').disabled = true;
+			document.getElementById('button_submit').disabled = true;
 
 			//START THE TIMER
 			timer = setInterval( function() {HttpGET(amount_of_users)}, 500);
 		}
 	}
 }
-
 
 function search_position()
 {
@@ -195,6 +196,7 @@ function submit()
 	console.log(amountOfUserObjet["amountOfUser"]);*/
 
 	clean_table(my_table);
+	delete_all_markers();
 
 	i = 0;
 	parsed_JSON_objet.forEach(function(row)
@@ -223,12 +225,7 @@ function submit()
 		//INSERT A MARKER FOR EACH USER
 		lat = cell_lat.innerHTML;
 		lng = cell_lng.innerHTML;
-		marker = new google.maps.Marker({
-    		position: new google.maps.LatLng(lat,lng),
-    		map: my_map
-		});
-
-		marker.setMap(my_map);
+		add_marker(lat,lng);
 
 		i++;
 	});
@@ -237,6 +234,24 @@ function submit()
 	document.getElementById("total_users").innerHTML = "Users (" + connected_users + ")";
 
 	//resize_map(my_table);
+}
+
+function add_marker(_lat,_lng)
+{
+	//CREATE A NEW MARKER
+		marker = new google.maps.Marker({
+    		position: new google.maps.LatLng(_lat,_lng),
+    		map: my_map
+		});
+
+	marker_array.push(marker);
+	marker.setMap(my_map);
+}
+
+function delete_all_markers()
+{
+	for (var i=0;i<marker_array.length;i++)
+		marker_array[0].setMap(null);
 }
 
 function resize_map(table)
