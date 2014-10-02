@@ -1,13 +1,27 @@
 package http;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
+import http.handlers.AmountOfUsersFromDaBeginnin;
+import http.handlers.NumberOfConnected;
+import http.handlers.TotalOfAllDistances;
+import http.handlers.UsersLastKnownLocations;
+import http.handlers.UsersTravelledDistances;
 
-import com.sun.net.httpserver.HttpServer;
+import java.util.HashMap;
 
-import configuration.ConfLoader;
+import logger.Logger;
 
-public class HTTPGolfSupervisionServer {
+public class HTTPGolfSupervisionServer extends HTTPGolfServer {
 
-	
+	public HTTPGolfSupervisionServer(HashMap<String, Logger> loggers, String name, String port) {
+		super(loggers, name, port);
+	}
+
+	@Override
+	protected void createMultiEntriesContext() {
+		getServer().createContext("/users/lastKnownLocations", new UsersLastKnownLocations(getLoggers()));
+		getServer().createContext("/users/travelledDistances", new UsersTravelledDistances(getLoggers()));
+		getServer().createContext("/amountOfUsers", new AmountOfUsersFromDaBeginnin(getLoggers()));
+		getServer().createContext("/totalDistances", new TotalOfAllDistances(getLoggers()));
+		getServer().createContext("/numbereOfConnected", new NumberOfConnected(getLoggers()));
+	}
 }

@@ -1,9 +1,11 @@
 package http.handlers;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import logger.Logger;
 
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 abstract class CustomizedHandler implements HttpHandler{
@@ -14,6 +16,15 @@ abstract class CustomizedHandler implements HttpHandler{
 		this.setLoggers(loggers);
 	}
 
+	@Override
+	public void handle(HttpExchange t) throws IOException {
+		try{
+			doYourStuff(t);
+		}catch(Exception e){
+			loggers.get("Errors").addLogToBeWritten(e.getMessage());
+		}
+	}
+	
 	public HashMap<String,Logger> getLoggers() {
 		return loggers;
 	}
@@ -21,5 +32,7 @@ abstract class CustomizedHandler implements HttpHandler{
 	public void setLoggers(HashMap<String,Logger> loggers) {
 		this.loggers = loggers;
 	}
+	
+	abstract protected void doYourStuff(HttpExchange t) throws Exception;
 	
 }

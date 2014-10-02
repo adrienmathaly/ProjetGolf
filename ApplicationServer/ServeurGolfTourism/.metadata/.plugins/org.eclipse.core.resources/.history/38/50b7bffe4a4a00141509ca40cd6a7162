@@ -1,0 +1,29 @@
+package http.handlers;
+
+import http.SetOfUsers;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.HashMap;
+
+import com.sun.net.httpserver.HttpExchange;
+
+import logger.Logger;
+
+public class TotalOfAllDistances extends CustomizedHandler  {
+
+	public TotalOfAllDistances(HashMap<String, Logger> loggers) {
+		super(loggers);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void handle(HttpExchange t) throws IOException {
+	      String response = ""+SetOfUsers.totalOfAllDistances();
+	      t.sendResponseHeaders(200, response.length());
+	      OutputStream os = t.getResponseBody();
+	      os.write(response.getBytes());
+	      os.close();
+	}
+
+}

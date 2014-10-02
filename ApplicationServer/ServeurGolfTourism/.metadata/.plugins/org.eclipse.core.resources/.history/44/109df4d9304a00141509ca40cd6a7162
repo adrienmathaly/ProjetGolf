@@ -1,0 +1,20 @@
+package http;
+
+import java.util.HashMap;
+import logger.Logger;
+
+public class HTTPGolfSupervisionServer extends HTTPGolfServer {
+
+	public HTTPGolfSupervisionServer(HashMap<String, Logger> loggers, String name, String port) {
+		super(loggers, name, port);
+	}
+
+	@Override
+	protected void createMultiEntriesContext() {
+		getServer().createContext("/users/lastKnownLocations", null);
+		getServer().createContext("/users/travelledDistances", null);
+		getServer().createContext("", null);
+		getServer().createContext("", null);
+		getServer().createContext("", null);
+	}
+}
