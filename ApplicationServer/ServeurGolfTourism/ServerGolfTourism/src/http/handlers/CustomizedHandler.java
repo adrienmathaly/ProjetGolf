@@ -2,9 +2,7 @@ package http.handlers;
 
 import java.io.IOException;
 import java.util.HashMap;
-
 import logger.Logger;
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 

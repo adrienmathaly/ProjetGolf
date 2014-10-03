@@ -74,4 +74,15 @@ public class SetOfUsers {
 		MrNobody.setTravelledDistance(MrNobody.getTravelledDistance()+newPoint.distanceBetweenMeAnd(MrNobody.getLocation()));
 		MrNobody.setLocation(newPoint);
 	}
+	
+	public static void setFirstLocationOf(String token, Point firstPoint){
+		User MrNobody = users.get(token) ;
+		MrNobody.setTravelledDistance(0);
+		MrNobody.setLocation(firstPoint);
+		MrNobody.setFullyCreated(true);
+	}
+	
+	public static boolean isUserFullyCreated(String token){
+		return users.get(token).isFullyCreated();
+	}
 }
