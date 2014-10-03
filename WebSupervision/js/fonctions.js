@@ -3,7 +3,7 @@ var connected = 0;
 var ip_Server_navbar = null;
 var JSON_response = null;
 var timer;
-var refresh_frequency = 1000;
+var refresh_frequency;
 
 //MAPPING VARIABLES
 var my_map;
@@ -72,9 +72,9 @@ function initialiser()
 	my_map = new google.maps.Map(document.getElementById("my_map"), options);
 }
 
-function change_refresh_frequency()
+function refresh_parameters()
 {
-	var value = document.getElementById("refresh_value").innerHTML;
+	var value = document.getElementById("refresh_value").value;
 
 	if (value > 0)
 		refresh_frequency = value;
@@ -107,6 +107,7 @@ function connect_to_server()
 			document.getElementById('ipServer').disabled = true;
 
 			//START THE TIMER
+			console.log("Refresh : " + refresh_frequency + "ms");
 			timer = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);
 		}
 	}
