@@ -20,7 +20,7 @@
 // Data retrieving  in the url (longitude and latitude)
 $longitude  = $_GET['lg'];
 $latitude   = $_GET['lt'];
-$population = 100000;
+$population = 1000;
 
 // Connection database informations
 $host = "localhost";
