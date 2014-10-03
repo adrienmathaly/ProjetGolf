@@ -25,7 +25,7 @@ final class Poi extends Table{
         $query = "
                     SELECT      type_nom as type, poi_nom as name, ville_nom_reel as ville, poi_longitude as lg, poi_latitude as lt, 
                                 (sqrt(pow(abs(".$longitude." - poi_longitude),2) + pow(abs(".$latitude." - poi_latitude), 2)))*100 as distance , 
-                                poi_etoile as etoile, poi_type_id
+                                poi_etoile as etoile
                     FROM        t_poi, t_ville, t_type
                     WHERE       poi_ville_id = ville_id and poi_type_id = type_id 
                     GROUP BY    poi_nom, ville_nom_reel, poi_longitude, poi_latitude 
