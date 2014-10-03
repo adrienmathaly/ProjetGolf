@@ -34,10 +34,7 @@
 					    <div class="input-group">
 					      	<input type="text" class="form-control" placeholder="172.0.0.1:8080" id="ipServer" value="172.31.1.191:8082">
 					      	<span class="input-group-btn">
-					        	<button class="btn btn-info" id="connect" type="button" onclick="connect_to_server()">
-					        		Connect
-					        		<!--<span class="glyphicon glyphicon-globe"></span>-->
-					        	</button>
+					        	<button class="btn btn-info" id="connect" type="button" onclick="connect_to_server()">Connect</button>
 					      	</span>
 					 	</div>
 			      	</form>
@@ -59,32 +56,71 @@
 		<div class="container-fluid">
 			<div class="row-fluid">
 			    <div class="col-md-5">
-					<div>
-						<table class="table table-condensed" id="table_infos">
-							<thead>
-							   	<tr>
-							    	<th id="total_users">Users</th>
-							    	<th>Latitude</th> 
-							    	<th>Longitude</th>
-							    	<th>Distance</th>
-							  	</tr>
-							</thead>
 
-							<tbody id="body_table">
-							</tbody>
-						</table> 
-					</div>
-					<div>
-						<textarea id="textarea_submit" rows="7" cols="65"></textarea>
+			    	<!--GROUP ACCORDION-->
+					<div class="panel-group" id="accordion">
+
+						<!--ACCORDION FOR THE TABLE-->
+					  	<div class="panel panel-default" style="opacity : 0.95;">
+						    <div class="panel-heading">
+						      <h4 class="panel-title">
+						        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+						         Details users
+						        </a>
+						      </h4>
+						    </div>
+						    <div id="collapseOne" class="panel-collapse collapse in">
+						      	<div class="panel-body" >
+
+									<div>
+										<table class="table table-condensed" id="table_infos">
+											<thead>
+											   	<tr>
+											    	<th id="total_users">Users</th>
+											    	<th>Latitude</th> 
+											    	<th>Longitude</th>
+											    	<th id="total_distances">Distance</th>
+											  	</tr>
+											</thead>
+											<tbody id="body_table"></tbody>
+										</table> 
+									</div>
+
+						      	</div>
+						    </div>
+					  	</div>
+
+						<!--ACCORDION FOR THE JSON TEST BOX-->
+					  	<div class="panel panel-default" style="opacity : 0.95;">
+					    	<div class="panel-heading">
+					      		<h4 class="panel-title">
+					        		<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+					          		JSON Test Box
+					        		</a>
+					      		</h4>
+					    	</div>
+					    	<div id="collapseTwo" class="panel-collapse collapse" id="collapse_submit_JSON">
+					      		<div class="panel-body">
+									<div>
+										<textarea id="textarea_submit" rows="7" cols="65"></textarea>
 <!--[
+{"amount" : 10}
 {"idToken" : "A", "lg" : "0.000", "lt" : "1.000", "dist" : "0"},
 {"idToken" : "B", "lg" : "-20.000", "lt" : "40.000", "dist" : "0"},
 {"idToken" : "C", "lg" : "10.000", "lt" : "50.000", "dist" : "0"},
 {"idToken" : "D", "lg" : "-100.000", "lt" : "0.000", "dist" : "0"}
 ]-->
-						
-					</div>
-			    </div>
+									</div>
+
+				        			<button class="btn btn-info" id="button_search" type="button" onclick="submit_response()">
+				        				<div>Submit</div>
+				        			</button>
+
+					      		</div>
+					    	</div>
+					  	</div>
+					</div>	<!--end group accordion-->
+				</div>
 
 			    <div class="col-md-7">
 				    <div class="input-group">
@@ -94,10 +130,7 @@
 								<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Actions</button>
 							  	<ul class="dropdown-menu" role="menu">
 							    	<li><a role="menuitem" onclick="go_home()">Go to IMERIR</a></li>
-				        			<li><a role="menuitem" onclick="submit_response()">Submit JSON</a></li>
 							    	<li><a role="menuitem" onclick="resize_map()">View all users</a></li>
-							    	<li class="divider"></li>
-							    	<li><a role="menuitem" id="hide_or_show_button" onclick="hide_or_show()">Hide/Show Test Box</a></li>
 							  	</ul>
 							</div>
 				      	</span>		
@@ -139,9 +172,8 @@
 		</div>
 
 
-
 		<!-- PARAMETERS MODAL  data-target=".parameters-modal-lg"-->
-		<div class="modal fade parameters-modal-lg">
+		<div class="modal fade parameters-modal-lg" id="parameters_modal">
 		  	<div class="modal-dialog">
 			    <div class="modal-content">
 			      	<div class="modal-header">

@@ -1,9 +1,15 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
-var ip_Server_navbar = null;
-var JSON_response = null;
-var timer;
-var refresh_frequency;
+var refresh_frequency = 500;
+
+//VARIABLES JSON REQUESTS
+var timer_amount;
+var timer_totalDistances;
+var timer_lastKnownLocations;
+
+var JSON_amount;
+var JSON_totalDistances;
+var JSON_lastKnownLocations;
 
 //MAPPING VARIABLES
 var my_map;
@@ -11,13 +17,6 @@ var my_table;
 var marker_array = [];
 var lat_array = [];
 var lng_array = [];
-
-
-//VARIABLES DE REQUETAGE
-var number_users = "/users/number";
-var location_users = "/users/location";
-var distance_travelled = "/users/distance_ball";
-var amount_of_users = "/amountOfUsers";
 
 
 //FONCTION DE REQUETAGE GET
@@ -29,7 +28,7 @@ function HttpGET(request)
 	else
 	{
 		//VARIABLES CREATION AND INITIALIZATION 
-		var URI = "http://"+$("#ipServer").val()+request;
+		var URI = "http://"+$("#ipServer").val() + request;
 		var xmlHttp = new XMLHttpRequest();
 
 		//CONNECTION OPENING
@@ -42,7 +41,22 @@ function HttpGET(request)
 				if ((xmlHttp.status == 200 || xmlHttp.status == 0))
 				{
 					if (xmlHttp.responseText != "")
-						document.getElementById("textarea_submit").innerHTML = xmlHttp.responseText;
+					{
+						if (request == "/amountOfUsers")
+						{
+							JSON_amount = xmlHttp.responseText;
+						}
+
+						if (request == "/totalDistances")
+						{
+							JSON_totalDistances = xmlHttp.responseText;
+						}
+
+						if (request == "/users/lastKnownLocations")
+						{
+							JSON_lastKnownLocations = xmlHttp.responseText;
+						}
+					}
 				}
 				else
 					console.log("Connection failed");
@@ -51,13 +65,6 @@ function HttpGET(request)
 		submit_response();
 	}
 }
-
-function show_response_on_textarea(response)
-{
-	if (response != "")
-		document.getElementById("textarea_submit").innerHTML = response;
-}
-
 
 function initialiser()
 {
@@ -77,7 +84,10 @@ function refresh_parameters()
 	var value = document.getElementById("refresh_value").value;
 
 	if (value > 0)
+	{
 		refresh_frequency = value;
+		$('#parameters_modal').modal('hide');
+	}
 }
 
 //FONCTIONS DE CONNEXION / DECONNEXION
@@ -91,8 +101,9 @@ function connect_to_server()
 		$("#connect").html("Connect");
 		document.getElementById('ipServer').disabled = false;
 
-		//STOP THE TIMER
-		clearInterval(timer);
+		clearInterval(timer_amount);
+		clearInterval(timer_totalDistances);
+		clearInterval(timer_lastKnownLocations);
 	}
 	else
 	{
@@ -106,9 +117,9 @@ function connect_to_server()
 			$("#connect").html("Disconnect");
 			document.getElementById('ipServer').disabled = true;
 
-			//START THE TIMER
-			console.log("Refresh : " + refresh_frequency + "ms");
-			timer = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);
+			timer_amount = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);;
+			timer_totalDistances  = setInterval( function() {HttpGET("/totalDistances")}, refresh_frequency);;
+			timer_lastKnownLocations = setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
 		}
 	}
 }
@@ -178,31 +189,41 @@ function go_home()
 
 function submit_response()
 {	
+	//CLEAN THE OLD TABLE AND DELETE OLD MARKERS ON THE MAP
+	clean_table(my_table);
+	delete_all_markers();
+
+
+	//AMOUNT OF USERS
+	var parse_JSON_amount = eval("(" + JSON_amount + ")");
+	if (parse_JSON_amount != undefined)
+		document.getElementById("total_users").innerHTML = "Users (" + parse_JSON_amount["amount"] + ")";
+
+
+	//TOTAL DISTANCES
+	var parse_JSON_totalDistances = eval("(" + JSON_totalDistances + ")");
+	if (parse_JSON_totalDistances != undefined)
+		document.getElementById("total_distances").innerHTML = "Distances (" + parse_JSON_totalDistances["totalDist"] + ")";
+
+	
+	//LAST KNOWN LOCATIONS
+	var parse_JSON_lastKnownLocations = eval("(" +JSON_lastKnownLocations + ")");
+		console.log(JSON_lastKnownLocations);
+
+	//-------------------------------------------------------------------------------------
+	//-----------------------------------OLD FUNCTION--------------------------------------
+
 	//VARIABMES
-	var parsed_JSON_objet;
+	/*var parsed_JSON_objet;
 
 	my_table = document.getElementById("table_infos");
 	parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")");
 
-	clean_table(my_table);
-	delete_all_markers();
-
-	//AMOUNT OF USERS CONNECTED
-	document.getElementById("total_users").innerHTML = "Users (" + parsed_JSON_objet.amount + ")";
-
-	/*var i = 0;
+	var i = 0;
 	parsed_JSON_objet.forEach(function(row)
 	{
-		window.alert("Pop entrée");
-
-		//SI LA REPONSE JSON COMPORTE DES MOTS CLEFS
-		if (row["amount"] >= 0)
-		{
-			alert("test");
-			document.getElementById("total_users").innerHTML = "Users (" + row["amount"] + ")";
-		}
-
-		window.alert("pop !");
+		//AMOUNT USERS
+		document.getElementById("total_users").innerHTML = "Users (" + row["amount"] + ")";
 
 		//INSERT ROW AND CELLS
 		var new_row = my_table.insertRow(i+1)
@@ -223,6 +244,9 @@ function submit_response()
 
 		i++;
 	});*/
+
+	//-------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------
 }
 
 
@@ -284,14 +308,4 @@ function resize_map()
 
 		my_map.setZoom(choose_zoom(max_distance));
 	}
-}
-
-
-function hide_or_show()
-{
- 	var textarea=document.getElementById('textarea_submit');
-  	if(textarea.style.display == "none")
-  	   	textarea.style.display = "block";
-  	else
-    	textarea.style.display = "none";
 }
