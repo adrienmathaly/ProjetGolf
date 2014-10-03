@@ -6,10 +6,12 @@ var refresh_frequency = 500;
 var timer_amount;
 var timer_totalDistances;
 var timer_lastKnownLocations;
+var timer_numberOfConnected;
 
 var JSON_amount;
 var JSON_totalDistances;
 var JSON_lastKnownLocations;
+var JSON_numberOfConnected;
 
 //MAPPING VARIABLES
 var my_map;
@@ -17,6 +19,8 @@ var my_table;
 var marker_array = [];
 var lat_array = [];
 var lng_array = [];
+var lat_home = 42.674564;
+var lng_home = 2.847732;
 
 
 //FONCTION DE REQUETAGE GET
@@ -56,11 +60,17 @@ function HttpGET(request)
 						{
 							JSON_lastKnownLocations = xmlHttp.responseText;
 						}
+
+						if (request == "/numberOfConnected")
+						{
+							JSON_numberOfConnected = xmlHttp.responseText;
+						}
 					}
 				}
 				else
 					console.log("Connection failed");
 			}
+
 		xmlHttp.send();
 		submit_response();
 	}
@@ -68,7 +78,7 @@ function HttpGET(request)
 
 function initialiser()
 {
-	var latlng = new google.maps.LatLng(42.686400, 2.887967);
+	var latlng = new google.maps.LatLng(lat_home, lng_home);
 
 	var options = {
 		center: latlng,
@@ -81,12 +91,46 @@ function initialiser()
 
 function refresh_parameters()
 {
-	var value = document.getElementById("refresh_value").value;
+	var refresh_frequency_value = document.getElementById("refresh_value").value;
+	var refresh_home_position_value = document.getElementById("refresh_home_position").value;
 
-	if (value > 0)
+	if (refresh_frequency_value > 0)
 	{
 		refresh_frequency = value;
 		$('#parameters_modal').modal('hide');
+	}
+
+	if (refresh_home_position_value != "")
+	{
+		var arrayOfCoordinates = refresh_home_position_value.split("/");
+
+		if (arrayOfCoordinates.length != 2)
+		{
+			alert("Invalid coordinates");			
+		}
+		else
+		{
+			var latitude = arrayOfCoordinates[0];
+			var longitude = arrayOfCoordinates[1];
+			
+			if (latitude > 90 || latitude < -90)
+			{
+				alert("Latitude problem");
+			}
+			else
+			{
+				if (longitude > 180 || longitude < -180)
+				{
+					alert("Longitude problem");
+				}
+				else
+				{
+					lat_home = latitude;
+					lng_home = longitude;
+					$('#parameters_modal').modal('hide');
+				}
+			}
+		}
 	}
 }
 
@@ -104,6 +148,7 @@ function connect_to_server()
 		clearInterval(timer_amount);
 		clearInterval(timer_totalDistances);
 		clearInterval(timer_lastKnownLocations);
+		clearInterval(timer_numberOfConnected);
 	}
 	else
 	{
@@ -120,6 +165,7 @@ function connect_to_server()
 			timer_amount = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);;
 			timer_totalDistances  = setInterval( function() {HttpGET("/totalDistances")}, refresh_frequency);;
 			timer_lastKnownLocations = setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
+			timer_numberOfConnected = setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
 		}
 	}
 }
@@ -171,7 +217,7 @@ function search_position()
 
 					//POINT THE MAP ON THE NEW MARKER
 					my_map.setCenter(new google.maps.LatLng(latitude, longitude));
-					my_map.setZoom(15);
+					my_map.setZoom(12);
 				}
 			}
 		}
@@ -181,8 +227,8 @@ function search_position()
 
 function go_home()
 {
-	var latlng_IMERIR = new google.maps.LatLng(42.674520, 2.847786);
-	my_map.setCenter(latlng_IMERIR);
+	var latlng = new google.maps.LatLng(lat_home, lng_home);
+	my_map.setCenter(latlng);
 	my_map.setZoom(16);
 }
 
@@ -197,18 +243,25 @@ function submit_response()
 	//AMOUNT OF USERS
 	var parse_JSON_amount = eval("(" + JSON_amount + ")");
 	if (parse_JSON_amount != undefined)
-		document.getElementById("total_users").innerHTML = "Users (" + parse_JSON_amount["amount"] + ")";
+		document.getElementById("stats_amount").value = parse_JSON_amount["amount"];
 
 
 	//TOTAL DISTANCES
 	var parse_JSON_totalDistances = eval("(" + JSON_totalDistances + ")");
 	if (parse_JSON_totalDistances != undefined)
-		document.getElementById("total_distances").innerHTML = "Distances (" + parse_JSON_totalDistances["totalDist"] + ")";
+		document.getElementById("stats_distances").value = parse_JSON_totalDistances["totalDist"];
 
-	
+
+	//NUMBER OF CONNECTED
+	var parse_JSON_numberOfConnected = eval("(" +JSON_numberOfConnected + ")");
+	if (parse_JSON_numberOfConnected != undefined)
+		document.getElementById("stats_users_connected").value = parse_JSON_numberOfConnected["nbConnected"];
+
+
 	//LAST KNOWN LOCATIONS
 	var parse_JSON_lastKnownLocations = eval("(" +JSON_lastKnownLocations + ")");
-		console.log(JSON_lastKnownLocations);
+	//console.log(JSON_lastKnownLocations);
+
 
 	//-------------------------------------------------------------------------------------
 	//-----------------------------------OLD FUNCTION--------------------------------------
