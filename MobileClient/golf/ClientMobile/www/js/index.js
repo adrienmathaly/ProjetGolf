@@ -151,20 +151,21 @@ function helper(){
 //Check if the device is ready to start the game
 function requestStartingGame(){
     if(connectedToDevice && connectedToInternet && connectedToGPS && connectedToServer){
-        location.replace('boardGame.html');
+        location.replace('boardGame.html?id=' + gameID);
     }
 }
 
 //Check if the device is ready to start the game
 function saveID(id){
+    id = id['token'];
     var element = document.getElementById('userConnection');
     element.innerHTML = 'id: ' + id;
+    
     gameID = id;
+    
     connectedToServer = true;
     app.receivedEvent('onServerConnection', true);
     requestStartingGame();
-
 }
-
 
 app.initialize();

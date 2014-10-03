@@ -8,9 +8,14 @@ var mouseLat = 0;
 
 var flightPath = null;
 
+//The id is delivery by the server when the first connection
+var gameID = null;
+
 //Variable to save the position to make the direction and strong deplacement
 //Function called when page full loaded
 function initialize(){
+	//Retrieve the id gaming
+	gameID = location.search.split('id=')[1];
 
 	initializeCarto();
 	localiseOnMap();
@@ -82,8 +87,16 @@ function onStopDragBall(event){
 	if(flightPath !== null){
 		flightPath.setMap(null);
 		flightPath = null;
+
+		var elem = document.getElementById('bottom_map');
+		elem.innerHTML = 'Send data :' +  mouseLat + ':' + mouseLng;
+		getNearestPOI(mouseLat, mouseLng, test);
 	}
 	disableMovement(false);
+}
+
+function test(data){
+	alert(data['name']);
 }
 
 //Calback when user finger move

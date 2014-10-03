@@ -30,11 +30,26 @@ function getIDConnection(callback){
 	var xhr = getXMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-			callback(xhr.responseText);
+			callback(JSON.parse(xhr.responseText));
 		}
 	};
 	
 	xhr.open("GET", serveurIp + serveurPort + "token", true);
+	xhr.send(null);
+}
+
+//Get information in JSON with nearest town, long, lat and list of POI
+function getNearestPOI(latitute, longitude, callback){
+	//Create a connection
+	var xhr = getXMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+			callback(JSON.parse(xhr.responseText));
+		}
+	};
+	var data = "?lg=" + longitude + "&lt=" + latitute;
+	
+	xhr.open("GET", serveurIp + serveurPort + "poi/nearest" + data, true);
 	xhr.send(null);
 }
 
@@ -44,11 +59,11 @@ function getIDConnection(callback){
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send(
 		{
-			'userLT'=userLT,
-			'userLG'=userLG,
-			'ballLT'=ballLT,
-			'ballLG'=ballLG,
-			'id'=id,
+			'userLT':userLT,
+			'userLG':userLG,
+			'ballLT':ballLT,
+			'ballLG':ballLG,
+			'id':id,
 		}
 	);
 }*/
