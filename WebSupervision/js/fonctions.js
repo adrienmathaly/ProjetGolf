@@ -42,14 +42,12 @@ function HttpGET(request)
 			{
 				if ((xmlHttp.status == 200 || xmlHttp.status == 0))
 				{
-					show_response_on_textarea(xmlHttp.responseText);
+					if (xmlHttp.responseText != "")
+						document.getElementById("textarea_submit").innerHTML = xmlHttp.responseText;
 				}
 				else
 					console.log("Connection failed");
 			}
-
-		//REQUEST SENDING AND ANALYSING
-		console.log("URI : "+URI);
 		xmlHttp.send();
 	}
 }
@@ -160,6 +158,7 @@ function search_position()
 	}
 }
 
+
 function go_home()
 {
 	var latlng_IMERIR = new google.maps.LatLng(42.674520, 2.847786);
@@ -167,28 +166,11 @@ function go_home()
 	my_map.setZoom(16);
 }
 
-function clean_table(table)
-{
-	var length = table.rows.length;
-
-	if (length > 1)
-	{
-		for (var j=1;j<length;j++)
-		{
-			table.deleteRow(1);
-		}
-	}
-}
 
 function submit()
 {
-	//VARIABLES INITIALIZATION
-	var parsed_JSON_objet;
-	var i;
-
-	//ASSIGNATION
 	my_table = document.getElementById("table_infos");
-	parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")");
+	var parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")");
 
 	
 	/*var amountOfUserObjet = { amountOfUser : 5 };
@@ -197,7 +179,7 @@ function submit()
 	clean_table(my_table);
 	delete_all_markers();
 
-	i = 0;
+	var i = 0;
 	parsed_JSON_objet.forEach(function(row)
 	{
 		//LOCAL VARIABLES
