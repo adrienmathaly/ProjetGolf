@@ -1,7 +1,13 @@
 package http.handlers;
 
+import http.Point;
+import http.SetOfUsers;
+
 import java.util.HashMap;
+
 import com.sun.net.httpserver.HttpExchange;
+
+import configuration.ConfLoader;
 import logger.Logger;
 
 public class Shot extends CustomizedHandler{
@@ -12,6 +18,25 @@ public class Shot extends CustomizedHandler{
 
 	@Override
 	protected void doYourStuff(HttpExchange t) throws Exception {
+		HashMap<String,String> map = parseUserInfo(t);
+		if(!SetOfUsers.isUserFullyCreated(map.get("token"))){
+			SetOfUsers.setFirstLocationOf(map.get("token"),new Point(Float.parseFloat(map.get("lg")),Float.parseFloat(map.get("lt"))));
+		}
+		SetOfUsers.updateUserLocation(map.get("token"), new Point(Float.parseFloat(map.get("lg")),Float.parseFloat(map.get("lt"))));
+
+		
 	}
 
+	private HashMap<String,String> parseUserInfo(HttpExchange t) {
+		HashMap<String,String> arguments= new HashMap<String, String>();
+		String[] s = t.getRequestURI().toString().split("/");
+		String result="";
+		 result=s[s.length - 1].replace("?","");
+		 s=result.split("&");
+		 for(int i=0;i<s.length;i++){
+			 String[] keyAndValue=s[i].split("=");
+			 arguments.put(keyAndValue[0], keyAndValue[1]);
+		 }
+		return arguments;
+	}
 }

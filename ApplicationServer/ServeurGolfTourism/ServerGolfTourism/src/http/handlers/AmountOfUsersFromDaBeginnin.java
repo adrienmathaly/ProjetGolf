@@ -1,14 +1,10 @@
 package http.handlers;
 
 import http.SetOfUsers;
-
 import java.io.OutputStream;
 import java.util.HashMap;
-
 import json.JSONBuilder;
-
 import com.sun.net.httpserver.HttpExchange;
-
 import logger.Logger;
 
 public class AmountOfUsersFromDaBeginnin extends CustomizedHandler  {

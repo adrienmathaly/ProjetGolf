@@ -24,6 +24,7 @@ public class BindTokenId extends CustomizedHandler {
 	      String response = generateUID();
 	      SetOfUsers.addUser(response, new User());
 	      response=JSONBuilder.buildJSONBasicMsg("token",response);
+	      System.out.println(response);
 	      t.sendResponseHeaders(200, response.length());
 	      OutputStream os = t.getResponseBody();
 	      os.write(response.getBytes());

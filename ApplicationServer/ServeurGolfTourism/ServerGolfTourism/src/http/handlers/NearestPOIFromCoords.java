@@ -4,7 +4,6 @@ import http.DatabaseManager;
 import java.io.OutputStream;
 import java.util.HashMap;
 import com.sun.net.httpserver.HttpExchange;
-
 import configuration.ConfLoader;
 import logger.Logger;
 
@@ -16,9 +15,12 @@ public class NearestPOIFromCoords extends CustomizedHandler {
 
 	@Override
 	protected void doYourStuff(HttpExchange t) throws Exception {
+		System.out.println("Mobile "+t.getRequestURI());
 		DatabaseManager dbm = new DatabaseManager(formatDbRequest(t));
 		dbm.connect("GET");
-		String response = dbm.getResponse();//test
+		String response = dbm.getResponse();
+		System.out.println("BDD "+response);
+		t.getResponseHeaders().add("Content-type", "json;charset=utf-8");
 		t.sendResponseHeaders(200, response.length());
 		OutputStream os = t.getResponseBody();
 		os.write(response.getBytes());
