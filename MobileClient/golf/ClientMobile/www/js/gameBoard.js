@@ -47,10 +47,21 @@ function changePokeballPosition(x, y){
 	poke.style.top = y + 'px';
 }
 
+//Change position of pokeball with the position of a google maps marker
+function changePokeballFromLatLng(point){
+	if(point !== null)
+	{
+		pokeballPosition = point;
+		var position = fromLatLngToPoint(point, map);
+		
+		var poke = document.getElementById("pokeball");
+		changePokeballPosition(position.x - poke.width/2, position.y + poke.width/2);
+	}
+}
 
 //Change position of pokeball with the position of a google maps marker
 function changePokeballFromMarker(marker){
-	if(devicePositionMarker !== null)
+	if(marker !== null)
 	{
 		//Used for the initialization, after is useless
 		clearInterval(timer);
@@ -90,13 +101,21 @@ function onStopDragBall(event){
 
 		var elem = document.getElementById('bottom_map');
 		elem.innerHTML = 'Send data :' +  mouseLat + ':' + mouseLng;
-		getNearestPOI(mouseLat, mouseLng, test);
+		getNearestPOI(mouseLat, mouseLng, onPOIRequestReceive);
 	}
 	disableMovement(false);
 }
 
-function test(data){
-	alert(data['name']);
+function onPOIRequestReceive(data){
+	alert(data['lt']);
+	alert(data['lg']);
+
+	var latLong = new google.maps.LatLng(data['lt'], data['lg']);
+	changePokeballFromLatLng(latLong);
+
+	var positionUser = devicePositionMarker.getPosition();
+
+	postShot(positionUser.lat(), positionUser.lng(), pokeballPosition.lat(), pokeballPosition.lng(), gameID);
 }
 
 //Calback when user finger move

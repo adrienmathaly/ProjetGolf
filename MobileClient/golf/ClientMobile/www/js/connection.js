@@ -54,16 +54,24 @@ function getNearestPOI(latitute, longitude, callback){
 }
 
 //Ask for an ID
-/*function postShot(userLT, userLG, ballLT, ballLG, id){
-	xhr.open("POST", "172.131.191:8081/shot", true);
-	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.send(
-		{
-			'userLT':userLT,
-			'userLG':userLG,
-			'ballLT':ballLT,
-			'ballLG':ballLG,
-			'id':id,
+function postShot(userLT, userLG, ballLT, ballLG, gamerId){
+	//Create a connection
+	var xhr = getXMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && (xhr.status == 201 || xhr.status == 0)) {
+			alert(xhr.responseText);
 		}
-	);
-}*/
+	};
+	xhr.open("POST", serveurIp + serveurPort + "shot", true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+
+	var data = {
+			"userLt":userLT,
+			"userLg":userLG,
+			"ballLt":ballLT,
+			"ballLg":ballLG,
+			"token":gamerId
+		};
+
+	xhr.send(JSON.stringify(data));
+}
