@@ -60,16 +60,61 @@
 			    	<!--GROUP ACCORDION-->
 					<div class="panel-group" id="accordion">
 
-						<!--ACCORDION FOR THE TABLE-->
-					  	<div class="panel panel-default" style="opacity : 0.95;">
+						<!--ACCORDION FOR THE STATISTICS-->
+					  	<div class="panel panel-default" style="opacity : 0.9;">
+						    
 						    <div class="panel-heading">
 						      <h4 class="panel-title">
-						        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-						         Details users
+						        <a data-toggle="collapse" data-parent="false" href="#collapseOne">
+						        Statistics
 						        </a>
 						      </h4>
 						    </div>
+
 						    <div id="collapseOne" class="panel-collapse collapse in">
+						      	<div class="panel-body" >
+
+									<div class="input-group">
+									  	<span class="input-group-addon">Amount of users</span>
+									  	<input type="text" class="form-control stats" id="stats_amount" value="---">
+									</div>
+
+									<div class="input-group">
+									  	<span class="input-group-addon">Users connected</span>
+									  	<input type="text" class="form-control stats" id="stats_users_connected" value="---">
+									</div>
+
+									<div class="input-group">
+									  	<span class="input-group-addon">Total distances</span>
+									  	<input type="text" class="form-control stats" id="stats_distances" value="---">
+									</div>
+
+									<div class="input-group">
+									  	<span class="input-group-addon">Best distance</span>
+									  	<input type="text" class="form-control stats" id="stats_best_distance" value="---">
+									</div>
+
+									<div class="input-group">
+									  	<span class="input-group-addon">Best location</span>
+									  	<input type="text" class="form-control stats" id="stats_best_location" value="---">
+									</div>									
+
+
+						      	</div>
+						    </div>
+					  	</div>
+
+
+						<!--ACCORDION FOR THE TABLE-->
+					  	<div class="panel panel-default" style="opacity : 0.9;">
+						    <div class="panel-heading">
+						      <h4 class="panel-title">
+						        <a data-toggle="collapse" data-parent="false" href="#collapseTwo">
+						         Details
+						        </a>
+						      </h4>
+						    </div>
+						    <div id="collapseTwo" class="panel-collapse collapse">
 						      	<div class="panel-body" >
 
 									<div>
@@ -91,25 +136,18 @@
 					  	</div>
 
 						<!--ACCORDION FOR THE JSON TEST BOX-->
-					  	<div class="panel panel-default" style="opacity : 0.95;">
+					  	<!--<div class="panel panel-default" style="opacity : 0.95;">
 					    	<div class="panel-heading">
 					      		<h4 class="panel-title">
-					        		<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+					        		<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
 					          		JSON Test Box
 					        		</a>
 					      		</h4>
 					    	</div>
-					    	<div id="collapseTwo" class="panel-collapse collapse" id="collapse_submit_JSON">
+					    	<div id="collapseThree" class="panel-collapse collapse" id="collapse_submit_JSON">
 					      		<div class="panel-body">
 									<div>
 										<textarea id="textarea_submit" rows="7" cols="65"></textarea>
-<!--[
-{"amount" : 10}
-{"idToken" : "A", "lg" : "0.000", "lt" : "1.000", "dist" : "0"},
-{"idToken" : "B", "lg" : "-20.000", "lt" : "40.000", "dist" : "0"},
-{"idToken" : "C", "lg" : "10.000", "lt" : "50.000", "dist" : "0"},
-{"idToken" : "D", "lg" : "-100.000", "lt" : "0.000", "dist" : "0"}
-]-->
 									</div>
 
 				        			<button class="btn btn-info" id="button_search" type="button" onclick="submit_response()">
@@ -118,7 +156,7 @@
 
 					      		</div>
 					    	</div>
-					  	</div>
+					  	</div>-->
 					</div>	<!--end group accordion-->
 				</div>
 
@@ -129,7 +167,7 @@
 				        	<div class="dropdown">
 								<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Actions</button>
 							  	<ul class="dropdown-menu" role="menu">
-							    	<li><a role="menuitem" onclick="go_home()">Go to IMERIR</a></li>
+							    	<li><a role="menuitem" onclick="go_home()">Go home</a></li>
 							    	<li><a role="menuitem" onclick="resize_map()">View all users</a></li>
 							  	</ul>
 							</div>
@@ -183,6 +221,11 @@
 					<div class="input-group">
 					  	<span class="input-group-addon">Refresh frequency</span>
 					  	<input type="text" class="form-control" placeholder="in milliseconds" id="refresh_value">
+					</div>
+
+					<div class="input-group">
+					  	<span class="input-group-addon">Home position</span>
+					  	<input type="text" class="form-control" placeholder="Latitude/Longitude" id="refresh_home_position">
 					</div>
 
 			      	<div class="modal-body">

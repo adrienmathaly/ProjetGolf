@@ -63,7 +63,7 @@ div.modal-header
 table
 {
 	text-align:center;
-	opacity : 0.8;
+	opacity : 0.9;
 	color:#F1DDA8;
 	background-color:#626063;
 	border-color:transparent;
@@ -79,3 +79,21 @@ table>tbody
 	font-size:11px;
 }
 
+span.input-group-addon
+{
+	width:145px;
+	text-align: left;
+	color : #F1DDA8;
+	background-color: #626063;
+}
+
+.input-group
+{
+	width : 100%;
+}
+
+.stats
+{
+	color : 626063;
+	background-color: #F1DDA8;
+}
