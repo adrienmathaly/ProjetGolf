@@ -1,10 +1,9 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
 var ip_Server_navbar = null;
-var connected_users = 0;
 var JSON_response = null;
 var timer;
-
+var refresh_frequency;
 
 //MAPPING VARIABLES
 var my_map;
@@ -49,6 +48,7 @@ function HttpGET(request)
 					console.log("Connection failed");
 			}
 		xmlHttp.send();
+		submit_response();
 	}
 }
 
@@ -70,6 +70,14 @@ function initialiser()
 	};
 
 	my_map = new google.maps.Map(document.getElementById("my_map"), options);
+}
+
+function refresh_parameters()
+{
+	var value = document.getElementById("refresh_value").value;
+
+	if (value > 0)
+		refresh_frequency = value;
 }
 
 //FONCTIONS DE CONNEXION / DECONNEXION
@@ -99,7 +107,8 @@ function connect_to_server()
 			document.getElementById('ipServer').disabled = true;
 
 			//START THE TIMER
-			timer = setInterval( function() {HttpGET(amount_of_users)}, 500);
+			console.log("Refresh : " + refresh_frequency + "ms");
+			timer = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);
 		}
 	}
 }
@@ -167,21 +176,34 @@ function go_home()
 }
 
 
-function submit()
-{
-	my_table = document.getElementById("table_infos");
-	var parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")");
+function submit_response()
+{	
+	//VARIABMES
+	var parsed_JSON_objet;
 
-	
-	/*var amountOfUserObjet = { amountOfUser : 5 };
-	console.log(amountOfUserObjet["amountOfUser"]);*/
+	my_table = document.getElementById("table_infos");
+	parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")");
 
 	clean_table(my_table);
 	delete_all_markers();
 
-	var i = 0;
+	//AMOUNT OF USERS CONNECTED
+	document.getElementById("total_users").innerHTML = "Users (" + parsed_JSON_objet.amount + ")";
+
+	/*var i = 0;
 	parsed_JSON_objet.forEach(function(row)
 	{
+		window.alert("Pop entrée");
+
+		//SI LA REPONSE JSON COMPORTE DES MOTS CLEFS
+		if (row["amount"] >= 0)
+		{
+			alert("test");
+			document.getElementById("total_users").innerHTML = "Users (" + row["amount"] + ")";
+		}
+
+		window.alert("pop !");
+
 		//INSERT ROW AND CELLS
 		var new_row = my_table.insertRow(i+1)
 		var cell_user = new_row.insertCell(0);
@@ -200,11 +222,9 @@ function submit()
 		add_marker(cell_lat.innerHTML,cell_lng.innerHTML,user_info);
 
 		i++;
-	});
-
-	connected_users = i;
-	document.getElementById("total_users").innerHTML = "Users (" + connected_users + ")";
+	});*/
 }
+
 
 function add_marker(_lat,_lng,_name)
 {
@@ -221,11 +241,13 @@ function add_marker(_lat,_lng,_name)
 	marker.setMap(my_map);
 }
 
+
 function delete_all_markers()
 {
 	for (var i=0;i<marker_array.length;i++)
 		marker_array[i].setMap(null);
 }
+
 
 function resize_map()
 {
