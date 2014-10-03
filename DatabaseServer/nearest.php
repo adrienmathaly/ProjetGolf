@@ -16,39 +16,22 @@
 // Perpignan          :  42.683300 , 2.883330
 // Pic du Canigou     :  42.518881 , 2.456667     
 
+require_once("Lib/City.php");
 
 // Data retrieving  in the url (longitude and latitude)
-$longitude  = $_GET['lg'];
-$latitude   = $_GET['lt'];
+$longitude  = 2.456667; //$_GET['lg'];
+$latitude   = 42.518881; //$_GET['lt'];
 $population = 1000;
 
-// Connection database informations
-$host = "localhost";
-$user = "root";
-$bdd  = "DB_GLF";
-$pwd  = "";
-
-// Database connection
-mysql_connect($host, $user, $pwd) or die("Erreur de connexion au serveur");
-mysql_select_db($bdd) or die("Erreur de connexion a la base de donnees");
-mysql_query("SET NAMES UTF8");
+$city = new City();
+$nearestCity = $city->getNearestCity($longitude,$latitude,$population);
+$city->deconnect();
+echo "<pre>";
+print_r($nearestCity);
+echo "</pre>";
 
 
-// SQL Request 
-$query = "
-    SELECT ville_nom_reel, ville_longitude_deg, ville_latitude_deg, ville_url_wiki 
-    FROM 
-        ( SELECT ville_nom_reel, ville_longitude_deg, ville_latitude_deg, ville_url_wiki, 
-            (sqrt(pow(abs(".$longitude." - ville_longitude_deg),2) + pow(abs(".$latitude." - ville_latitude_deg), 2))) 
-          FROM `t_ville` 
-          WHERE ville_population > ".$population." order by 5
-        ) as tt 
-    LIMIT 1 
-";
-
-$result = mysql_query($query);
-
-$array_liste_ville = array();
+/*$array_liste_ville = array();
 while($donnees = mysql_fetch_assoc($result)) {
      
     $ville = array(
@@ -67,6 +50,6 @@ $array_liste_ville_json = json_encode($array_liste_ville);
 echo ($array_liste_ville_json);
 
 mysql_close();
-
+*/
 
 ?>
