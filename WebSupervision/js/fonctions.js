@@ -1,6 +1,8 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
+var waiting_mode = 0;
 var refresh_frequency = 500;
+//var connected_to_server = false;
 
 //VARIABLES JSON REQUESTS
 var timer_amount;
@@ -38,6 +40,13 @@ function HttpGET(request)
 		//CONNECTION OPENING
 		xmlHttp.open("GET",URI, true);
 		xmlHttp.setRequestHeader("Origin", "*");
+
+
+		//BOOLEAN FOR THE CONNECTION
+		if (xmlHttp.status == 200)
+			connected = 1;
+		else
+			connected = 0;
 
 		//FUNCTION PREPARATION
 		xmlHttp.onreadystatechange = function()
@@ -137,7 +146,74 @@ function refresh_parameters()
 //FONCTIONS DE CONNEXION / DECONNEXION
 function connect_to_server()
 {
-    if(connected == 1)
+	//btn-warning = WAITING
+	//btn-info = CONNECTED
+	//btn-danger = DISCONNECTED
+
+
+		//IF SERVER NOT CONNECTED OR IN WAITING-MODE	
+		if (connected == 0)
+		{
+			//IF WAITING MODE IS ON
+			if (waiting_mode == 1)
+			{
+				waiting_mode = 0;
+				$("#connect").removeClass("btn-warning");
+				$("#connect").addClass("btn-danger");
+				$("#connect").html("Disconnected");
+
+				clearInterval(timer_amount);
+				clearInterval(timer_totalDistances);
+				clearInterval(timer_lastKnownLocations);
+				clearInterval(timer_numberOfConnected);
+			}
+			else if (waiting_mode == 0)
+			{
+				waiting_mode = 1;
+				$("#connect").removeClass("btn-info");
+				$("#connect").removeClass("btn-danger");
+				$("#connect").addClass("btn-warning");
+				$("#connect").html("Waiting ...");
+
+				//TEST STATUS OF THE CONNECTION
+				timer_amount = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);
+
+				//IF SERVER CONNECTED
+				if (connected == 1)
+				{
+					//STOP THE WAITING MODE
+					waiting_mode = 0;
+
+					//START THE REQUESTS
+					timer_amount = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);;
+					timer_totalDistances  = setInterval( function() {HttpGET("/totalDistances")}, refresh_frequency);;
+					timer_lastKnownLocations = setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
+					timer_numberOfConnected = setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
+
+					//CHANGE BUTTON CLASS
+					$("#connect").removeClass("btn-warning");
+					$("#connect").removeClass("btn-danger");
+					$("#connect").addClass("btn-info");
+					$("#connect").html("Connected");
+				}
+			}
+		}
+		else if (connected == 1)
+		{
+			waiting_mode = 0;
+			$("#connect").removeClass("btn-info");
+			$("#connect").addClass("btn-danger");
+			$("#connect").html("Disconnected");
+			//document.getElementById('ipServer').disabled = false;
+
+			clearInterval(timer_amount);
+			clearInterval(timer_totalDistances);
+			clearInterval(timer_lastKnownLocations);
+			clearInterval(timer_numberOfConnected);
+		}
+
+
+   /* if(connected == 1)
     {
  		connected = 0;
 		$("#connect").removeClass("btn-danger");
@@ -167,7 +243,7 @@ function connect_to_server()
 			timer_lastKnownLocations = setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
 			timer_numberOfConnected = setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
 		}
-	}
+	}*/
 }
 
 function search_position()
@@ -239,24 +315,20 @@ function submit_response()
 	clean_table(my_table);
 	delete_all_markers();
 
-
 	//AMOUNT OF USERS
 	var parse_JSON_amount = eval("(" + JSON_amount + ")");
 	if (parse_JSON_amount != undefined)
 		document.getElementById("stats_amount").value = parse_JSON_amount["amount"];
-
 
 	//TOTAL DISTANCES
 	var parse_JSON_totalDistances = eval("(" + JSON_totalDistances + ")");
 	if (parse_JSON_totalDistances != undefined)
 		document.getElementById("stats_distances").value = parse_JSON_totalDistances["totalDist"];
 
-
 	//NUMBER OF CONNECTED
 	var parse_JSON_numberOfConnected = eval("(" +JSON_numberOfConnected + ")");
 	if (parse_JSON_numberOfConnected != undefined)
 		document.getElementById("stats_users_connected").value = parse_JSON_numberOfConnected["nbConnected"];
-
 
 	//LAST KNOWN LOCATIONS
 	var parse_JSON_lastKnownLocations = eval("(" +JSON_lastKnownLocations + ")");
