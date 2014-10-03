@@ -1,9 +1,6 @@
 var serveurIp = 'http://172.31.1.191';
 var serveurPort = ':8081/';
 
-//The id is delivery by the server when the first connection
-var gameID = null;
-
 //Create a HTMLREQUEST object
 function getXMLHttpRequest() {
 	var xhr = null;

@@ -8,9 +8,14 @@ var mouseLat = 0;
 
 var flightPath = null;
 
+//The id is delivery by the server when the first connection
+var gameID = null;
+
 //Variable to save the position to make the direction and strong deplacement
 //Function called when page full loaded
 function initialize(){
+	//Retrieve the id gaming
+	gameID = location.search.split('id=')[1];
 
 	initializeCarto();
 	localiseOnMap();
@@ -32,8 +37,6 @@ function initialize(){
 	google.maps.event.addListener(map, 'drag', onBoundsChanged);
 	google.maps.event.addListener(map, 'bounds_changed', onBoundsChanged);
 	google.maps.event.addListener(map, 'mousemove', onMouseMove);
-
-	alert(gameID);
 }
 
 //Change position of pokeball with a x/y position 
@@ -93,11 +96,7 @@ function onStopDragBall(event){
 }
 
 function test(data){
-	alert(data);
-
-	var dataJ = JSON.parse(data);
-	alert(dataJ);
-	alert(dataJ['name']);
+	alert(data['name']);
 }
 
 //Calback when user finger move
