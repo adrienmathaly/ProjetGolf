@@ -37,7 +37,12 @@ body
 
 span.glyphicon-question-sign
 {
-    font-size: 1.3em;
+    font-size: 1.5em;
+}
+
+span.glyphicon-wrench
+{
+    font-size: 1.5em;
 }
 
 div.modal-body, div.modal-footer

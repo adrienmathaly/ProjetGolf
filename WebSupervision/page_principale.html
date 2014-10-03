@@ -34,17 +34,20 @@
 					    <div class="input-group">
 					      	<input type="text" class="form-control" placeholder="172.0.0.1:8080" id="ipServer" value="172.31.1.191:8082">
 					      	<span class="input-group-btn">
-					        	<button class="btn btn-info" id="connect" type="button" onclick="connect_to_server()">Connect</button>
+					        	<button class="btn btn-info" id="connect" type="button" onclick="connect_to_server()">
+					        		Connect
+					        		<!--<span class="glyphicon glyphicon-globe"></span>-->
+					        	</button>
 					      	</span>
 					 	</div>
 			      	</form>
 
 			      	<ul class="nav navbar-nav navbar-right" role="help">
 				 		<li>
-							<a title="Need help ?" data-toggle="modal" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-question-sign"></span></a>
+							<a title="Help" data-toggle="modal" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-question-sign"></span></a>
 				 		</li>
 				 		<li>
-							<a title=="Parameters" data-toggle="modal" data-target=".parameters-modal-lg"><span class="glyphicon glyphicon-wrench"></span></a>
+							<a title="Parameters" data-toggle="modal" data-target=".parameters-modal-lg"><span class="glyphicon glyphicon-wrench"></span></a>
 				 		</li>
 			      	</ul>
 
@@ -60,7 +63,7 @@
 						<table class="table table-condensed" id="table_infos">
 							<thead>
 							   	<tr>
-							    	<th id="total_users">Users (0)</th>
+							    	<th id="total_users">Users</th>
 							    	<th>Latitude</th> 
 							    	<th>Longitude</th>
 							    	<th>Distance</th>
@@ -72,14 +75,14 @@
 						</table> 
 					</div>
 					<div>
-						<textarea id="textarea_submit" rows="7" cols="65">
-[
+						<textarea id="textarea_submit" rows="7" cols="65"></textarea>
+<!--[
 {"idToken" : "A", "lg" : "0.000", "lt" : "1.000", "dist" : "0"},
 {"idToken" : "B", "lg" : "-20.000", "lt" : "40.000", "dist" : "0"},
 {"idToken" : "C", "lg" : "10.000", "lt" : "50.000", "dist" : "0"},
 {"idToken" : "D", "lg" : "-100.000", "lt" : "0.000", "dist" : "0"}
-]
-						</textarea>
+]-->
+						
 					</div>
 			    </div>
 
@@ -88,13 +91,10 @@
 
 					    <span class="input-group-btn">
 				        	<div class="dropdown">
-								<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-							    Actions
-							    <span class="glyphicon glyphicon-screenshot"></span>
-							  	</button>
+								<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Actions</button>
 							  	<ul class="dropdown-menu" role="menu">
 							    	<li><a role="menuitem" onclick="go_home()">Go to IMERIR</a></li>
-				        			<li><a role="menuitem" onclick="submit()">Submit JSON</a></li>
+				        			<li><a role="menuitem" onclick="submit_response()">Submit JSON</a></li>
 							    	<li><a role="menuitem" onclick="resize_map()">View all users</a></li>
 							    	<li class="divider"></li>
 							    	<li><a role="menuitem" id="hide_or_show_button" onclick="hide_or_show()">Hide/Show Test Box</a></li>
@@ -147,6 +147,9 @@
 			      	<div class="modal-header">
 			        	<h4 class="modal-title">Parameters</h4>
 			      	</div>
+
+
+
 			      	<div class="modal-body">
 
 			      	</div>
