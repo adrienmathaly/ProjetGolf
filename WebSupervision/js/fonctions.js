@@ -143,107 +143,81 @@ function refresh_parameters()
 	}
 }
 
+function clearIntervals()
+{
+	clearInterval(timer_amount);
+	clearInterval(timer_totalDistances);
+	clearInterval(timer_lastKnownLocations);
+	clearInterval(timer_numberOfConnected);
+}
+
+function setIntervals()
+{
+	timer_amount = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);;
+	timer_totalDistances  = setInterval( function() {HttpGET("/totalDistances")}, refresh_frequency);;
+	timer_lastKnownLocations = setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
+	timer_numberOfConnected = setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
+}
+
 //FONCTIONS DE CONNEXION / DECONNEXION
 function connect_to_server()
 {
-	//btn-warning = WAITING
-	//btn-info = CONNECTED
-	//btn-danger = DISCONNECTED
-
-
-		//IF SERVER NOT CONNECTED OR IN WAITING-MODE	
-		if (connected == 0)
-		{
-			//IF WAITING MODE IS ON
-			if (waiting_mode == 1)
-			{
-				waiting_mode = 0;
-				$("#connect").removeClass("btn-warning");
-				$("#connect").addClass("btn-danger");
-				$("#connect").html("Disconnected");
-
-				clearInterval(timer_amount);
-				clearInterval(timer_totalDistances);
-				clearInterval(timer_lastKnownLocations);
-				clearInterval(timer_numberOfConnected);
-			}
-			else if (waiting_mode == 0)
-			{
-				waiting_mode = 1;
-				$("#connect").removeClass("btn-info");
-				$("#connect").removeClass("btn-danger");
-				$("#connect").addClass("btn-warning");
-				$("#connect").html("Waiting ...");
-
-				//TEST STATUS OF THE CONNECTION
-				timer_amount = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);
-
-				//IF SERVER CONNECTED
-				if (connected == 1)
-				{
-					//STOP THE WAITING MODE
-					waiting_mode = 0;
-
-					//START THE REQUESTS
-					timer_amount = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);;
-					timer_totalDistances  = setInterval( function() {HttpGET("/totalDistances")}, refresh_frequency);;
-					timer_lastKnownLocations = setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
-					timer_numberOfConnected = setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
-
-					//CHANGE BUTTON CLASS
-					$("#connect").removeClass("btn-warning");
-					$("#connect").removeClass("btn-danger");
-					$("#connect").addClass("btn-info");
-					$("#connect").html("Connected");
-				}
-			}
-		}
-		else if (connected == 1)
+	//IF SERVER NOT CONNECTED OR IN WAITING-MODE	
+	if (connected == 0)
+	{
+		//IF WAITING MODE IS ON
+		if (waiting_mode == 1)
 		{
 			waiting_mode = 0;
-			$("#connect").removeClass("btn-info");
+			$("#connect").removeClass("btn-warning");
 			$("#connect").addClass("btn-danger");
 			$("#connect").html("Disconnected");
-			//document.getElementById('ipServer').disabled = false;
+			document.getElementById('ipServer').disabled = false;
 
-			clearInterval(timer_amount);
-			clearInterval(timer_totalDistances);
-			clearInterval(timer_lastKnownLocations);
-			clearInterval(timer_numberOfConnected);
+			//STOP TIMER EXECUTION
+			clearIntervals();
 		}
-
-
-   /* if(connected == 1)
-    {
- 		connected = 0;
-		$("#connect").removeClass("btn-danger");
-		$("#connect").addClass("btn-info");
-		$("#connect").html("Connect");
-		document.getElementById('ipServer').disabled = false;
-
-		clearInterval(timer_amount);
-		clearInterval(timer_totalDistances);
-		clearInterval(timer_lastKnownLocations);
-		clearInterval(timer_numberOfConnected);
-	}
-	else
-	{
-		if ($("#ipServer").val() == "")
-			window.alert("Empty Server adress");
-		else
+		else if (waiting_mode == 0)
 		{
-			connected = 1;
+			waiting_mode = 1;
 			$("#connect").removeClass("btn-info");
-			$("#connect").addClass("btn-danger");
-			$("#connect").html("Disconnect");
+			$("#connect").removeClass("btn-danger");
+			$("#connect").addClass("btn-warning");
+			$("#connect").html("Waiting ...");
 			document.getElementById('ipServer').disabled = true;
 
-			timer_amount = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);;
-			timer_totalDistances  = setInterval( function() {HttpGET("/totalDistances")}, refresh_frequency);;
-			timer_lastKnownLocations = setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
-			timer_numberOfConnected = setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
+			//TEST STATUS OF THE CONNECTION
+			timer_amount = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);
+
+			//IF SERVER CONNECTED
+			if (connected == 1)
+			{
+				//STOP THE WAITING MODE
+				waiting_mode = 0;
+
+				//START THE REQUESTS
+				setIntervals();
+
+				//CHANGE BUTTON CLASS
+				$("#connect").removeClass("btn-warning");
+				$("#connect").removeClass("btn-danger");
+				$("#connect").addClass("btn-info");
+				$("#connect").html("Connected");
+				document.getElementById('ipServer').disabled = true;
+			}
 		}
-	}*/
+	}
+	else if (connected == 1)
+	{
+		waiting_mode = 0;
+		$("#connect").removeClass("btn-info");
+		$("#connect").addClass("btn-danger");
+		$("#connect").html("Disconnected");
+		document.getElementById('ipServer').disabled = false;
+
+		clearIntervals();
+	}
+	//console.log("Connected : " + connected + "; Waiting : " + waiting_mode);
 }
 
 function search_position()
