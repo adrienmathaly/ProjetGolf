@@ -188,33 +188,32 @@ function submit()
 		var marker;
 		var user_info;
 
-		//CREATE A NEW ROW
-		new_row = my_table.insertRow(i+1);
+		//CREATE ROW AND CELLS
+		new_row = add_row(my_table,(i+1));
+		cell_user = add_cell(row, 0, "Anonymous#"+(i+1));
+		cell_lat = add_cell(row, 1, parseFloat(row["lt"]).toFixed(5));
+		cell_lng = add_cell(row, 2, parseFloat(row["lg"]).toFixed(5));
+		cell_dist = add_cell(row, 3, parseFloat(row["dist"]).toFixed(0));	
 
-		//CREATE NEW CELLS
-		cell_user = new_row.insertCell(0);
+
+		/*cell_user = new_row.insertCell(0);
 		cell_lat = new_row.insertCell(1);
 		cell_lng = new_row.insertCell(2);
 		cell_dist = new_row.insertCell(3);
-
-		//INSERT VALUES
 		cell_user.innerHTML = "Anonymous#"+(i+1);
 		cell_lat.innerHTML = parseFloat(row["lt"]).toFixed(5);
 		cell_lng.innerHTML = parseFloat(row["lg"]).toFixed(5);
-		cell_dist.innerHTML = parseFloat(row["dist"]).toFixed(0);
+		cell_dist.innerHTML = parseFloat(row["dist"]).toFixed(0);*/
 
 		//INSERT A MARKER FOR EACH USER
 		user_info = cell_user.innerHTML + " (" + cell_dist.innerHTML + ")";
 		add_marker(cell_lat.innerHTML,cell_lng.innerHTML,user_info);
 
-		//INCREMENTE THE ROW 
 		i++;
 	});
 
 	connected_users = i;
 	document.getElementById("total_users").innerHTML = "Users (" + connected_users + ")";
-
-	//resize_map();
 }
 
 function add_marker(_lat,_lng,_name)

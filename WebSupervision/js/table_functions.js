@@ -1,9 +1,14 @@
-function add_cell()
+function add_cell(row, index, contents)
 {
-	
-	
+	var cell = row.insertCell(index);
+	cell.innerHTML = contents;
+	return cell;
 }
 
+function add_row(table, index)
+{
+	return (table.insertRow(index));
+}
 
 function clean_table(table)
 {
