@@ -1,12 +1,15 @@
-function clean_table(table)
+function clean_table(_table)
 {
-	var length = table.rows.length;
-
-	if (length > 1)
+	if (_table != undefined)
 	{
-		for (var j=1;j<length;j++)
+		var length = _table.rows.length;
+
+		if (length > 1)
 		{
-			table.deleteRow(1);
+			for (var j=1;j<length;j++)
+			{
+				table.deleteRow(1);
+			}
 		}
 	}
 }

@@ -62,11 +62,6 @@ function HttpGET(request)
 					console.log("Connection failed");
 			}
 		xmlHttp.send();
-
-		/*alert("JSON distances : " + JSON_totalDistances);
-		alert("JSON amount : " + JSON_amount);
-		alert("JSON last know location : " + JSON_lastKnownLocations);*/
-
 		submit_response();
 	}
 }
@@ -93,7 +88,6 @@ function refresh_parameters()
 		refresh_frequency = value;
 		$('#parameters_modal').modal('hide');
 	}
-
 }
 
 //FONCTIONS DE CONNEXION / DECONNEXION
@@ -196,8 +190,8 @@ function go_home()
 function submit_response()
 {	
 	//CLEAN THE OLD TABLE AND DELETE OLD MARKERS ON THE MAP
-	//clean_table(my_table);
-	//delete_all_markers();
+	clean_table(my_table);
+	delete_all_markers();
 
 
 	//AMOUNT OF USERS
