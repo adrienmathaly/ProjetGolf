@@ -23,7 +23,7 @@ require_once("../lib/Poi.php");
 // Data retrieving  in the url (longitude and latitude)
 $longitude  = $_GET['lg'];
 $latitude   = $_GET['lt'];
-$population = 5000;
+$population = 3000;
 $limit_km   = 30;
 
 $city = new City();
@@ -37,8 +37,8 @@ $poi->deconnect();
 
 $nearest_city = array(
 	"name" => $array_nearest_city[0]["ville_nom_reel"],
-	"lt"   => $array_nearest_city[0]["ville_longitude_deg"],
-	"lg"   => $array_nearest_city[0]["ville_latitude_deg"],
+	"lg"   => $array_nearest_city[0]["ville_longitude_deg"],
+	"lt"   => $array_nearest_city[0]["ville_latitude_deg"],
 	"url"  => $array_nearest_city[0]["ville_url_wiki"],
 	"listOfPoi" => $array_nearest_poi
 );
