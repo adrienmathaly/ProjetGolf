@@ -99,7 +99,8 @@ function connect_to_server()
 			document.getElementById('ipServer').disabled = true;
 
 			//START THE TIMER
-			timer = setInterval( function() {HttpGET(amount_of_users)}, 500);
+			//timer = setInterval( function() {HttpGET(amount_of_users)}, 500);
+			timer =setInterval(function(){console.log("POP !")}, 1);
 		}
 	}
 }
