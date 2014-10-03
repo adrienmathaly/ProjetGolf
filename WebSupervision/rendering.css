@@ -4,7 +4,7 @@
 
 body
 {
-	background-image:url(./images/burmy-sandy.jpg);
+	background-image:url("images/burmy-sandy.jpg");
 	background-attachment:fixed;
 	background-repeat: no-repeat;
 	background-position:top left;
@@ -15,7 +15,6 @@ body
 #title_page
 {
 	color : #F1DDA8;
-	/*font-size: 25px;*/
 	font-family: Verdana;
 }
 
@@ -23,11 +22,6 @@ body
 {
   background-color: #626063;
   border-color : transparent;
-}
-
-#left_layout
-{
-	background-size: 30%;
 }
 
 #textarea_submit
