@@ -184,35 +184,57 @@ function clean_table(table)
 
 function submit()
 {
+	//VARIABLES INITIALIZATION
+	var parsed_JSON_objet;
+	var i;
+
 	//ASSIGNATION
 	my_table = document.getElementById("table_infos");
-	var parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")");
+	parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")");
 
+	
 	/*var amountOfUserObjet = { amountOfUser : 5 };
 	console.log(amountOfUserObjet["amountOfUser"]);*/
 
 	clean_table(my_table);
 	delete_all_markers();
 
-	var i = 0;
+	i = 0;
 	parsed_JSON_objet.forEach(function(row)
 	{
-		//CREATE A NEW ROW WITH 4 CELLS
-		var new_row = add_row(my_table,(i+1));
-		var cell_user = add_cell(0,new_row,"Anonymous#"+(i+1));
-		var cell_lat = add_cell(1,new_row,parseFloat(row["lt"]).toFixed(5))
-		var cell_lng = add_cell(2,new_row,parseFloat(row["lg"]).toFixed(5))
-		var cell_dist = add_cell(3,new_row,parseFloat(row["dist"]).toFixed(0))
+		//LOCAL VARIABLES
+		var new_row;
+		var cell_user, cell_lat, cell_lng;
+		var marker;
+		var user_info;
+
+		//CREATE A NEW ROW
+		new_row = my_table.insertRow(i+1);
+
+		//CREATE NEW CELLS
+		cell_user = new_row.insertCell(0);
+		cell_lat = new_row.insertCell(1);
+		cell_lng = new_row.insertCell(2);
+		cell_dist = new_row.insertCell(3);
+
+		//INSERT VALUES
+		cell_user.innerHTML = "Anonymous#"+(i+1);
+		cell_lat.innerHTML = parseFloat(row["lt"]).toFixed(5);
+		cell_lng.innerHTML = parseFloat(row["lg"]).toFixed(5);
+		cell_dist.innerHTML = parseFloat(row["dist"]).toFixed(0);
 
 		//INSERT A MARKER FOR EACH USER
-		var user_info = cell_user.innerHTML + " (" + cell_dist.innerHTML + ")";
+		user_info = cell_user.innerHTML + " (" + cell_dist.innerHTML + ")";
 		add_marker(cell_lat.innerHTML,cell_lng.innerHTML,user_info);
 
+		//INCREMENTE THE ROW 
 		i++;
 	});
 
 	connected_users = i;
 	document.getElementById("total_users").innerHTML = "Users (" + connected_users + ")";
+
+	//resize_map();
 }
 
 function add_marker(_lat,_lng,_name)
