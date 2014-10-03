@@ -3,7 +3,7 @@ var connected = 0;
 var ip_Server_navbar = null;
 var JSON_response = null;
 var timer;
-
+var refresh_frequency = 1000;
 
 //MAPPING VARIABLES
 var my_map;
@@ -72,6 +72,14 @@ function initialiser()
 	my_map = new google.maps.Map(document.getElementById("my_map"), options);
 }
 
+function change_refresh_frequency()
+{
+	var value = document.getElementById("refresh_value").innerHTML;
+
+	if (value > 0)
+		refresh_frequency = value;
+}
+
 //FONCTIONS DE CONNEXION / DECONNEXION
 function connect_to_server()
 {
@@ -99,8 +107,7 @@ function connect_to_server()
 			document.getElementById('ipServer').disabled = true;
 
 			//START THE TIMER
-			timer = setInterval( function() {HttpGET("/amountOfUsers")}, 500);
-			//timer =setInterval(function(){console.log("POP !")}, 500);
+			timer = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);
 		}
 	}
 }
@@ -172,8 +179,6 @@ function submit_response()
 {	
 	//VARIABMES
 	var parsed_JSON_objet;
-	var i;
-	var connected_users;
 
 	my_table = document.getElementById("table_infos");
 	parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")");
@@ -181,14 +186,11 @@ function submit_response()
 	clean_table(my_table);
 	delete_all_markers();
 
-	console.log("clean_table and delete_all_markers OK");
-
 	//AMOUNT OF USERS CONNECTED
-	connected_users = parsed_JSON_objet.amount;
-	document.getElementById("total_users").innerHTML = "Users (" + connected_users + ")";
+	document.getElementById("total_users").innerHTML = "Users (" + parsed_JSON_objet.amount + ")";
 
-	i = 0;
-	/*parsed_JSON_objet.forEach(function(row)
+	/*var i = 0;
+	parsed_JSON_objet.forEach(function(row)
 	{
 		window.alert("Pop entrée");
 
@@ -222,6 +224,7 @@ function submit_response()
 	});*/
 }
 
+
 function add_marker(_lat,_lng,_name)
 {
 	//CREATE A NEW MARKER
@@ -237,11 +240,13 @@ function add_marker(_lat,_lng,_name)
 	marker.setMap(my_map);
 }
 
+
 function delete_all_markers()
 {
 	for (var i=0;i<marker_array.length;i++)
 		marker_array[i].setMap(null);
 }
+
 
 function resize_map()
 {
