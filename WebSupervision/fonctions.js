@@ -75,7 +75,7 @@ function connect_to_server()
 		$("#connect").addClass("btn-info");
 		$("#connect").html("Connect");
 		document.getElementById('ipServer').disabled = false;
-		document.getElementById('button_submit').disabled = false;
+		//document.getElementById('button_submit').disabled = false;
 
 		//STOP THE TIMER
 		clearInterval(timer);
@@ -91,7 +91,7 @@ function connect_to_server()
 			$("#connect").addClass("btn-danger");
 			$("#connect").html("Disconnect");
 			document.getElementById('ipServer').disabled = true;
-			document.getElementById('button_submit').disabled = true;
+			//document.getElementById('button_submit').disabled = true;
 
 			//START THE TIMER
 			timer = setInterval( function() {HttpGET(amount_of_users)}, 500);
