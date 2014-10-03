@@ -17,6 +17,7 @@ class Db{
 
 		$this->link = mysql_connect( $this->host , $this->user, $this->password) or die ("Connexion MYSQL => PROBLEME");
 		mysql_select_db($this->bd_name) or die ("Selection BD => PROBLEME");
+		mysql_query("SET NAMES UTF8");
 	}
 	
 	public function getResponse($query){

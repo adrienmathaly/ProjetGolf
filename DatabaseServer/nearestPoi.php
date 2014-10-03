@@ -33,18 +33,17 @@ mysql_connect($host, $user, $pwd) or die("Erreur de connexion au serveur");
 mysql_select_db($bdd) or die("Erreur de connexion a la base de donnees");
 mysql_query("SET NAMES UTF8");
 
-//select `poi_nom`, ville_nom_reel, `poi_longitude`, `poi_latitude`, (sqrt(pow(abs(2.833076 - poi_longitude),2) + pow(abs(42.641190 - poi_latitude), 2)))*100 from t_poi, t_ville where `poi_ville_id` = ville_id order by 5 
-
+//select `poi_nom`, ville_nom_reel, `poi_longitude`, `poi_latitude`, (sqrt(pow(abs(2.833076 - poi_longitude),2) + pow(abs(42.641190 - poi_latitude), 2)))*100 as distance from t_poi, t_ville where `poi_ville_id` = ville_id group by `poi_nom`, ville_nom_reel, `poi_longitude`, `poi_latitude` having distance < 30 order by 5 
 // SQL Request 
 $query = "
-    SELECT poi_nom, poi_type_id, poi_longitude, poi_latitude, poi_etoile 
-    FROM 
-        ( SELECT ville_nom_reel, ville_longitude_deg, ville_latitude_deg, ville_url_wiki, 
-            (sqrt(pow(abs(".$longitude." - ville_longitude_deg),2) + pow(abs(".$latitude." - ville_latitude_deg), 2))) 
-          FROM `t_ville` 
-          WHERE ville_population > ".$population." order by 5
-        ) as tt 
-    LIMIT 5 
+    SELECT      type_nom, poi_nom, ville_nom_reel, poi_longitude, poi_latitude, 
+                (sqrt(pow(abs($longitude - poi_longitude),2) + pow(abs($latitude - poi_latitude), 2)))*100 as distance , 
+                poi_etoile, poi_type_id
+    FROM        t_poi, t_ville, t_type
+    WHERE       poi_ville_id = ville_id and poi_type_id = type_id 
+    GROUP BY    poi_nom, ville_nom_reel, poi_longitude, poi_latitude 
+    HAVING      distance < 20
+    ORDER BY    6
 ";
 
 $result = mysql_query($query);
@@ -53,17 +52,21 @@ $array_liste_poi = array();
 while($donnees = mysql_fetch_assoc($result)) {
      
     $poi = array(
-    	"poi_nom"       => $donnees["poi_nom"],
-    	"poi_type_id"   => $donnees["poi_type_id"],
-    	"poi_longitude" => $donnees["poi_longitude"],
-        "poi_latitude"  => $donnees["poi_latitude"],
-        "poi_etoile"    => $donnees["poi_etoile"],
-
+        "type_nom"       => $donnees["type_nom"],
+    	"poi_nom"        => $donnees["poi_nom"],
+    	"ville_nom_reel" => $donnees["ville_nom_reel"],
+    	"poi_longitude"  => $donnees["poi_longitude"],
+        "poi_latitude"   => $donnees["poi_latitude"],
+        "distance"       => $donnees["distance"],
+        "poi_etoile"     => $donnees["poi_etoile"]
     );
 
     array_push($array_liste_poi, $poi);
 }
 
+/*echo "<pre>";
+print_r($array_liste_poi);
+echo "</pre>";*/
 // Json Encode
 $array_liste_poi_json = json_encode($array_liste_poi);
 
