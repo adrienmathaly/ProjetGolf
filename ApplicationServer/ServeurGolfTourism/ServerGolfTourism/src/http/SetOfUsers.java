@@ -9,6 +9,10 @@ public class SetOfUsers {
 	
 	private static HashMap<String,User> users;
 	
+	public static void prepareUsers(){
+		users=new HashMap<String,User>();
+	}
+	
 	public static void addUser(String token,User user){
 		users.put(token,user);
 	}

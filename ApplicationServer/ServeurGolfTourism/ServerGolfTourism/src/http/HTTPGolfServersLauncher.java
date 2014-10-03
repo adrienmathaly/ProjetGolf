@@ -19,7 +19,8 @@ public class HTTPGolfServersLauncher {
 	public HTTPGolfServersLauncher() {
 		ConfLoader.loadConfigFile();
 		launchLoggers();
-		loggers.get("Events").addLogToBeWritten(ConfLoader.getEntry("onStartMsg"));
+		SetOfUsers.prepareUsers();
+		Logger.addLogToBeWritten("Events",ConfLoader.getEntry("onStartMsg"));
 		active=true;
 		headers=new HTTPResponseHeaderBuilder(new File(ConfLoader.getEntry("headersDirectory")));
 		mobileServer = new HTTPGolfMobileServer(loggers,"[MOBILE]", ConfLoader.getEntry("serverPortMobile"));
@@ -42,6 +43,7 @@ public class HTTPGolfServersLauncher {
 	}
 	
 	private void launchLoggers(){
+		Logger.prepareLoggers();
 		loggers = new HashMap<String,Logger>();
 		loggers.put(ConfLoader.getEntry("loggerEventsName"), new Logger(ConfLoader.getEntry("loggerEventsName"), ConfLoader.getEntry("loggerEventsPath"),10));
 		loggers.put(ConfLoader.getEntry("loggerErrorsName"), new Logger(ConfLoader.getEntry("loggerErrorsName"), ConfLoader.getEntry("loggerErrorsPath"),10));

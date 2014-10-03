@@ -1,7 +1,14 @@
 package http.handlers;
 
+import http.SetOfUsers;
+
+import java.io.OutputStream;
 import java.util.HashMap;
+
+import json.JSONBuilder;
+
 import com.sun.net.httpserver.HttpExchange;
+
 import logger.Logger;
 
 public class UsersLastKnownLocations extends CustomizedHandler {
@@ -12,5 +19,10 @@ public class UsersLastKnownLocations extends CustomizedHandler {
 
 	@Override
 	protected void doYourStuff(HttpExchange t) throws Exception {
+	      String response = JSONBuilder.buildJSONBasicMsg("lastKnownLocations",SetOfUsers.listOfCoordinates());
+	      t.sendResponseHeaders(200, response.length());
+	      OutputStream os = t.getResponseBody();
+	      os.write(response.getBytes());
+	      os.close();
 	}
 }

@@ -1,0 +1,38 @@
+package http.handlers;
+
+import http.SetOfUsers;
+
+import java.io.OutputStream;
+import java.util.HashMap;
+
+import json.JSONBuilder;
+
+import com.sun.net.httpserver.HttpExchange;
+
+import logger.Logger;
+
+public class AmountOfUsersFromDaBeginnin extends CustomizedHandler  {
+
+	public AmountOfUsersFromDaBeginnin(HashMap<String, Logger> loggers) {
+		super(loggers);
+	}
+
+	@Override
+	protected void doYourStuff(HttpExchange t) throws Exception {
+		Logger.addLogToBeWritten("Events","Amount Requested1");
+		System.out.println("coucou");
+	      String response = JSONBuilder.buildJSONBasicMsg("amount",SetOfUsers.amountOfUsers());
+	      Logger.addLogToBeWritten("Events","Amount Requested2");
+	      t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+	      Logger.addLogToBeWritten("Events","Amount Requested3");
+	      t.sendResponseHeaders(200, response.length());
+	      Logger.addLogToBeWritten("Events","Amount Requested4");
+	      OutputStream os = t.getResponseBody();
+	      Logger.addLogToBeWritten("Events","Amount Requested5");
+	      os.write(response.getBytes());
+			Logger.addLogToBeWritten("Events","Amount Requested6");
+	      os.close();
+	}
+
+	
+}

@@ -6,7 +6,6 @@
 <fullyQualifiedTypeName name="http.HTTPGolfMobileServer"/>
 <fullyQualifiedTypeName name="java.io.PrintWriter"/>
 <fullyQualifiedTypeName name="java.io.BufferedWriter"/>
-<fullyQualifiedTypeName name="java.util.LinkedList"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
 <fullyQualifiedTypeName name="java.io.FileWriter"/>
@@ -25,4 +24,18 @@
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="http.DatabaseManager"/>
 <fullyQualifiedTypeName name="configuration.ConfLoader"/>
+<fullyQualifiedTypeName name="http.HTTPGolfServer"/>
+<fullyQualifiedTypeName name="http.handlers.CustomizedHandler"/>
+<fullyQualifiedTypeName name="http.handlers.AmountOfUsersFromDaBeginnin"/>
+<fullyQualifiedTypeName name="http.handlers.UsersLastKnownLocations"/>
+<fullyQualifiedTypeName name="http.handlers.UsersTravelledDistances"/>
+<fullyQualifiedTypeName name="http.handlers.TotalOfAllDistances"/>
+<fullyQualifiedTypeName name="http.handlers.NumberOfConnected"/>
+<fullyQualifiedTypeName name="http.handlers.NearestPOIFromCoords"/>
+<fullyQualifiedTypeName name="http.handlers.Shot"/>
+<fullyQualifiedTypeName name="java.util.LinkedList"/>
+<fullyQualifiedTypeName name="java.awt.Point"/>
+<fullyQualifiedTypeName name="java.lang.Package"/>
+<fullyQualifiedTypeName name="http.User"/>
+<fullyQualifiedTypeName name="http.SetOfUsers"/>
 </qualifiedTypeNameHistroy>

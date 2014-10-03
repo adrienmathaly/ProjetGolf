@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Logger implements Runnable{
@@ -17,7 +18,9 @@ public class Logger implements Runnable{
 	private long interval;
 	private PrintWriter out;
 	private SimpleDateFormat dateFormat;
-
+	private static HashMap<String,Logger> loggers;
+	
+	
 	public Logger(String loggerName, String path, long interval) {
 		this.loggerName = loggerName;
 		this.path = path;
@@ -25,6 +28,7 @@ public class Logger implements Runnable{
 		this.loggerActive = false;
 		this.interval = interval;
 		this.dateFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
+		loggers.put(loggerName, this);
 	}
 
 	public void startLogger() {
@@ -63,10 +67,14 @@ public class Logger implements Runnable{
 		startLogger();
 	}
 
-	public void addLogToBeWritten(String log) {
-		this.logsToBeWritten.add(log);
+	public static void addLogToBeWritten(String logger,String log) {
+		loggers.get(logger).logsToBeWritten.add(log);
 	}
 
+	public static void prepareLoggers(){
+		loggers=new HashMap<String,Logger>();
+	}
+	
 	public String getLoggerName() {
 		return loggerName;
 	}

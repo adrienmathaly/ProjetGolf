@@ -1,0 +1,34 @@
+package json;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
+
+import org.json.simple.JSONObject;
+
+public class JSONBuilder {
+
+	public static String buildJSONBasicMsg(String key, String value) {
+		StringWriter out=new StringWriter();
+		try {
+			JSONObject jsono = new JSONObject();
+			jsono.put(key, value);
+			jsono.writeJSONString(out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return out.toString();
+	}
+	
+	public static String buildJSONComplexMsg(HashMap<String,Object> map) {
+		StringWriter out=new StringWriter();
+		try {
+			JSONObject jsono = new JSONObject();
+			jsono.putAll(map);
+			jsono.writeJSONString(out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return out.toString();
+	}
+}

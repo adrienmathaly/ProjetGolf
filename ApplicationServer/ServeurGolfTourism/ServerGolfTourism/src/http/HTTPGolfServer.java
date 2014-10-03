@@ -3,8 +3,12 @@ package http;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
+
 import logger.Logger;
+
 import com.sun.net.httpserver.HttpServer;
+
+import configuration.ConfLoader;
 
 abstract class HTTPGolfServer{
 
@@ -50,7 +54,7 @@ abstract class HTTPGolfServer{
 
 	public void launchMePlease(){
 	    server.start();
-	    loggers.get("Events").addLogToBeWritten(serverName+" - Server launched");
+	    Logger.addLogToBeWritten("Events",serverName+" - Server launched");
 	}
 	
 	public void killMePlease(){

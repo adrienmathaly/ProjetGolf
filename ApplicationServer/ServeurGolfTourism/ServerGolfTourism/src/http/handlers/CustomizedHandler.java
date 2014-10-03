@@ -21,7 +21,7 @@ abstract class CustomizedHandler implements HttpHandler{
 		try{
 			doYourStuff(t);
 		}catch(Exception e){
-			loggers.get("Errors").addLogToBeWritten(e.getMessage());
+			Logger.addLogToBeWritten("Errors", e.getMessage());
 		}
 	}
 	

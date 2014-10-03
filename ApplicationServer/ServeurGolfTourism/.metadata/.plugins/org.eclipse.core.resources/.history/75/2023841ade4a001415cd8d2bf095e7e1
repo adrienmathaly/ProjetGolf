@@ -1,0 +1,27 @@
+package http.handlers;
+
+import http.DatabaseManager;
+
+import java.util.HashMap;
+
+import com.sun.net.httpserver.HttpExchange;
+
+import configuration.ConfLoader;
+import logger.Logger;
+
+public class NearestPOIFromCoords extends CustomizedHandler {
+
+	public NearestPOIFromCoords(HashMap<String, Logger> loggers) {
+		super(loggers);
+	}
+
+	@Override
+	protected void doYourStuff(HttpExchange t) throws Exception {
+		DatabaseManager dbm = new DatabaseManager(ConfLoader.getEntry("databaseURL")+);
+		dbm.connect("GET");
+	}
+	
+	private String formatDbRequest(HttpExchange t){
+		t.getRequestURI().getQuery().split("/")
+	}
+}
