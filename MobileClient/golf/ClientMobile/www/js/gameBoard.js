@@ -32,6 +32,8 @@ function initialize(){
 	google.maps.event.addListener(map, 'drag', onBoundsChanged);
 	google.maps.event.addListener(map, 'bounds_changed', onBoundsChanged);
 	google.maps.event.addListener(map, 'mousemove', onMouseMove);
+
+	alert(gameID);
 }
 
 //Change position of pokeball with a x/y position 
@@ -82,8 +84,20 @@ function onStopDragBall(event){
 	if(flightPath !== null){
 		flightPath.setMap(null);
 		flightPath = null;
+
+		var elem = document.getElementById('bottom_map');
+		elem.innerHTML = 'Send data :' +  mouseLat + ':' + mouseLng;
+		getNearestPOI(mouseLat, mouseLng, test);
 	}
 	disableMovement(false);
+}
+
+function test(data){
+	alert(data);
+
+	var dataJ = JSON.parse(data);
+	alert(dataJ);
+	alert(dataJ['name']);
 }
 
 //Calback when user finger move

@@ -157,13 +157,15 @@ function requestStartingGame(){
 
 //Check if the device is ready to start the game
 function saveID(id){
+    id = id['token'];
     var element = document.getElementById('userConnection');
     element.innerHTML = 'id: ' + id;
+    
     gameID = id;
+    
     connectedToServer = true;
     app.receivedEvent('onServerConnection', true);
     requestStartingGame();
-
 }
 
 
