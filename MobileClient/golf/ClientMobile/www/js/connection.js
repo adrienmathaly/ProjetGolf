@@ -1,3 +1,6 @@
+var serveurIp = 'http://172.31.1.191';
+var serveurPort = ':8081/';
+
 //Create a HTMLREQUEST object
 function getXMLHttpRequest() {
 	var xhr = null;
@@ -31,7 +34,7 @@ function getIDConnection(callback){
 		}
 	};
 	
-	xhr.open("GET", "http://172.31.1.191:8081/token", true);
+	xhr.open("GET", serveurIp + serveurPort + "token", true);
 	xhr.send(null);
 }
 

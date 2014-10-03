@@ -8,8 +8,19 @@
           'Speed: '             + position.coords.speed             + '\n' +
           'Timestamp: '         + position.timestamp                + '\n');*/
 
-//Variable to access to the map
+//Variable to access to the map and projection
 var map = null;
+
+//Marker
+var devicePositionMarker = null;
+
+
+//Position
+var pokeballPosition = null;
+
+//Own event when localisation works
+var localisedEvent = new Event('Event');
+localisedEvent.initEvent('localised', true, true);
 
 //When the body is full loaded initialize carto on France
 function initializeCarto() {
@@ -17,8 +28,8 @@ function initializeCarto() {
         center: { lat: 46.5643202, lng: 2.5282764},
         zoom: 6,
         mapTypeId: google.maps.MapTypeId.ROADMAP
-      	};
-    var divMap = document.getElementById("map-canvas");
+        };
+    var divMap = document.getElementById("map-google");
 
     //get element upper and botton the map to set the dimmension
     var upperElement = document.getElementById("upper_map");
@@ -30,16 +41,16 @@ function initializeCarto() {
     divMap.style.width = screen.width + "px";
     divMap.style.height = displayHeight + "px";
 
-    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    map = new google.maps.Map(document.getElementById('map-google'), mapOptions);
+    //projection = map.getProjection();
 }
 
 // onSucess localisation zoom on it and mark the position
 var onLocaliseSuccess = function(position) {
-	alert("Changement de localisation \n Latitude: " + position.coords.latitude + " \n Longitude: " + position.coords.longitude);
-	map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-	map.setZoom(10);
+  map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+  map.setZoom(10);
 
-	var marker = new google.maps.Marker({
+  devicePositionMarker = new google.maps.Marker({
       position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
       map: map,
       title: 'Je te vois :D'
@@ -54,8 +65,40 @@ function onLocaliseError(error) {
 
 //Localise the mobile
 function localiseOnMap() {
-	navigator.geolocation.getCurrentPosition(onLocaliseSuccess, onLocaliseError);
+  navigator.geolocation.getCurrentPosition(onLocaliseSuccess, onLocaliseError);
 }
 
-localiseOnMap();
+//From latitute and longitute get the pixel position on screen
+function fromLatLngToPoint(latLng, map) {
+  var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
+  var bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
+  var scale = Math.pow(2, map.getZoom());
+  var worldPoint = map.getProjection().fromLatLngToPoint(latLng);
+  return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
+}
+
+//Disable or enable the map movement, zoom, scrool, doubleclick
+function disableMovement(disable) {
+    var mapOptions;
+    if (disable) {
+        mapOptions = {
+            draggable: false,
+            scrollwheel: false,
+            disableDoubleClickZoom: true,
+            zoomControl: false
+        };
+    } else {
+        mapOptions = {
+            draggable: true,
+            scrollwheel: true,
+            disableDoubleClickZoom: false,
+            zoomControl: true
+        };
+    }
+    map.setOptions(mapOptions);
+}
+
+
+
+
 
