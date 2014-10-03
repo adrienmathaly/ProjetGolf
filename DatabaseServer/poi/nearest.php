@@ -5,12 +5,11 @@
 * \author Loïc TRICJAUD
 * \version 1.0
 * \date 01/10/2014
-* \brief Return nearest town
+* \brief Return nearest city and nearestpoi
 */
 
 //      Location      |  Latitude  | Longitude
 // ============================================
-// Park next to Dijon :  47.265494 , 4.188541
 // Imerir             :  42.6746   , 2.84773
 // Canohes            :  42.641190 , 2.833076
 // Perpignan          :  42.683300 , 2.883330
@@ -45,7 +44,7 @@ $nearest_city = array(
 );
 
 // JSON Decode
-$nearest_city_json = json_encode($nearest_city, JSON_UNESCAPED_UNICODE);
+$nearest_city_json = json_encode($nearest_city, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 echo ($nearest_city_json);
 
 ?>
