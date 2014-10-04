@@ -302,7 +302,12 @@ function submit_response()
 	//NUMBER OF CONNECTED
 	var parse_JSON_numberOfConnected = eval("(" +JSON_numberOfConnected + ")");
 	if (parse_JSON_numberOfConnected != undefined)
-		document.getElementById("stats_users_connected").value = parse_JSON_numberOfConnected["nbConnected"];
+	{
+		var value = parse_JSON_numberOfConnected["nbConnected"];
+		document.getElementById("stats_users_connected").value = value;
+		document.getElementById("badge_connected_users").value = value;
+	}
+
 
 	//LAST KNOWN LOCATIONS
 	var parse_JSON_lastKnownLocations = eval("(" +JSON_lastKnownLocations + ")");

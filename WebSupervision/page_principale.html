@@ -110,7 +110,9 @@
 						    <div class="panel-heading">
 						      <h4 class="panel-title">
 						        <a data-toggle="collapse" data-parent="false" href="#collapseTwo">
-						         Details <span class="caret" style="float : right;"></span>
+						         Details  
+						         <!--<span class="badge badge-info" id="badge_connected_users">0</span>-->
+						         <span class="caret" style="float : right;"></span>
 						        </a>
 						      </h4>
 						    </div>
@@ -169,8 +171,8 @@
 							</div>
 				      	</span>		
 
-				      	<input type="text" class="form-control" placeholder="Latitude/Longitude" id="search">
 
+						<input type="text" class="form-control" placeholder="Latitude/Longitude" id="search">
 				      	<span class="input-group-btn">
 				        	<button class="btn btn-info" id="button_search" type="button" onclick="search_position()">
 				        		<div>Search
@@ -194,7 +196,7 @@
 			        	<h4 class="modal-title">You need help ?</h4>
 			      	</div>
 			      	<div class="modal-body">
-			        	<p>
+		        		<p>
 			        	This webpage supervision allows you to view all the statistics related to GolfProject application.</br>
 							<li>To connect to the server, specify the IP address and the port (ex : 172.10.10.10:1234)</li>
 							<li>...</li>
@@ -219,23 +221,25 @@
 			        	<h4 class="modal-title">Parameters</h4>
 			      	</div>
 
-					<div class="input-group">
-					  	<span class="input-group-addon">Refresh frequency</span>
-					  	<input type="text" class="form-control" placeholder="in milliseconds" id="refresh_value">
-					</div>
 
-					<div class="input-group">
-					  	<span class="input-group-addon">Home position</span>
-					  	<input type="text" class="form-control" placeholder="Latitude/Longitude" id="refresh_home_position">
-					</div>
+					<div class="modal-body">
 
-			      	<div class="modal-body">
+						<div class="input-group">
+						  	<span class="input-group-addon">Refresh frequency</span>
+						  	<input type="text" class="form-control" placeholder="in milliseconds" id="refresh_value">
+						</div>
+
+						<div class="input-group">
+						  	<span class="input-group-addon">Home position</span>
+						  	<input type="text" class="form-control" placeholder="Latitude/Longitude" id="refresh_home_position">
+						</div>
 
 			      	</div>
-			    <div class="modal-footer">
-			        <button type="button" class="btn btn-info" onclick="refresh_parameters()">Validate</button>
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-			    </div>
+
+				    <div class="modal-footer">
+				        <button type="button" class="btn btn-info" onclick="refresh_parameters()">Validate</button>
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				    </div>
 			    </div>
 		  	</div>
 		</div>
