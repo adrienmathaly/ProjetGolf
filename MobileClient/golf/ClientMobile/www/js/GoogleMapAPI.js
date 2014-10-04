@@ -14,13 +14,8 @@ var map = null;
 //Marker
 var devicePositionMarker = null;
 
-
 //Position
 var pokeballPosition = null;
-
-//Own event when localisation works
-var localisedEvent = new Event('Event');
-localisedEvent.initEvent('localised', true, true);
 
 //When the body is full loaded initialize carto on France
 function initializeCarto() {
@@ -42,14 +37,26 @@ function initializeCarto() {
     divMap.style.height = displayHeight + "px";
 
     map = new google.maps.Map(document.getElementById('map-google'), mapOptions);
-    //projection = map.getProjection();
 }
 
-// onSucess localisation zoom on it and mark the position
-var onLocaliseSuccess = function(position) {
-  map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-  map.setZoom(10);
+function updateCarto(){
+  var data = null;
+}
 
+//Update the size 
+
+// change center of map
+function changeMapCenterFromLatLng(position) {
+  map.setCenter(new google.maps.LatLng(position.lat(), position.lng()));
+}
+
+// change center of map
+function changeMapCenterFromMarker(marker) {
+  changeMapCenterFromLatLng(marker.getPosition());
+}
+
+// onSucess localisation mark the position
+var onLocaliseSuccess = function(position) {
   devicePositionMarker = new google.maps.Marker({
       position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
       map: map,
