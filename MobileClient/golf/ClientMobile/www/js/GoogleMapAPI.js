@@ -19,31 +19,35 @@ var pokeballPosition = null;
 
 //When the body is full loaded initialize carto on France
 function initializeCarto() {
-    var mapOptions = {
-        center: { lat: 46.5643202, lng: 2.5282764},
-        zoom: 6,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-    var divMap = document.getElementById("map-google");
+  var mapOptions = {
+      center: { lat: 46.5643202, lng: 2.5282764},
+      zoom: 6,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+  map = new google.maps.Map(document.getElementById('map-google'), mapOptions);
 
-    //get element upper and botton the map to set the dimmension
-    var upperElement = document.getElementById("upper_map");
-    var bottomElement = document.getElementById("bottom_map");
-
-    //height of map = height of screen - height of data upper - height of data bottom - 25px because of action bar
-    var displayHeight = screen.height - upperElement.offsetHeight - bottomElement.offsetHeight - 25;
-    
-    divMap.style.width = screen.width + "px";
-    divMap.style.height = displayHeight + "px";
-
-    map = new google.maps.Map(document.getElementById('map-google'), mapOptions);
-}
-
-function updateCarto(){
-  var data = null;
+  var bottomElement = document.getElementById('movementZone');
+  bottomElement.style.display = 'block';
 }
 
 //Update the size 
+function updateSizeCarto(){
+  //get map element
+  var divMap = document.getElementById("map-google");
+
+  //get element upper and botton map to set the dimmension
+  var upperElement = document.getElementById("upper_map");
+  var bottomElement = document.getElementById("bottom_map");
+
+  //height of map = height of screen - height of data upper - height of data bottom - 25px because of action bar
+  var displayHeight = window.innerHeight - upperElement.offsetHeight - bottomElement.offsetHeight;
+  var displayWidth = window.innerWidth;
+
+  divMap.style.width = displayWidth + "px";
+  divMap.style.height = displayHeight + "px";  
+  google.maps.event.trigger(map, 'resize'); 
+}
+
 
 // change center of map
 function changeMapCenterFromLatLng(position) {

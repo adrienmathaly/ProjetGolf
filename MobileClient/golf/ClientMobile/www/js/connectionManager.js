@@ -27,7 +27,7 @@
 * onGeolocationError();
 * onResume();
 * onPause();
-*
+* onOrientationChanged();
 */
 
 //Timer used to make a loop of geolocalisation
@@ -57,7 +57,9 @@ var connectionManager = {
         //Event when the application is paused/put in the background
         document.addEventListener('pause', this.onGeolocalisationNoNeeded, false);
         //Event when the application is paused/put in the background
-        document.addEventListener('destroy', this.destroy, false);    
+        document.addEventListener('destroy', this.destroy, false);
+        //Event when the orientation change
+        window.addEventListener('resize', this.orientationchange);    
     },
     // deviceready Event Handler  
     deviceReady: function() {
@@ -93,6 +95,9 @@ var connectionManager = {
     onGeolocalisationNoNeeded: function(){
         checkLocalisation(false);
         onPause();
+    },
+    orientationchange: function(){
+        onOrientationChanged();
     }
 };
 

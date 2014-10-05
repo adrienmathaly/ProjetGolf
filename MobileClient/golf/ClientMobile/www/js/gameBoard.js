@@ -26,8 +26,12 @@ function initialize(){
 //Change position of pokeball with a x/y position 
 function changePokeballPosition(x, y){
 	var poke = document.getElementById('pokeball');
+
+	//get element upper and botton map to set the dimmension
+  	var upperElement = document.getElementById("upper_map");
+
 	poke.style.left = x - poke.width/2 + 'px';
-	poke.style.top = y - poke.height/2 + 'px';
+	poke.style.top = y - poke.height/2 + upperElement.offsetHeight + 'px';
 }
 
 //Change position of pokeball with the position of a google maps marker

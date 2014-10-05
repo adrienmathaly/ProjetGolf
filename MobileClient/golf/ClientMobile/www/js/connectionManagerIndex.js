@@ -8,6 +8,7 @@
 *   function onGeolocationError();
 *   function onResume();
 *   function onPause();
+*   function onOrientationChanged();
 */
 
 /* Bolean use to check connection (create in connectionManager.js)
@@ -99,6 +100,11 @@ function onResume(){
 
 //On pause application event handler
 function onPause(){
+    var doNothing = true;
+}
+
+//On orientation change event handler
+function onOrientationChanged(){
     var doNothing = true;
 }
 

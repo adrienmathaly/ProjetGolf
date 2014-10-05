@@ -7,6 +7,7 @@
 *   function onGeolocationError();
 *   function onResume();
 *   function onPause();
+*	function onOrientationChanged();
 */
 
 /* Bolean use to check connection (create in connectionManager.js)
@@ -52,20 +53,25 @@ function onPause(){
 	var doNothing = true;
 }
 
+function onOrientationChanged(){
+	updateSizeCarto();
+}
+
 //Initialize the google map carto and display the gamer position
 function initializeGame(){
 	initializeCarto();
 	localiseOnMap();
 	
-	var mapElement = document.getElementById('movementZone');
-	mapElement.style.display = 'inline';
-	var bottomElement = document.getElementById('bottom_map');
-	bottomElement.style.display = 'block';
-
 	//Google maps event
 	google.maps.event.addListener(map, 'drag', onBoundsChanged);
 	google.maps.event.addListener(map, 'bounds_changed', onBoundsChanged);
 	google.maps.event.addListener(map, 'mousemove', onMouseMove);
 
+	var bottomElement = document.getElementById('bottom_map');
+	bottomElement.style.display = 'block';
+	var upperElement = document.getElementById('upper_map');
+	upperElement.style.display = 'block';
+
+	updateSizeCarto();
 	changePokeballFromMarker(devicePositionMarker);
 }
