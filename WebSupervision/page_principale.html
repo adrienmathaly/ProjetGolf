@@ -200,10 +200,10 @@
 			      	<div class="modal-body">
 		        		<p>
 			        	This webpage supervision allows you to view all the statistics related to GolfProject application.</br>
-							<li>To connect to the server, specify the IP address and the port (ex : 172.10.10.10:1234)</li>
-							<li>...</li>
-							<li>...</li>
-							<li>...</li>
+							<li>To connect to the server, specify the IP address and the port. Click on the "Disconnected" button and wait until its specifies "Connected".</li>
+							<li>When the connection is made, you have the possibility to visualize some information : the general statistics and details users (name, position, distance travelled in km,...)</li>
+							<li>The button "Actions" give you the possibility to return to your Home point, and view all users with an adapted zoom.</li>
+							<li>The button "Search" allows you to go the GPS poisitions you have previously indicated in the text field.</li>
 			        	</p>
 			      	</div>
 			    <div class="modal-footer">
@@ -231,7 +231,14 @@
 
 						<div class="input-group">
 						  	<span class="input-group-addon">Home position</span>
-						  	<input type="text" class="form-control" placeholder="Latitude/Longitude" id="refresh_home_position">
+							<input type="text" class="form-control" placeholder="Latitude/Longitude" id="refresh_home_position">
+
+					      	<span class="input-group-btn">
+					        	<button class="btn btn-default" id="home_IMERIR" type="button" onclick="go_to_IMERIR()">
+					        	<img src="logos/icon_imerir.png" style="height : 20px">
+					        	</button>
+					      	</span>
+
 						</div>
 
 			      	</div>

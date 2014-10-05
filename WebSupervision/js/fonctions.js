@@ -24,17 +24,19 @@ var lat_home = 42.674564;
 var lng_home = 2.847732;
 
 
-//FONCTION DE REQUETAGE GET
 function HttpGET(request)
 {
 	//SECURITE DU FORMAT DE L'ADRESSE
 	if ($("#ipServer").val() == null)
-		window.alert("Adresse vide");
+	{
+		window.alert("Adresse vide");	
+	}
 	else
 	{
 		//VARIABLES CREATION AND INITIALIZATION 
 		var URI = "http://"+$("#ipServer").val() + request;
 		var xmlHttp = new XMLHttpRequest();
+
 
 		//CONNECTION OPENING
 		xmlHttp.open("GET",URI, true);
@@ -84,6 +86,7 @@ function HttpGET(request)
 	}
 }
 
+
 function initialiser()
 {
 	var latlng = new google.maps.LatLng(lat_home, lng_home);
@@ -96,6 +99,7 @@ function initialiser()
 
 	my_map = new google.maps.Map(document.getElementById("my_map"), options);
 }
+
 
 function refresh_parameters()
 {
@@ -142,6 +146,7 @@ function refresh_parameters()
 	}
 }
 
+
 function clearIntervals()
 {
 	clearInterval(timer_amount);
@@ -149,6 +154,7 @@ function clearIntervals()
 	clearInterval(timer_lastKnownLocations);
 	clearInterval(timer_numberOfConnected);
 }
+
 
 function setIntervals()
 {
@@ -158,7 +164,7 @@ function setIntervals()
 	timer_numberOfConnected = setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
 }
 
-//FONCTIONS DE CONNEXION / DECONNEXION
+
 function connect_to_server()
 {
 	//IF SERVER NOT CONNECTED OR IN WAITING-MODE	
