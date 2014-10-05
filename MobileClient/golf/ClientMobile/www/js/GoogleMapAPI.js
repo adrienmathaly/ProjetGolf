@@ -13,9 +13,13 @@ var map = null;
 
 //Marker
 var devicePositionMarker = null;
+var errorDevicePositionMarker = null;
 
 //Position
 var pokeballPosition = null;
+
+//Tab of position (last POI) to fit auto
+var poiBounds = new google.maps.LatLngBounds();
 
 //When the body is full loaded initialize carto on France
 function initializeCarto() {
@@ -30,7 +34,7 @@ function initializeCarto() {
   bottomElement.style.display = 'block';
 }
 
-//Update the size 
+//Update the size on the html page
 function updateSizeCarto(){
   //get map element
   var divMap = document.getElementById("map-google");
@@ -48,6 +52,11 @@ function updateSizeCarto(){
   google.maps.event.trigger(map, 'resize'); 
 }
 
+//Update the size on the google map
+function updateSizeMap(){
+  
+}
+
 
 // change center of map
 function changeMapCenterFromLatLng(position) {
@@ -61,11 +70,18 @@ function changeMapCenterFromMarker(marker) {
 
 // onSucess localisation mark the position
 var onLocaliseSuccess = function(position) {
-  devicePositionMarker = new google.maps.Marker({
-      position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-      map: map,
-      title: 'Je te vois :D'
-  });
+  if(errorDevicePositionMarker !== null){
+    errorDevicePositionMarker.setMap(null);
+    errorDevicePositionMarker = null;
+  }
+  
+  if(devicePositionMarker === null){
+      devicePositionMarker = new google.maps.Marker({
+        position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+        map: map,
+        title: 'Je te vois :D'
+    });
+  }
 };
 
 // onError Callback receives a PositionError object
@@ -107,6 +123,15 @@ function disableMovement(disable) {
         };
     }
     map.setOptions(mapOptions);
+}
+
+//function rezoom auto between device localisation and ball localisation
+function zoomAutoDeviceBall(){
+    var ballDeviceBounds = new google.maps.LatLngBounds();
+    ballDeviceBounds.extend(pokeballPosition);
+    var pos = devicePositionMarker.getPosition();
+    ballDeviceBounds.extend(pos);
+    map.fitBounds(ballDeviceBounds);
 }
 
 

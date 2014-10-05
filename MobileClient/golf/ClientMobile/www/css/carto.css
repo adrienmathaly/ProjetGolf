@@ -103,16 +103,27 @@ h1 {
     -webkit-animation:fade 3000ms infinite;
 }
 
-.pokeball{
+.pokeballCarto{
     z-index: 2000;
     position: absolute;
-    max-width:100px;
-    max-height:100px;
-    width: auto;
-    height: auto;
+    max-width:40px;
+    max-height:40px;
+    width:auto;
+    height:auto;
+    display:none;
+    pointer-events:none;
 
-    pointer-events: none;
+    /*Use for debug position ball*/
+    /*border: solid;
+    border-color: black;
+    border-width: 2px;*/
+}
 
+.pokeball{
+    max-width:55px;
+    max-height:55px;
+    width:auto;
+    height:auto;
     /*Use for debug position ball*/
     /*border: solid;
     border-color: black;

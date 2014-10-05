@@ -29,10 +29,12 @@ function onDeviceReady(){
 	checkLocalisation(true);
 }
 function onOnline(){
-	var doNothing = true;
+	var bottomElement = document.getElementById('pokeball');
+	bottomElement.style.display = 'inline';
 }
 function onOffline(){
-	var doNothing = true;
+	var pokeball = document.getElementById('pokeball');
+	pokeball.style.display = 'none';
 }
 function onGeolocationSuccess(){
 	if(! initializedCenter){
@@ -44,7 +46,18 @@ function onGeolocationSuccess(){
 	localiseOnMap();
 }
 function onGeolocationError(){
-	var doNothing = true;
+	if(errorDevicePositionMarker === null){
+		errorDevicePositionMarker = new google.maps.Marker({
+	        position: new google.maps.LatLng(devicePositionMarker.getPosition().lat(), devicePositionMarker.getPosition().lng()),
+	        map: map,
+	        title: 'Je te vois plus :(',
+	    });
+    	errorDevicePositionMarker.setIcon('http://maps.google.com/mapfiles/ms/micons/grey.png');
+	}
+
+	devicePositionMarker.setMap(null);
+	devicePositionMarker = null;
+
 }
 function onResume(){
 	var doNothing = true;
@@ -61,12 +74,14 @@ function onOrientationChanged(){
 function initializeGame(){
 	initializeCarto();
 	localiseOnMap();
+	initBallListener();
 	
 	//Google maps event
 	google.maps.event.addListener(map, 'drag', onBoundsChanged);
 	google.maps.event.addListener(map, 'bounds_changed', onBoundsChanged);
 	google.maps.event.addListener(map, 'mousemove', onMouseMove);
 
+	//Display upper and bottom information
 	var bottomElement = document.getElementById('bottom_map');
 	bottomElement.style.display = 'block';
 	var upperElement = document.getElementById('upper_map');

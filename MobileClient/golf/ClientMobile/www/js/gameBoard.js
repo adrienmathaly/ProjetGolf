@@ -7,6 +7,7 @@ var mouseLat = 0;
 var flightPath = null;
 var flightPath2 = null;
 
+var forceBall = 1;
 
 //Variable to save the position to make the direction and strong deplacement
 //Function called when page full loaded
@@ -81,18 +82,20 @@ function onStopDragBall(event){
 		flightPath2.setMap(null);
 		flightPath2 = null;
 
-		var elem = document.getElementById('bottom_map');
+		var elem = document.getElementById('information');
 		elem.innerHTML = 'Send data :' +  mouseLat + ':' + mouseLng;
+		updateSizeCarto();
 
 		var distLat = pokeballPosition.lat()-mouseLat;
 		var distLgn = pokeballPosition.lng()-mouseLng;
 
-		var dataLat = pokeballPosition.lat()+distLat;
-		var dataLng = pokeballPosition.lng()+distLgn;
+		var dataLat = pokeballPosition.lat()+distLat*forceBall;
+		var dataLng = pokeballPosition.lng()+distLgn*forceBall;
 
 		//getNearestPOI(mouseLat, mouseLng, onPOIRequestReceive);
 
 		changePokeballFromLatLng(new google.maps.LatLng(dataLat, dataLng))
+		zoomAutoDeviceBall();
 	}
 	disableMovement(false);
 }
@@ -127,10 +130,11 @@ function onMoveDragBall(event){
 		var posY = event.touches[0].clientY;
 
 		//Print some information of debug in the bottom
-		var elem = document.getElementById('bottom_map');
+		var elem = document.getElementById('information');
 		elem.innerHTML = 'DragBall moving \n finger x:' + posX + ' finger y:' + posY + ' / ' + 
 										   ' ball lat: ' + pokeballPosition.lat() + ' ball long: ' + pokeballPosition.lng() + ' / ' +
 										   ' mouse lat: ' + mouseLat + ' mouse long: '+ mouseLng ;
+		updateSizeCarto();
 
 	    //Create tab with lat long position of the pokeball and lat long position of user mouse  
 		var flightPlanCoordinates = [
@@ -175,7 +179,7 @@ function onMoveDragBall(event){
 
 //Callback of bounds_changed, update position of the ball
 function onBoundsChanged(){
-	var elem = document.getElementById('bottom_map');
+	var elem = document.getElementById('information');
 	elem.innerHTML = 'map move';
 	
 	if(pokeballPosition !== null){
@@ -187,6 +191,39 @@ function onBoundsChanged(){
 function onMouseMove(event){
 	mouseLat = event.latLng.lat();
 	mouseLng = event.latLng.lng();
+}
+
+//Initialize pokeball listener
+function initBallListener(){
+	document.getElementById('pokeball_1').addEventListener('click', function(){changePokeball(1)}, false);
+	document.getElementById('pokeball_2').addEventListener('click', function(){changePokeball(2)}, false);
+	document.getElementById('pokeball_3').addEventListener('click', function(){changePokeball(3)}, false);
+	document.getElementById('pokeball_4').addEventListener('click', function(){changePokeball(4)}, false);
+}
+
+function changePokeball(id){
+	var pokeball = document.getElementById('pokeball');
+	switch(id){
+		case 1:
+			pokeball.src = "img/pokeball.png";
+			forceBall = 1;
+			break;
+		case 2:
+			pokeball.src = "img/superball.png";
+			forceBall = 2;
+			break;
+		case 3:
+			pokeball.src = "img/ultraball.png";
+			forceBall = 3;
+			break;
+		case 4:
+			pokeball.src = "img/masterball.png";
+			forceBall = 4;
+			break;
+		default:
+			pokeball.src = "img/pokeball.png";
+			forceBall = 1;
+	}
 }
 
 
