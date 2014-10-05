@@ -29,7 +29,7 @@ function HttpGET(request)
 	//SECURITE DU FORMAT DE L'ADRESSE
 	if ($("#ipServer").val() == null)
 	{
-		window.alert("Adresse vide");	
+		window.alert("empty address");	
 	}
 	else
 	{
