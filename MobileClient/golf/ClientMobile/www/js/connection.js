@@ -38,28 +38,13 @@ function getIDConnection(callback){
 	xhr.send(null);
 }
 
-//Get information in JSON with nearest town, long, lat and list of POI
-function getNearestPOI(latitute, longitude, callback){
-	//Create a connection
-	var xhr = getXMLHttpRequest();
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-			callback(JSON.parse(xhr.responseText));
-		}
-	};
-	var data = "?lg=" + longitude + "&lt=" + latitute;
-	
-	xhr.open("GET", serveurIp + serveurPort + "poi/nearest" + data, true);
-	xhr.send(null);
-}
-
 //Ask for an ID
-function postShot(userLT, userLG, ballLT, ballLG, gamerId){
+function postShot(userLT, userLG, ballLT, ballLG, gamerId, callback){
 	//Create a connection
 	var xhr = getXMLHttpRequest();
 	xhr.onreadystatechange = function() {
-		if (!(xhr.readyState == 4 && (xhr.status == 201 || xhr.status == 0))) {
-			alert("Error code: " + xhr.status);
+		if (xhr.readyState == 4 && (xhr.status == 201 || xhr.status == 0)) {
+			callback(xhr.responseText);
 		}
 	};
 	xhr.open("POST", serveurIp + serveurPort + "shot", true);

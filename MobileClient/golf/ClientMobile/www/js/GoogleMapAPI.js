@@ -143,14 +143,15 @@ function disableMovement(disable) {
 //function rezoom auto between device localisation and ball localisation
 function zoomAutoListMarker(listMarker){
   alert(listMarker);
-  /*  var bounds = new google.maps.LatLngBounds();
-    
-    var indexMarker = null;
-    for(indexMarker in listMarker){
-      alert(listMarker[indexMarker].getPosition());
-      bounds.extend(listMarker[indexMarker].getPosition());
-    }
-    map.fitBounds(bounds);*/
+  
+  var bounds = new google.maps.LatLngBounds();
+  var indexMarker = null;
+  for(indexMarker in listMarker){
+    bounds.extend(listMarker[indexMarker].getPosition());
+  }
+  //Add the ball to see all POI markers and the ball
+  bounds.extend(pokeballPosition);
+  map.fitBounds(bounds);
 }
 
 

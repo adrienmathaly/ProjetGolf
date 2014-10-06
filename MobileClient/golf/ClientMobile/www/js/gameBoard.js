@@ -92,7 +92,7 @@ function onStopDragBall(event){
 		var dataLat = pokeballPosition.lat()+distLat*forceBall;
 		var dataLng = pokeballPosition.lng()+distLgn*forceBall;
 
-		getNearestPOI(dataLat, dataLng, onPOIRequestReceive);
+		requestResult(dataLat, dataLng);
 
 		/*changePokeballFromLatLng(new google.maps.LatLng(dataLat, dataLng))
 		zoomAutoDeviceBall();*/
@@ -100,13 +100,15 @@ function onStopDragBall(event){
 	disableMovement(false);
 }
 
-function onPOIRequestReceive(data){
-	var latLong = new google.maps.LatLng(data['lt'], data['lg']);
-	changePokeballFromLatLng(latLong);
+function requestResult(dataLat, dataLng){
+	//var latLong = new google.maps.LatLng(data['lt'], data['lg']);
+	//changePokeballFromLatLng(latLong);
 
 	var positionUser = devicePositionMarker.getPosition();
-	postShot(positionUser.lat(), positionUser.lng(), pokeballPosition.lat(), pokeballPosition.lng(), gameID);
+	postShot(positionUser.lat(), positionUser.lng(), dataLat, dataLng, gameID, onRequestResponse);
+}
 
+function onRequestResponse(data){
 	//Clean POI marker on map
 	for(marker in markersPoi){
 		markersPoi[marker].setMap(null);
