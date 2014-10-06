@@ -31,30 +31,38 @@ while( !feof($file) ){
         $ville = rtrim($ville);
         $ville = strtolower($ville);
         $pos = strpos($ville, "-");
-   
-        $nomville = substr($ville, 0, $pos-1);
+        //echo "$ville - $pos <br>";
+        if(!empty($pos)){
+            $nomville = substr($ville, 0, $pos-1);
+            $nomChtx = substr($ville, $pos+1);
+        }else{
+            $nomville = $ville;
+            $nomChtx = "Chateau";
+        }
+        $pos = strpos($nomville, "/");
+        if(!empty($pos)){
+            $nomville = substr($nomville, 0, $pos);
+        }
 
-        $nomChtx = substr($ville, $pos+1);
-        
-        echo "$nomville | $nomChtx | $departement<br>";
+        //echo "$nomville | $nomChtx | $departement<br>";
+ 
         $query = '
         SELECT ville_id, ville_nom_simple
         FROM t_ville
-        WHERE ville_nom_simple = "'.$ville.' and ville_departement = '.$departement.' "
+        WHERE ville_nom_simple = "'.$nomville.'" and ville_departement = '.$departement.'
         ';
 
         $result = mysql_query($query);
         $res = mysql_fetch_array($result);
- 
-        //echo "<b>villeBD:</b> $res[1] || <b>villeFile:</b> $ville || <b>dep</b> = $departement || <b>res[0]</b> = $res[0] <br>";
+        //echo "$query <br>";
+        //if(!empty($res[0]))
+        //echo "<b>villeBD:</b> $res[1] || <b>villeFile:</b> $nomville || <b>dep</b> = $departement || <b>res[0]</b> = $res[0] <br>";
 
         $poi_ville_id  = $res[0];
         $poi_longitude = $explode_chtx[0];
         $poi_latitude = $explode_chtx[1];
-        if(!empty($explode_chtx[6]))
-            $poi_nom = $explode_chtx[5];
-        else
-            $poi_nom = "Chateau";
+        
+        $poi_nom = $nomChtx;
         $poi_type_id = 4;
         $poi_etoile = 0;
          
@@ -67,7 +75,7 @@ while( !feof($file) ){
 
 
             //echo $query."<br>";        
-            //$result = mysql_query($query);
+            $result = mysql_query($query);
                 $i++;
         
         }
