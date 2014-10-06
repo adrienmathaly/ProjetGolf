@@ -8,6 +8,10 @@ var lng_home;
 var lat_IMERIR = 42.674547;
 var lng_IMERIR = 2.847754;
 
+var marker_array = [];
+var lat_array = [];
+var lng_array = [];
+
 
 function initialiser()
 {
@@ -115,6 +119,8 @@ function add_marker(_lat,_lng,_name)
 
 	marker_array.push(marker);
 	marker.setMap(my_map);
+
+	//resize_map();
 }
 
 function delete_all_markers()
@@ -131,8 +137,8 @@ function resize_map()
 		
 	for(i = 0; i < marker_array.length; i++)
 	{
-		var position = marker_array[i].getPosition();
-		bounds.extend(position);
+		//var position = marker_array[i].getPosition();
+		bounds.extend(marker_array[i].getPosition());
 	}
 		
 	my_map.fitBounds(bounds);
