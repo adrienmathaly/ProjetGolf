@@ -109,7 +109,6 @@ function add_marker(_lat,_lng,_name)
 		marker = new google.maps.Marker({
     		position : new google.maps.LatLng(_lat,_lng),
     		map : my_map,
-    		//animation: google.maps.Animation.DROP,
     		icon: "logos/location-icon.png",
     		title : _name
 		});
