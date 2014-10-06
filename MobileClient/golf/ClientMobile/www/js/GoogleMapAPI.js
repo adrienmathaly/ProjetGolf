@@ -141,12 +141,16 @@ function disableMovement(disable) {
 }
 
 //function rezoom auto between device localisation and ball localisation
-function zoomAutoDeviceBall(){
-    var ballDeviceBounds = new google.maps.LatLngBounds();
-    ballDeviceBounds.extend(pokeballPosition);
-    var pos = devicePositionMarker.getPosition();
-    ballDeviceBounds.extend(pos);
-    map.fitBounds(ballDeviceBounds);
+function zoomAutoListMarker(listMarker){
+  alert(listMarker);
+  /*  var bounds = new google.maps.LatLngBounds();
+    
+    var indexMarker = null;
+    for(indexMarker in listMarker){
+      alert(listMarker[indexMarker].getPosition());
+      bounds.extend(listMarker[indexMarker].getPosition());
+    }
+    map.fitBounds(bounds);*/
 }
 
 

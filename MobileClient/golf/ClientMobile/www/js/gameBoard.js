@@ -113,8 +113,9 @@ function onPOIRequestReceive(data){
 	}
 	markersPoi = [];
 
+	//Add a town marker
 	var townMarker = new google.maps.Marker({
-	        position: new google.maps.LatLng(data['lt'], data['lg']),
+	        position: new google.maps.LatLng(data['ltCity'], data['lgCity']),
 	        map: map,
 	        title: data['name'],
 	        icon: 'img/google_marker/town.png',
@@ -151,7 +152,7 @@ function onPOIRequestReceive(data){
 		
 		//Create a marker for each POI
 		var poiMarker = new google.maps.Marker({
-	        position: new google.maps.LatLng(listPoi[poi]['lt'], listPoi[poi]['lg']),
+	        position: new google.maps.LatLng(listPoi[poi]['ltPoi'], listPoi[poi]['lgPoi']),
 	        map: map,
 	        title: listPoi[poi]['name'],
 	        icon: iconMarker
@@ -160,6 +161,8 @@ function onPOIRequestReceive(data){
 		poiMarker.setMap(map);
 	}
 	zoomAutoListMarker(markersPoi);
+	//Display auto the info
+	infowindow.open(map, townMarker);
 }
 
 //Calback when user finger move
