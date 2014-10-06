@@ -40,7 +40,7 @@ span.glyphicon-question-sign
     font-size: 1.5em;
 }
 
-span.glyphicon-wrench
+span.glyphicon-cog
 {
     font-size: 1.5em;
 }
@@ -92,8 +92,9 @@ span.input-group-addon
 	width : 100%;
 }
 
-.stats
+.stats, .stats:disabled
 {
+	cursor : default;
 	color : 626063;
-	background-color: #F1DDA8;
+	background-color: #F1DDA8; 
 }

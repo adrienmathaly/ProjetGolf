@@ -9,7 +9,7 @@
 		<script src="jquery-2.1.1.js"></script>
 		<script src="js/fonctions.js"></script>
 		<script src="js/table_functions.js"></script>
-		<script src="js/calcul_functions.js"></script>
+		<script src="js/maps_functions.js"></script>
 
 		<script src="bootstrap/js/bootstrap.js"></script>
 		
@@ -34,7 +34,7 @@
 					    <div class="input-group">
 					      	<input type="text" class="form-control" placeholder="172.0.0.1:8080" id="ipServer" value="172.31.1.191:8082">
 					      	<span class="input-group-btn">
-					        	<button class="btn btn-info" id="connect" type="button" onclick="connect_to_server()">Connect</button>
+					        	<button class="btn btn-danger" id="connect" type="button" onclick="connect_to_server()">Disconnected</button>
 					      	</span>
 					 	</div>
 			      	</form>
@@ -43,8 +43,9 @@
 				 		<li>
 							<a title="Help" data-toggle="modal" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-question-sign"></span></a>
 				 		</li>
+
 				 		<li>
-							<a title="Parameters" data-toggle="modal" data-target=".parameters-modal-lg"><span class="glyphicon glyphicon-wrench"></span></a>
+							<a title="Parameters" data-toggle="modal" data-target=".parameters-modal-lg"><span class="glyphicon glyphicon-cog"></span></a>
 				 		</li>
 			      	</ul>
 
@@ -66,7 +67,7 @@
 						    <div class="panel-heading">
 						      <h4 class="panel-title">
 						        <a data-toggle="collapse" data-parent="false" href="#collapseOne">
-						        Statistics
+						        Statistics <span class="glyphicon glyphicon-chevron-down" style="float : right;"></span>
 						        </a>
 						      </h4>
 						    </div>
@@ -76,27 +77,27 @@
 
 									<div class="input-group">
 									  	<span class="input-group-addon">Amount of users</span>
-									  	<input type="text" class="form-control stats" id="stats_amount" value="---">
+									  	<input type="text" class="form-control stats" id="stats_amount" placeholder="---"  disabled>
 									</div>
 
 									<div class="input-group">
 									  	<span class="input-group-addon">Users connected</span>
-									  	<input type="text" class="form-control stats" id="stats_users_connected" value="---">
+									  	<input type="text" class="form-control stats" id="stats_users_connected" placeholder="---"  disabled>
 									</div>
 
 									<div class="input-group">
 									  	<span class="input-group-addon">Total distances</span>
-									  	<input type="text" class="form-control stats" id="stats_distances" value="---">
+									  	<input type="text" class="form-control stats" id="stats_distances" placeholder="---" disabled>
 									</div>
 
 									<div class="input-group">
 									  	<span class="input-group-addon">Best distance</span>
-									  	<input type="text" class="form-control stats" id="stats_best_distance" value="---">
+									  	<input type="text" class="form-control stats" id="stats_best_distance" placeholder="---" disabled>
 									</div>
 
 									<div class="input-group">
 									  	<span class="input-group-addon">Best location</span>
-									  	<input type="text" class="form-control stats" id="stats_best_location" value="---">
+									  	<input type="text" class="form-control stats" id="stats_best_location" placeholder="---" disabled>
 									</div>									
 
 
@@ -110,11 +111,13 @@
 						    <div class="panel-heading">
 						      <h4 class="panel-title">
 						        <a data-toggle="collapse" data-parent="false" href="#collapseTwo">
-						         Details
+						         Details  
+						         <!--<span class="badge badge-info" id="badge_connected_users">0</span>-->
+						         <span class="glyphicon glyphicon-chevron-down" style="float : right;"></span>
 						        </a>
 						      </h4>
 						    </div>
-						    <div id="collapseTwo" class="panel-collapse collapse">
+						    <div id="collapseTwo" class="panel-collapse collapse in">
 						      	<div class="panel-body" >
 
 									<div>
@@ -136,27 +139,23 @@
 					  	</div>
 
 						<!--ACCORDION FOR THE JSON TEST BOX-->
-					  	<!--<div class="panel panel-default" style="opacity : 0.95;">
+					  	<div class="panel panel-default" style="opacity : 0.95;">
 					    	<div class="panel-heading">
 					      		<h4 class="panel-title">
-					        		<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-					          		JSON Test Box
+					        		<a data-toggle="collapse" data-parent="false" href="#collapseThree">
+					          		JSON Test Box <span class="glyphicon glyphicon-chevron-down" style="float : right;"></span>
 					        		</a>
 					      		</h4>
 					    	</div>
-					    	<div id="collapseThree" class="panel-collapse collapse" id="collapse_submit_JSON">
+					    	<div id="collapseThree" class="panel-collapse collapse in" id="collapse_submit_JSON">
 					      		<div class="panel-body">
 									<div>
-										<textarea id="textarea_submit" rows="7" cols="65"></textarea>
+										<textarea class="form-control" id="textarea_submit" rows="7" style="width : 100%;"></textarea>
 									</div>
-
-				        			<button class="btn btn-info" id="button_search" type="button" onclick="submit_response()">
-				        				<div>Submit</div>
-				        			</button>
 
 					      		</div>
 					    	</div>
-					  	</div>-->
+					  	</div>
 					</div>	<!--end group accordion-->
 				</div>
 
@@ -169,12 +168,13 @@
 							  	<ul class="dropdown-menu" role="menu">
 							    	<li><a role="menuitem" onclick="go_home()">Go home</a></li>
 							    	<li><a role="menuitem" onclick="resize_map()">View all users</a></li>
+							    	<li><a role="menuitem" onclick="delete_all_markers()">Delete markers</a></li>
 							  	</ul>
 							</div>
 				      	</span>		
 
-				      	<input type="text" class="form-control" placeholder="Latitude/Longitude" id="search">
 
+						<input type="text" class="form-control" placeholder="Latitude/Longitude" id="search">
 				      	<span class="input-group-btn">
 				        	<button class="btn btn-info" id="button_search" type="button" onclick="search_position()">
 				        		<div>Search
@@ -198,19 +198,22 @@
 			        	<h4 class="modal-title">You need help ?</h4>
 			      	</div>
 			      	<div class="modal-body">
-			        	<p>
-			        	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+		        		<p>
+			        	This webpage supervision allows you to view all the statistics related to GolfProject application.</br>
+							<li>To connect to the server, specify the IP address and the port. Click on the "Disconnected" button and wait until its specifies "Connected".</li>
+							<li>When the connection is made, you have the possibility to visualize some information : the general statistics and details users (name, position, distance travelled in km,...)</li>
+							<li>The button "Actions" give you the possibility to return to your Home point, and view all users with an adapted zoom.</li>
+							<li>The button "Search" allows you to go the GPS poisitions you have previously indicated in the text field.</li>
 			        	</p>
 			      	</div>
 			    <div class="modal-footer">
+			    	<h6>For more information, never contact us...</h6>
 			        <button type="button" class="btn btn-info" data-dismiss="modal">Thanks !</button>
 			    </div>
 			    </div>
 		  	</div>
 		</div>
 
-
-		<!-- PARAMETERS MODAL  data-target=".parameters-modal-lg"-->
 		<div class="modal fade parameters-modal-lg" id="parameters_modal">
 		  	<div class="modal-dialog">
 			    <div class="modal-content">
@@ -218,27 +221,35 @@
 			        	<h4 class="modal-title">Parameters</h4>
 			      	</div>
 
-					<div class="input-group">
-					  	<span class="input-group-addon">Refresh frequency</span>
-					  	<input type="text" class="form-control" placeholder="in milliseconds" id="refresh_value">
-					</div>
 
-					<div class="input-group">
-					  	<span class="input-group-addon">Home position</span>
-					  	<input type="text" class="form-control" placeholder="Latitude/Longitude" id="refresh_home_position">
-					</div>
+					<div class="modal-body">
 
-			      	<div class="modal-body">
+						<div class="input-group">
+						  	<span class="input-group-addon">Refresh frequency</span>
+						  	<input type="text" class="form-control" placeholder="in milliseconds" id="refresh_value">
+						</div>
+
+						<div class="input-group">
+						  	<span class="input-group-addon">Home position</span>
+							<input type="text" class="form-control" placeholder="Latitude/Longitude" id="refresh_home_position">
+
+					      	<span class="input-group-btn">
+					        	<button class="btn btn-default" id="home_IMERIR" type="button" onclick="fill_IMERIR_position()">
+					        	<img src="logos/icon_imerir.png" style="height : 20px">
+					        	</button>
+					      	</span>
+
+						</div>
 
 			      	</div>
-			    <div class="modal-footer">
-			        <button type="button" class="btn btn-info" onclick="refresh_parameters()">Validate</button>
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-			    </div>
+
+				    <div class="modal-footer">
+				        <button type="button" class="btn btn-info" onclick="refresh_parameters()">Validate</button>
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				    </div>
 			    </div>
 		  	</div>
 		</div>
-
 
 	</body>
 </html>

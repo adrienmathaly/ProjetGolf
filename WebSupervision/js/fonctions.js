@@ -1,49 +1,54 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
-var refresh_frequency = 500;
+var waiting_mode = 0;
+var refresh_frequency = 1000;
 
 //VARIABLES JSON REQUESTS
 var timer_amount;
 var timer_totalDistances;
 var timer_lastKnownLocations;
 var timer_numberOfConnected;
+var timer_travelledDistance;
 
 var JSON_amount;
 var JSON_totalDistances;
 var JSON_lastKnownLocations;
 var JSON_numberOfConnected;
+var JSON_travelledDistance;
 
 //MAPPING VARIABLES
-var my_map;
 var my_table;
 var marker_array = [];
 var lat_array = [];
 var lng_array = [];
-var lat_home = 42.674564;
-var lng_home = 2.847732;
 
 
-//FONCTION DE REQUETAGE GET
 function HttpGET(request)
 {
 	//SECURITE DU FORMAT DE L'ADRESSE
 	if ($("#ipServer").val() == null)
-		window.alert("Adresse vide");
+	{
+		window.alert("empty address");	
+	}
 	else
 	{
 		//VARIABLES CREATION AND INITIALIZATION 
 		var URI = "http://"+$("#ipServer").val() + request;
 		var xmlHttp = new XMLHttpRequest();
 
+
 		//CONNECTION OPENING
 		xmlHttp.open("GET",URI, true);
 		xmlHttp.setRequestHeader("Origin", "*");
+
 
 		//FUNCTION PREPARATION
 		xmlHttp.onreadystatechange = function()
 			{
 				if ((xmlHttp.status == 200 || xmlHttp.status == 0))
 				{
+					connected = 1;
+
 					if (xmlHttp.responseText != "")
 					{
 						if (request == "/amountOfUsers")
@@ -59,6 +64,13 @@ function HttpGET(request)
 						if (request == "/users/lastKnownLocations")
 						{
 							JSON_lastKnownLocations = xmlHttp.responseText;
+							//document.getElementById("textarea_submit").value = JSON_lastKnownLocations;
+						}
+
+						if (request == "/users/travelledDistances")
+						{
+							JSON_travelledDistances = xmlHttp.responseText;
+							document.getElementById("textarea_submit").value = JSON_travelledDistances;
 						}
 
 						if (request == "/numberOfConnected")
@@ -68,7 +80,11 @@ function HttpGET(request)
 					}
 				}
 				else
+				{
 					console.log("Connection failed");
+					connected = 0;
+				}
+					
 			}
 
 		xmlHttp.send();
@@ -76,18 +92,6 @@ function HttpGET(request)
 	}
 }
 
-function initialiser()
-{
-	var latlng = new google.maps.LatLng(lat_home, lng_home);
-
-	var options = {
-		center: latlng,
-		zoom: 10,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
-	};
-
-	my_map = new google.maps.Map(document.getElementById("my_map"), options);
-}
 
 function refresh_parameters()
 {
@@ -134,102 +138,114 @@ function refresh_parameters()
 	}
 }
 
-//FONCTIONS DE CONNEXION / DECONNEXION
+
+function clearIntervals()
+{
+	clearInterval(timer_amount);
+	clearInterval(timer_totalDistances);
+	clearInterval(timer_lastKnownLocations);
+	clearInterval(timer_numberOfConnected);
+	clearInterval(timer_travelledDistance);
+}
+
+
+function setIntervals()
+{
+	timer_amount 				= setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);;
+	timer_totalDistances  		= setInterval( function() {HttpGET("/totalDistances")}, refresh_frequency);;
+	timer_lastKnownLocations 	= setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
+	timer_travelledDistance 	= setInterval( function() {HttpGET("/users/travelledDistances")}, refresh_frequency);
+	timer_numberOfConnected 	= setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
+}
+
+
 function connect_to_server()
 {
-    if(connected == 1)
-    {
- 		connected = 0;
+	if (connected == 1)
+	{
+		connected = 0;
+		clearIntervals();
+
+		$("#connect").removeClass("btn-info");
+		$("#connect").addClass("btn-danger");
+		$("#connect").html("Disconnected");
+		document.getElementById('ipServer').disabled = false;
+	}
+	else
+	{
+		connected = 1;
+		setIntervals();
+
 		$("#connect").removeClass("btn-danger");
 		$("#connect").addClass("btn-info");
-		$("#connect").html("Connect");
-		document.getElementById('ipServer').disabled = false;
-
-		clearInterval(timer_amount);
-		clearInterval(timer_totalDistances);
-		clearInterval(timer_lastKnownLocations);
-		clearInterval(timer_numberOfConnected);
+		$("#connect").html("Connected");
+		document.getElementById('ipServer').disabled = true;
 	}
-	else
+
+
+	//IF SERVER NOT CONNECTED OR IN WAITING-MODE	
+	/*if (connected == 0)
 	{
-		if ($("#ipServer").val() == "")
-			window.alert("Empty Server adress");
-		else
+		//IF WAITING MODE IS ON
+		if (waiting_mode == 1)
 		{
-			connected = 1;
-			$("#connect").removeClass("btn-info");
+			waiting_mode = 0;
+			$("#connect").removeClass("btn-warning");
 			$("#connect").addClass("btn-danger");
-			$("#connect").html("Disconnect");
+			$("#connect").html("Disconnected");
+			document.getElementById('ipServer').disabled = false;
+
+			//STOP TIMER EXECUTION
+			clearIntervals();
+		}
+		else if (waiting_mode == 0)
+		{
+			waiting_mode = 1;
+			$("#connect").removeClass("btn-info");
+			$("#connect").removeClass("btn-danger");
+			$("#connect").addClass("btn-warning");
+			$("#connect").html("Waiting ...");
 			document.getElementById('ipServer').disabled = true;
 
-			timer_amount = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);;
-			timer_totalDistances  = setInterval( function() {HttpGET("/totalDistances")}, refresh_frequency);;
-			timer_lastKnownLocations = setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
-			timer_numberOfConnected = setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
-		}
-	}
-}
+			//TEST STATUS OF THE CONNECTION
 
-function search_position()
-{
-	var latitude = null;		//VERTICAL
-	var longitude = null;		//HORIZONTAL
-	var LatLng = null;
+			console.log(connected);
 
-	//SPLIT
-	LatLng = $("#search").val();
-
-	//COORDINATES SECURITY
-	if (LatLng == "")
-	{
-		alert("Empty text area");
-	}
-	else
-	{
-		var arrayOfCoordinates = LatLng.split("/");
-
-		if (arrayOfCoordinates.length != 2)
-		{
-			alert("Invalid coordinates");			
-		}
-		else
-		{
-			latitude = arrayOfCoordinates[0];
-			longitude = arrayOfCoordinates[1];
-			
-			if (latitude > 90 || latitude < -90)
+			while(connected == 0)
 			{
-				alert("Latitude problem");
+				HttpGET("/amountOfUsers");
+				console.log(connected);
 			}
-			else
-			{
-				if (longitude > 180 || longitude < -180)
-				{
-					alert("Longitude problem");
-				}
-				else
-				{
-					//CREATE A MARKER FOR THE NEW POINT SEARCHED
-					var mark = new google.maps.Marker({
-					position: new google.maps.LatLng(latitude, longitude),
-					map: my_map
-					});
 
-					//POINT THE MAP ON THE NEW MARKER
-					my_map.setCenter(new google.maps.LatLng(latitude, longitude));
-					my_map.setZoom(12);
-				}
+			//IF SERVER CONNECTED
+			if (connected == 1)
+			{
+				//STOP THE WAITING MODE
+				waiting_mode = 0;
+
+				//START THE REQUESTS
+				setIntervals();
+
+				//CHANGE BUTTON CLASS
+				$("#connect").removeClass("btn-warning");
+				$("#connect").removeClass("btn-danger");
+				$("#connect").addClass("btn-info");
+				$("#connect").html("Connected");
+				document.getElementById('ipServer').disabled = true;
 			}
 		}
 	}
-}
+	else if (connected == 1)
+	{
+		waiting_mode = 0;
+		$("#connect").removeClass("btn-info");
+		$("#connect").addClass("btn-danger");
+		$("#connect").html("Disconnected");
+		document.getElementById('ipServer').disabled = false;
 
-
-function go_home()
-{
-	var latlng = new google.maps.LatLng(lat_home, lng_home);
-	my_map.setCenter(latlng);
-	my_map.setZoom(16);
+		clearIntervals();
+	}*/
+	//console.log("Connected : " + connected + "; Waiting : " + waiting_mode);
 }
 
 
@@ -239,126 +255,81 @@ function submit_response()
 	clean_table(my_table);
 	delete_all_markers();
 
-
 	//AMOUNT OF USERS
 	var parse_JSON_amount = eval("(" + JSON_amount + ")");
 	if (parse_JSON_amount != undefined)
 		document.getElementById("stats_amount").value = parse_JSON_amount["amount"];
-
 
 	//TOTAL DISTANCES
 	var parse_JSON_totalDistances = eval("(" + JSON_totalDistances + ")");
 	if (parse_JSON_totalDistances != undefined)
 		document.getElementById("stats_distances").value = parse_JSON_totalDistances["totalDist"];
 
-
 	//NUMBER OF CONNECTED
 	var parse_JSON_numberOfConnected = eval("(" +JSON_numberOfConnected + ")");
 	if (parse_JSON_numberOfConnected != undefined)
-		document.getElementById("stats_users_connected").value = parse_JSON_numberOfConnected["nbConnected"];
-
-
-	//LAST KNOWN LOCATIONS
-	var parse_JSON_lastKnownLocations = eval("(" +JSON_lastKnownLocations + ")");
-	//console.log(JSON_lastKnownLocations);
-
-
-	//-------------------------------------------------------------------------------------
-	//-----------------------------------OLD FUNCTION--------------------------------------
-
-	//VARIABMES
-	/*var parsed_JSON_objet;
-
-	my_table = document.getElementById("table_infos");
-	parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")");
-
-	var i = 0;
-	parsed_JSON_objet.forEach(function(row)
 	{
-		//AMOUNT USERS
-		document.getElementById("total_users").innerHTML = "Users (" + row["amount"] + ")";
-
-		//INSERT ROW AND CELLS
-		var new_row = my_table.insertRow(i+1)
-		var cell_user = new_row.insertCell(0);
-		var cell_lat = new_row.insertCell(1);
-		var cell_lng = new_row.insertCell(2);
-		var cell_dist = new_row.insertCell(3);
-
-		//INDICATE CELLS CONTENTS
-		cell_user.innerHTML = "Anonymous#"+(i+1);
-		cell_lat.innerHTML = parseFloat(row["lt"]).toFixed(5);
-		cell_lng.innerHTML = parseFloat(row["lg"]).toFixed(5);
-		cell_dist.innerHTML = parseFloat(row["dist"]).toFixed(0);
-
-		//INSERT A MARKER FOR EACH USER
-		var user_info = cell_user.innerHTML + " (" + cell_dist.innerHTML + ")";
-		add_marker(cell_lat.innerHTML,cell_lng.innerHTML,user_info);
-
-		i++;
-	});*/
-
-	//-------------------------------------------------------------------------------------
-	//-------------------------------------------------------------------------------------
-}
-
-
-function add_marker(_lat,_lng,_name)
-{
-	//CREATE A NEW MARKER
-		marker = new google.maps.Marker({
-    		position : new google.maps.LatLng(_lat,_lng),
-    		map : my_map,
-    		//animation: google.maps.Animation.DROP,
-    		icon: "logos/location-icon.png",
-    		title : _name
-		});
-
-	marker_array.push(marker);
-	marker.setMap(my_map);
-}
-
-
-function delete_all_markers()
-{
-	for (var i=0;i<marker_array.length;i++)
-		marker_array[i].setMap(null);
-}
-
-
-function resize_map()
-{
-	var min_lat, max_lat, min_lng, max_lng;
-	var center_lat, center_lng;
-	var distance_lat,distance_lng;
-
-	//IF THE TABLE IS COMPLETED BY DATA
-	if (my_table.rows.length > 1)
-	{
-		//ARRAY LAT ET LNG INSERTION
-		for (var j=1;j<my_table.rows.length;j++)
-		{
-			lat_array.push(parseFloat(my_table.rows[j].cells[1].innerHTML));
-			lng_array.push(parseFloat(my_table.rows[j].cells[2].innerHTML));
-		}	
-
-		var min_lat = min(lat_array);
-		var max_lat = max(lat_array);
-		var min_lng = min(lng_array);
-		var max_lng = max(lng_array);
-
-		var distance_lat = max(lat_array) - min(lat_array);
-		var distance_lng = max(lng_array) - min(lng_array);
-
-		var center_lat = (min_lat + max_lat)/2
-		var center_lng = (min_lng + max_lng)/2
-
-		my_map.setCenter(new google.maps.LatLng(center_lat,center_lng));
-
-		//REZOOM
-		var array_distance = [distance_lat,distance_lng];
-		var max_distance = parseFloat(max(array_distance)).toFixed(5);
-
-		my_map.setZoom(choose_zoom(max_distance));
+		var value = parse_JSON_numberOfConnected["nbConnected"];
+		document.getElementById("stats_users_connected").value = value;
 	}
+
+
+	//---------------------------------------------------------------------------------
+	//USERS LAST KNOWN LOCATIONS
+	//---------------------------------------------------------------------------------
+	var parse_JSON_lastKnownLocations = eval("(" +JSON_lastKnownLocations + ")");
+
+	if (parse_JSON_lastKnownLocations != undefined)
+	{
+		var i = 0;
+		parse_JSON_lastKnownLocations["lastKnownLocations"].forEach(function(JSON_row)
+		{
+			//ADD A MARKER WITH THE EXACT POSITION
+			var lat_user = JSON_row["lt"];
+			var lng_user = JSON_row["lg"];
+			add_marker(lat_user,lng_user,"(0)");
+
+			//CREATE ROW AND CELLS WITH ROUNDED VALUES
+			var row = my_table.insertRow(i+1);
+			var cell_user = row.insertCell(0);
+			var cell_lat = row.insertCell(1);
+			var cell_lng = row.insertCell(2);
+			//var cell_dist = row.insertCell(3);
+
+			//INSERT ROUNDED VALUES
+			cell_user.innerHTML = "Anonymous#"+(i+1);
+			cell_lat.innerHTML = parseFloat(JSON_row["lt"]).toFixed(5);
+			cell_lng.innerHTML = parseFloat(JSON_row["lg"]).toFixed(5);
+
+			i++;
+		});
+	}
+	//---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+	//---------------------------------------------------------------------------------
+	//USERS TRAVELLED DISTANCE
+	//---------------------------------------------------------------------------------
+	var parse_JSON_travelledDistances = eval("(" +JSON_travelledDistances + ")");
+
+	if (parse_JSON_travelledDistances != undefined)
+	{
+		var i = 1;
+
+		parse_JSON_travelledDistances["travelledDistances"].forEach(function(JSON_row)
+		{
+			var cell_dist = my_table.rows[i].insertCell(3);
+			cell_dist.innerHTML = parseFloat(JSON_row["dist"]).toFixed(3);
+
+			i++;
+		});
+	}
+	//---------------------------------------------------------------------------------
+
+
 }
