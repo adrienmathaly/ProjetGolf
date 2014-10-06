@@ -14,12 +14,16 @@ import json.JSONBuilder;
 
 import com.sun.net.httpserver.HttpExchange;
 
-public class UsersLastKnownLocations extends CustomizedHandler {
+
+public class UsersTravelledDistances extends CustomizedHandler  {
 
 	@Override
 	protected void doYourStuff(HttpExchange t) throws Exception {
-	      String response = JSONBuilder.buildJSONBasicMsg("lastKnownLocations", prepareListOfCoordinates(SetOfUsers.listOfCoordinates()));
-	      //System.out.println(response);
+		  LinkedList<Float> list = SetOfUsers.listOfDistances();
+		  while(!list.isEmpty()){
+			  System.out.println(list.pop());
+		  }
+	      String response = JSONBuilder.buildJSONBasicMsg("travelledDistances",prepareListOfDistances(list));
 	      t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
 	      t.sendResponseHeaders(200, response.length());
 	      OutputStream os = t.getResponseBody();
@@ -28,17 +32,13 @@ public class UsersLastKnownLocations extends CustomizedHandler {
 	}
 	
 	
-	private JSONArray prepareListOfCoordinates(LinkedList<Point> list){
-		JSONArray listOfCoordinates=new JSONArray();
-
-		while(!list.isEmpty()){
-			Point p=list.pop();
+	private JSONArray prepareListOfDistances(LinkedList<Float> list){
+		JSONArray listOfDistances=new JSONArray();
+		for(int i=0; i<list.size();i++){
 			JSONObject jo = new JSONObject();
-			jo.put("lt",p.getLatitude());
-			jo.put("lg",p.getLongitude());
-			listOfCoordinates.add(jo);
+			jo.put("dist",list.pop());
+			listOfDistances.add(jo);
 		}
-
-		return listOfCoordinates;
+		return listOfDistances;
 	}
 }
