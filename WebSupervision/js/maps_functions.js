@@ -142,6 +142,23 @@ function resize_map()
 	}
 		
 	my_map.fitBounds(bounds);
+
+	//IF THERE IS NO MARKER
+	if (marker_array.length == 0)
+	{
+		my_map.setCenter(latlng_home);
+		my_map.setCenter(15);
+	}
+
+	//IF THERE IS AN ONLY ONE MARKER
+	else if (marker_array.length == 1)
+	{
+
+
+
+	}
+
+	//if (my_map.getZoom() > 15)	my_map.setZoom(12);
 }
 
 function fill_IMERIR_position()
