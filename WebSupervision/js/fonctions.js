@@ -1,6 +1,6 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
-var refresh_frequency = 1000;
+var refresh_frequency = 2000;
 
 //VARIABLES JSON REQUESTS
 var timer_amount;
