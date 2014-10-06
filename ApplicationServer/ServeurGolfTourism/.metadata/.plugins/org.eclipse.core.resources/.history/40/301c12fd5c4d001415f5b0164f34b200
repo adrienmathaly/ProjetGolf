@@ -13,9 +13,8 @@ public class SetOfUsers {
 		users=new HashMap<String,User>();
 	}
 	
-	public static void addUser(String token,User user){
+	synchronized public static void addUser(String token,User user){
 		users.put(token,user);
-		//System.out.println("Token: " + token);
 	}
 	
 	public static void disconnectUser(String token){
@@ -55,7 +54,6 @@ public class SetOfUsers {
 		for(Entry<String, User> e : users.entrySet()){
 			if(e.getValue().isFullyCreated()){
 				listOfDistances.add(e.getValue().getTravelledDistance());
-				//System.out.println("Coords " + e.getValue().getTravelledDistance() + " - " + e.getValue().getTravelledDistance());
 			}
 		}
 		return listOfDistances;
@@ -66,7 +64,6 @@ public class SetOfUsers {
 		for(Entry<String, User> e : users.entrySet()){
 			if(e.getValue().isFullyCreated()){
 				listOfCoordinates.add(new Point(e.getValue().getLatitude(),e.getValue().getLongitude()));
-				//System.out.println("Coords " + e.getValue().getLatitude() + " - " + e.getValue().getLongitude());
 			}
 		}
 		return listOfCoordinates;

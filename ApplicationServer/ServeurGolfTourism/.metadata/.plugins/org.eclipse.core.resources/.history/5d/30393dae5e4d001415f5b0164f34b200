@@ -19,7 +19,6 @@ public class UsersLastKnownLocations extends CustomizedHandler {
 	@Override
 	protected void doYourStuff(HttpExchange t) throws Exception {
 	      String response = JSONBuilder.buildJSONBasicMsg("lastKnownLocations", prepareListOfCoordinates(SetOfUsers.listOfCoordinates()));
-	      //System.out.println(response);
 	      t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
 	      t.sendResponseHeaders(200, response.length());
 	      OutputStream os = t.getResponseBody();
@@ -31,7 +30,7 @@ public class UsersLastKnownLocations extends CustomizedHandler {
 	private JSONArray prepareListOfCoordinates(LinkedList<Point> list){
 		JSONArray listOfCoordinates=new JSONArray();
 
-		while(!list.isEmpty()){
+		for(int i=0; i<list.size();i++){
 			Point p=list.pop();
 			JSONObject jo = new JSONObject();
 			jo.put("lt",p.getLatitude());
