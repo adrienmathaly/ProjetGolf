@@ -37,12 +37,6 @@ function onOffline(){
 	pokeball.style.display = 'none';
 }
 function onGeolocationSuccess(){
-	if(! initializedCenter){
-		changeMapCenterFromMarker(devicePositionMarker);
-		pokeballPosition = devicePositionMarker.getPosition();
-		changePokeballFromLatLng(pokeballPosition);
-		initializedCenter = true;
-	}
 	localiseOnMap();
 }
 function onGeolocationError(){
@@ -52,7 +46,7 @@ function onGeolocationError(){
 	        map: map,
 	        title: 'Je te vois plus :(',
 	    });
-    	errorDevicePositionMarker.setIcon('http://maps.google.com/mapfiles/ms/micons/grey.png');
+		errorDevicePositionMarker.setIcon('http://maps.google.com/mapfiles/ms/micons/grey.png');
 	}
 
 	devicePositionMarker.setMap(null);

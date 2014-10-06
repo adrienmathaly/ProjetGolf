@@ -21,7 +21,7 @@
 var connectedToServer   = false;
 
 //This id is delivery by the server
-var gameID = null;
+var gameID = 0;
 
 //Display the correct information of the status connection
 function receivedEvent(id, received) {
@@ -68,7 +68,9 @@ function onOnline(){
     receivedEvent('onOnline', true);
 
     //GET an id and give it to callback saveID, verify the connection with server
-    getIDConnection(saveID);
+    if(gameID == 0){
+        getIDConnection(saveID);
+    }
 
     //Try to start the game if all connection is ready
     requestStartingGame();   

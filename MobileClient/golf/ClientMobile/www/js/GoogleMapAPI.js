@@ -19,7 +19,8 @@ var errorDevicePositionMarker = null;
 var pokeballPosition = null;
 
 //Tab of position (last POI) to fit auto
-var poiBounds = new google.maps.LatLngBounds();
+var markersPoi = [];
+var infoMarkersPoi = [];
 
 //When the body is full loaded initialize carto on France
 function initializeCarto() {
@@ -82,8 +83,20 @@ var onLocaliseSuccess = function(position) {
         title: 'Je te vois :D'
     });
   }
+  else{
+    devicePositionMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+  }
 
-  devicePositionMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+  if(! initializedCenter){
+    changeMapCenterFromMarker(devicePositionMarker);
+    pokeballPosition = devicePositionMarker.getPosition();
+    changePokeballFromLatLng(pokeballPosition);
+    initializedCenter = true;
+
+    var bottomElement = document.getElementById('pokeball');
+    bottomElement.style.display = 'inline';
+    updateSizeCarto();
+  }
 };
 
 // onError Callback receives a PositionError object
@@ -135,8 +148,6 @@ function zoomAutoDeviceBall(){
     ballDeviceBounds.extend(pos);
     map.fitBounds(ballDeviceBounds);
 }
-
-
 
 
 
