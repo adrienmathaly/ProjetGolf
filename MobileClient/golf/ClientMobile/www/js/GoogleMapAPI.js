@@ -74,7 +74,7 @@ var onLocaliseSuccess = function(position) {
     errorDevicePositionMarker.setMap(null);
     errorDevicePositionMarker = null;
   }
-  
+
   if(devicePositionMarker === null){
       devicePositionMarker = new google.maps.Marker({
         position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
@@ -82,6 +82,8 @@ var onLocaliseSuccess = function(position) {
         title: 'Je te vois :D'
     });
   }
+
+  devicePositionMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
 };
 
 // onError Callback receives a PositionError object
