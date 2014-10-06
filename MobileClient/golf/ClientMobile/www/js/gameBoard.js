@@ -92,24 +92,74 @@ function onStopDragBall(event){
 		var dataLat = pokeballPosition.lat()+distLat*forceBall;
 		var dataLng = pokeballPosition.lng()+distLgn*forceBall;
 
-		//getNearestPOI(mouseLat, mouseLng, onPOIRequestReceive);
+		getNearestPOI(dataLat, dataLng, onPOIRequestReceive);
 
-		changePokeballFromLatLng(new google.maps.LatLng(dataLat, dataLng))
-		zoomAutoDeviceBall();
+		/*changePokeballFromLatLng(new google.maps.LatLng(dataLat, dataLng))
+		zoomAutoDeviceBall();*/
 	}
 	disableMovement(false);
 }
 
 function onPOIRequestReceive(data){
-	alert(data['lt']);
-	alert(data['lg']);
-
 	var latLong = new google.maps.LatLng(data['lt'], data['lg']);
 	changePokeballFromLatLng(latLong);
 
 	var positionUser = devicePositionMarker.getPosition();
-
 	postShot(positionUser.lat(), positionUser.lng(), pokeballPosition.lat(), pokeballPosition.lng(), gameID);
+
+	//Clean POI marker on map
+	for(marker in markersPoi){
+		markersPoi[marker].setMap(null);
+	}
+	markersPoi = [];
+
+	var townMarker = new google.maps.Marker({
+	        position: new google.maps.LatLng(data['lt'], data['lg']),
+	        map: map,
+	        title: data['name'],
+	        icon: 'img/google_marker/town.png',
+	        zIndex: 3000 
+	    });
+	markersPoi.push(townMarker);
+	townMarker.setMap(map);
+
+	var contentString = 
+		'<div id="content">'+
+		    '<div id="siteNotice">'+ '</div>'+
+		    '<h1 id="firstHeading" class="firstHeading">' + data['name'] + '</h1>'+
+		    '<div id="bodyContent">'+
+		    	'<p></p>'+
+		    	'<p>Link town: ' + data['name'] + ', <a href="' + data['url'] + '">'+ data['url'] + '</a> '+
+		    '</div>'+
+		'</div>';
+
+	var infowindow = new google.maps.InfoWindow({
+		content: contentString
+	});
+
+	google.maps.event.addListener(townMarker, 'click', function() {
+		infowindow.open(map,townMarker);
+	});
+
+	//Add each POI in map
+	var listPoi = data['listOfPoi'];
+	var poi = null;
+	for(poi in listPoi){
+		//alert(poi + '/' + listPoi[poi]['lt'] + '/' + listPoi[poi]['lg']);
+		//Retrieve the picture with the type received
+		var iconMarker = 'img/google_marker/' + listPoi[poi]['type'].toLowerCase() + '.png';
+		
+		//Create a marker for each POI
+		var poiMarker = new google.maps.Marker({
+	        position: new google.maps.LatLng(listPoi[poi]['lt'], listPoi[poi]['lg']),
+	        map: map,
+	        title: listPoi[poi]['name'],
+	        icon: iconMarker
+	    });
+		markersPoi.push(poiMarker);
+		poiMarker.setMap(map);
+	}
+	zoomAutoListMarker(markersPoi);
 }
 
 //Calback when user finger move
