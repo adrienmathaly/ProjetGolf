@@ -223,8 +223,8 @@ function submit_response()
 
 			//INSERT ROUNDED VALUES
 			cell_user.innerHTML = "Anonymous#"+(i+1);
-			cell_lat.innerHTML = parseFloat(JSON_row["lt"]).toFixed(5);
-			cell_lng.innerHTML = parseFloat(JSON_row["lg"]).toFixed(5);
+			cell_lat.innerHTML = parseFloat(JSON_row["lt"]).toFixed(7);
+			cell_lng.innerHTML = parseFloat(JSON_row["lg"]).toFixed(7);
 
 			i++;
 		});
