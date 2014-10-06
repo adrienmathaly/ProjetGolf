@@ -1,5 +1,13 @@
 <?php
 
+/**
+    * @file Db.php
+    * @author Loïc TRICJAUD
+    * @version 1.0
+    * @date 01/10/2014
+    * @brief Db class. This class allows the connection, access and disconnection of database
+*/
+
 class Db{
 
     private $host;
@@ -20,6 +28,11 @@ class Db{
 		mysql_query("SET NAMES UTF8");
 	}
 	
+	/**
+        * Returns the result of a sql query
+        * @param $query SQL request
+        * @return $response response of query
+    */
 	public function getResponse($query){
 		
 		$resultQuery = $this->executeQuery($query);
@@ -44,6 +57,11 @@ class Db{
 		return $response;
 	}
 	
+	/**
+        * Returns the result of a sql query
+        * @param $query SQL request
+        * @return $response response of query
+    */
 	public function executeQuery($query){
 	
 		$resultQuery = mysql_query($query, $this->link) or die ("Requete => PROBLEME");
@@ -52,6 +70,9 @@ class Db{
 
 	}
 	
+	/**
+        * Display the list of tables
+    */
 	public function showTables(){
 	
 		$resultQuery = mysql_query("SHOW TABLES;");
@@ -66,6 +87,9 @@ class Db{
 		echo "<br>";
 	}
 	
+	/**
+        * Database deconnection
+    */
 	public function deconnect(){
 		
 		mysql_close($this->link);

@@ -1,11 +1,11 @@
 <?php
 
 /**
-* \file nearest.php
-* \author Loïc TRICJAUD
-* \version 1.0
-* \date 01/10/2014
-* \brief Return nearest city and nearestpoi
+	* @file nearest.php
+	* @author Loïc TRICJAUD
+	* @version 1.0
+	* @date 01/10/2014
+	* @brief Return nearest city and nearest poi of input coordinates.
 */
 
 //      Location      |  Latitude  | Longitude
@@ -21,10 +21,10 @@ require_once("../lib/City.php");
 require_once("../lib/Poi.php");
 
 // Data retrieving  in the url (longitude and latitude)
-$longitude  = $_GET['lg'];
-$latitude   = $_GET['lt'];
-$population = 3000;
-$limit_km   = 30;
+$longitude  = $_GET['lg']; //!< Longitude retrieving  in the url
+$latitude   = $_GET['lt']; //!< Latitude retrieving  in the url
+$population = 3000; //!< Filter population to display small or large cities. 
+$limit_km   = 30; //!< Limit of kilometers of POI 
 
 $city = new City();
 $array_nearest_city = $city->getNearestCity($longitude,$latitude,$population);

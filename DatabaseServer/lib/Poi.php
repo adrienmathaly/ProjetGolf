@@ -1,5 +1,14 @@
 <?php
 
+/**
+    * @file Poi.php
+    * @author Loïc TRICJAUD
+    * @version 1.0
+    * @date 01/10/2014
+    * @brief Poi class.
+*/
+
+
 require_once("Db.php");
 require_once("Table.php");
 
@@ -20,6 +29,13 @@ final class Poi extends Table{
         );
 	}
 
+    /**
+        * This function will search the nearest poi of input coordinates.
+        * @param $longitude Longitude of the ball.
+        * @param $latitude Latitude of the ball.
+        * @param $limit_km Defines the scope of Poi display.
+        * @return $response Array of nearest poi informations
+    */
     public function getNearestPoi($longitude, $latitude, $limit_km){
 
         $query = "

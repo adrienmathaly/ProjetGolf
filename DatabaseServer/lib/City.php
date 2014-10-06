@@ -3,6 +3,14 @@
 require_once("Db.php");
 require_once("Table.php");
 
+/**
+    * @file City.php
+    * @author Loïc TRICJAUD
+    * @version 1.0
+    * @date 01/10/2014
+    * @brief City class
+*/
+
 final class City extends Table{
 	
 	public function __construct(){
@@ -33,6 +41,14 @@ final class City extends Table{
                 "ville_pays"          => "ville_pays"
         );
 	}
+
+    /**
+        * This function will search the nearest city coordinates input
+        * @param $longitude Longitude of the ball.
+        * @param $latitude Latitude of the ball.
+        * @param $population Filter to display small or large cities.
+        * @return $response Array of nearest city informations
+    */
 
     public function getNearestCity($longitude, $latitude, $population){
 
