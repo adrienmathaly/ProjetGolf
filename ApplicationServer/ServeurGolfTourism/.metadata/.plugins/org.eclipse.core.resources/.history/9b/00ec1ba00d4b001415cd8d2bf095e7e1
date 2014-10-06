@@ -1,0 +1,117 @@
+package logger;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+
+public class Logger implements Runnable{
+
+	private String loggerName;
+	private String path;
+	private LinkedList<String> logsToBeWritten;
+	private boolean loggerActive;
+	private long interval;
+	private PrintWriter out;
+	private SimpleDateFormat dateFormat;
+	private static HashMap<String,Logger> loggers;
+	
+	
+	public Logger(String loggerName, String path, long interval) {
+		this.loggerName = loggerName;
+		this.path = path;
+		this.logsToBeWritten = new LinkedList<String>();
+		this.loggerActive = false;
+		this.interval = interval;
+		this.dateFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
+		loggers.put(loggerName, this);
+	}
+
+	public void startLogger() {
+		if (!loggerActive) {
+			loggerActive = true;
+			while (loggerActive) {
+				if ((!logsToBeWritten.isEmpty())) {
+					writeAwaitingLog();
+				}
+				try {
+					Thread.sleep(interval);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void stopLogger() {
+		setLoggerActive(false);
+	}
+
+	private void writeAwaitingLog() {
+		String currentDate = dateFormat.format(new Date());
+		try {
+			out = new PrintWriter(new BufferedWriter(new FileWriter(path,true)));
+			out.println("[" + loggerName + "] " + currentDate + " "+ logsToBeWritten.poll());
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void run() {
+		startLogger();
+	}
+
+	public static void addLogToBeWritten(String logger,String log) {
+		loggers.get(logger).logsToBeWritten.add(log);
+	}
+
+	public static void prepareLoggers(){
+		loggers=new HashMap<String,Logger>();
+	}
+	
+	public String getLoggerName() {
+		return loggerName;
+	}
+
+	public void setLoggerName(String loggerName) {
+		this.loggerName = loggerName;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public boolean isLoggerActive() {
+		return loggerActive;
+	}
+
+	public void setLoggerActive(boolean loggerActive) {
+		this.loggerActive = loggerActive;
+	}
+
+	public long getInterval() {
+		return interval;
+	}
+
+	public void setInterval(long interval) {
+		this.interval = interval;
+	}
+
+	public SimpleDateFormat getDateFormat() {
+		return dateFormat;
+	}
+
+	public void setDateFormat(SimpleDateFormat dateFormat) {
+		this.dateFormat = dateFormat;
+	}
+}
