@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map.Entry;
 
 public class Logger implements Runnable{
 
@@ -73,6 +74,23 @@ public class Logger implements Runnable{
 
 	public static void prepareLoggers(){
 		loggers=new HashMap<String,Logger>();
+	}
+	
+	public static void createLogger(Logger newLogger){
+		loggers.put(newLogger.getLoggerName(), newLogger);
+	}
+	
+	public static void startAllLoggers(){
+		for(Entry<String,Logger> e : loggers.entrySet()){
+			Thread t = new Thread(e.getValue());
+			t.start();
+		}
+	}
+	
+	public static void killAllloggers(){
+		for(Entry<String,Logger> e : loggers.entrySet()){
+			e.getValue().stopLogger();
+		}
 	}
 	
 	public String getLoggerName() {

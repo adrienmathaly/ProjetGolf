@@ -1,17 +1,17 @@
 package http;
 
+import http.servers.HTTPGolfMobileServer;
+import http.servers.HTTPGolfSupervisionServer;
+import http.servers.HTTPResponseHeaderBuilder;
+import http.users.SetOfUsers;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map.Entry;
 import configuration.ConfLoader;
 import logger.Logger;
-
 
 public class HTTPGolfServersLauncher {
 
 	private boolean active;
 	private HTTPResponseHeaderBuilder headers;
-	private HashMap<String,Logger> loggers;
 	private HTTPGolfMobileServer mobileServer;
 	private HTTPGolfSupervisionServer supvServer;
 
@@ -23,9 +23,9 @@ public class HTTPGolfServersLauncher {
 		Logger.addLogToBeWritten("Events",ConfLoader.getEntry("onStartMsg"));
 		active=true;
 		headers=new HTTPResponseHeaderBuilder(new File(ConfLoader.getEntry("headersDirectory")));
-		mobileServer = new HTTPGolfMobileServer(loggers,"[MOBILE]", ConfLoader.getEntry("serverPortMobile"));
+		mobileServer = new HTTPGolfMobileServer("[MOBILE]", ConfLoader.getEntry("serverPortMobile"));
 		mobileServer.launchMePlease();
-		supvServer = new HTTPGolfSupervisionServer(loggers,"[SUPERVISION]", ConfLoader.getEntry("serverPortSupervision"));
+		supvServer = new HTTPGolfSupervisionServer("[SUPERVISION]", ConfLoader.getEntry("serverPortSupervision"));
 		supvServer.launchMePlease();
 		while(active){
 			try {
@@ -39,24 +39,20 @@ public class HTTPGolfServersLauncher {
 	
 	private void killEverything(){
 		mobileServer.killMePlease();
+		supvServer.killMePlease();
 		killLoggers();
+		Logger.addLogToBeWritten("Events",ConfLoader.getEntry("onStopMsg"));
 	}
 	
 	private void launchLoggers(){
 		Logger.prepareLoggers();
-		loggers = new HashMap<String,Logger>();
-		loggers.put(ConfLoader.getEntry("loggerEventsName"), new Logger(ConfLoader.getEntry("loggerEventsName"), ConfLoader.getEntry("loggerEventsPath"),10));
-		loggers.put(ConfLoader.getEntry("loggerErrorsName"), new Logger(ConfLoader.getEntry("loggerErrorsName"), ConfLoader.getEntry("loggerErrorsPath"),10));
-		for(Entry<String,Logger> e : loggers.entrySet()){
-			Thread t = new Thread(e.getValue());
-			t.start();
-		}
+		Logger.createLogger(new Logger(ConfLoader.getEntry("loggerEventsName"), ConfLoader.getEntry("loggerEventsPath"),10));
+		Logger.createLogger(new Logger(ConfLoader.getEntry("loggerErrorsName"), ConfLoader.getEntry("loggerErrorsPath"),10));
+		Logger.startAllLoggers();
 	}
 	
 	private void killLoggers(){
-		for(Entry<String,Logger> e : loggers.entrySet()){
-			e.getValue().stopLogger();
-		}
+		Logger.killAllloggers();
 	}
 	
 	public boolean isActive() {

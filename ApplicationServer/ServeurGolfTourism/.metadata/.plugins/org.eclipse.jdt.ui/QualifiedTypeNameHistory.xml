@@ -15,15 +15,9 @@
 <fullyQualifiedTypeName name="java.io.FileReader"/>
 <fullyQualifiedTypeName name="http.HTTPResponseHeaderBuilder"/>
 <fullyQualifiedTypeName name="java.io.File"/>
-<fullyQualifiedTypeName name="logger.Logger"/>
 <fullyQualifiedTypeName name="java.util.Map.Entry"/>
 <fullyQualifiedTypeName name="java.net.HttpURLConnection"/>
 <fullyQualifiedTypeName name="java.net.URL"/>
-<fullyQualifiedTypeName name="java.io.BufferedReader"/>
-<fullyQualifiedTypeName name="java.io.InputStreamReader"/>
-<fullyQualifiedTypeName name="java.util.HashMap"/>
-<fullyQualifiedTypeName name="http.DatabaseManager"/>
-<fullyQualifiedTypeName name="configuration.ConfLoader"/>
 <fullyQualifiedTypeName name="http.HTTPGolfServer"/>
 <fullyQualifiedTypeName name="http.handlers.CustomizedHandler"/>
 <fullyQualifiedTypeName name="http.handlers.AmountOfUsersFromDaBeginnin"/>
@@ -37,5 +31,16 @@
 <fullyQualifiedTypeName name="java.awt.Point"/>
 <fullyQualifiedTypeName name="java.lang.Package"/>
 <fullyQualifiedTypeName name="http.User"/>
+<fullyQualifiedTypeName name="java.io.StringWriter"/>
+<fullyQualifiedTypeName name="json.JSONBuilder"/>
+<fullyQualifiedTypeName name="http.DatabaseManager"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="http.Point"/>
 <fullyQualifiedTypeName name="http.SetOfUsers"/>
+<fullyQualifiedTypeName name="java.io.InputStreamReader"/>
+<fullyQualifiedTypeName name="java.io.BufferedReader"/>
+<fullyQualifiedTypeName name="org.json.simple.parser.JSONParser"/>
+<fullyQualifiedTypeName name="org.json.simple.JSONObject"/>
+<fullyQualifiedTypeName name="logger.Logger"/>
+<fullyQualifiedTypeName name="configuration.ConfLoader"/>
 </qualifiedTypeNameHistroy>

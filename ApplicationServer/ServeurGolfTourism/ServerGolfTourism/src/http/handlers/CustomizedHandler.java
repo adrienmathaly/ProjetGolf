@@ -1,34 +1,28 @@
 package http.handlers;
 
 import java.io.IOException;
-import java.util.HashMap;
+
 import logger.Logger;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-abstract class CustomizedHandler implements HttpHandler{
+import configuration.ConfLoader;
 
-	private HashMap<String,Logger> loggers;
-	
-	public CustomizedHandler(HashMap<String,Logger> loggers){
-		this.setLoggers(loggers);
+public abstract class CustomizedHandler implements HttpHandler{
+
+	public CustomizedHandler(){
 	}
 
 	@Override
 	public void handle(HttpExchange t) throws IOException {
 		try{
 			doYourStuff(t);
+		    Logger.addLogToBeWritten(ConfLoader.getEntry("loggerEventsName"),"- Request: "+this.getClass().getSimpleName());
 		}catch(Exception e){
-			Logger.addLogToBeWritten("Errors", e.getMessage());
+			e.printStackTrace();
+			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), this.getClass().getName() + e.toString() + e.getStackTrace()[0].getLineNumber());
 		}
-	}
-	
-	public HashMap<String,Logger> getLoggers() {
-		return loggers;
-	}
-
-	public void setLoggers(HashMap<String,Logger> loggers) {
-		this.loggers = loggers;
 	}
 	
 	abstract protected void doYourStuff(HttpExchange t) throws Exception;
