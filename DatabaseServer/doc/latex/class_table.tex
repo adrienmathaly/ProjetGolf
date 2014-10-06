@@ -1,0 +1,160 @@
+\hypertarget{class_table}{\section{Table Class Reference}
+\label{class_table}\index{Table@{Table}}
+}
+
+
+This class contains functions to read/write/delete from the database.  
+
+
+
+
+Inheritance diagram for Table\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=163pt]{class_table__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_table_aba0d5b303383fb5b1fabb5fd01cd3800}{get\-All} ()
+\begin{DoxyCompactList}\small\item\em This function returns the entire table. \end{DoxyCompactList}\item 
+\hyperlink{class_table_a2f4379fc75908df9538e80a8a7f1043a}{get\-Rows} (\$cond)
+\begin{DoxyCompactList}\small\item\em Collect some tuples of a table after some content provided \$cond table. \end{DoxyCompactList}\item 
+\hyperlink{class_table_a60590b38a52542f17a63f5211ba3a111}{insert\-Row} (\$valeurs)
+\item 
+\hyperlink{class_table_a9d23647d9285ae7c3066280c9ad2bf9f}{delete\-Row} (\$cond)
+\item 
+\hyperlink{class_table_a3ee38d1ab83f5834b5ffeae8daad85f8}{update\-Row} (\$new\-Value, \$cond)
+\item 
+\hyperlink{class_table_a8a406dace7e7ab080d58066e627c6465}{deconnect} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_table_a1fa3127fc82f96b1436d871ef02be319}{\$db}
+\begin{DoxyCompactList}\small\item\em Database. \end{DoxyCompactList}\item 
+\hyperlink{class_table_ab2fc40d43824ea3e1ce5d86dee0d763b}{\$name}
+\begin{DoxyCompactList}\small\item\em table name \end{DoxyCompactList}\item 
+\hyperlink{class_table_ab2303c817e3b402b77b7f99627b9c319}{\$fields}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class contains functions to read/write/delete from the database. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_table_a8a406dace7e7ab080d58066e627c6465}{\index{Table@{Table}!deconnect@{deconnect}}
+\index{deconnect@{deconnect}!Table@{Table}}
+\subsubsection[{deconnect}]{\setlength{\rightskip}{0pt plus 5cm}deconnect (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_table_a8a406dace7e7ab080d58066e627c6465}
+Database deconnect \hypertarget{class_table_a9d23647d9285ae7c3066280c9ad2bf9f}{\index{Table@{Table}!delete\-Row@{delete\-Row}}
+\index{delete\-Row@{delete\-Row}!Table@{Table}}
+\subsubsection[{delete\-Row}]{\setlength{\rightskip}{0pt plus 5cm}delete\-Row (
+\begin{DoxyParamCaption}
+\item[{}]{\$cond}
+\end{DoxyParamCaption}
+)}}\label{class_table_a9d23647d9285ae7c3066280c9ad2bf9f}
+Delete rows into a table according to conditions 
+\begin{DoxyParams}{Parameters}
+{\em \$cond} & delete condition \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 
+\end{DoxyReturn}
+\hypertarget{class_table_aba0d5b303383fb5b1fabb5fd01cd3800}{\index{Table@{Table}!get\-All@{get\-All}}
+\index{get\-All@{get\-All}!Table@{Table}}
+\subsubsection[{get\-All}]{\setlength{\rightskip}{0pt plus 5cm}get\-All (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_table_aba0d5b303383fb5b1fabb5fd01cd3800}
+
+
+This function returns the entire table. 
+
+\begin{DoxyReturn}{Returns}
+\$all\-Rows Data list 
+\end{DoxyReturn}
+\hypertarget{class_table_a2f4379fc75908df9538e80a8a7f1043a}{\index{Table@{Table}!get\-Rows@{get\-Rows}}
+\index{get\-Rows@{get\-Rows}!Table@{Table}}
+\subsubsection[{get\-Rows}]{\setlength{\rightskip}{0pt plus 5cm}get\-Rows (
+\begin{DoxyParamCaption}
+\item[{}]{\$cond}
+\end{DoxyParamCaption}
+)}}\label{class_table_a2f4379fc75908df9538e80a8a7f1043a}
+
+
+Collect some tuples of a table after some content provided \$cond table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \$cond} & select conditions \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\$rows Data list 
+\end{DoxyReturn}
+\hypertarget{class_table_a60590b38a52542f17a63f5211ba3a111}{\index{Table@{Table}!insert\-Row@{insert\-Row}}
+\index{insert\-Row@{insert\-Row}!Table@{Table}}
+\subsubsection[{insert\-Row}]{\setlength{\rightskip}{0pt plus 5cm}insert\-Row (
+\begin{DoxyParamCaption}
+\item[{}]{\$valeurs}
+\end{DoxyParamCaption}
+)}}\label{class_table_a60590b38a52542f17a63f5211ba3a111}
+Inserting rows into a table 
+\begin{DoxyParams}{Parameters}
+{\em \$valeurs} & value list to insert \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\$id\-Insere id of the inserted row 
+\end{DoxyReturn}
+\hypertarget{class_table_a3ee38d1ab83f5834b5ffeae8daad85f8}{\index{Table@{Table}!update\-Row@{update\-Row}}
+\index{update\-Row@{update\-Row}!Table@{Table}}
+\subsubsection[{update\-Row}]{\setlength{\rightskip}{0pt plus 5cm}update\-Row (
+\begin{DoxyParamCaption}
+\item[{}]{\$new\-Value, }
+\item[{}]{\$cond}
+\end{DoxyParamCaption}
+)}}\label{class_table_a3ee38d1ab83f5834b5ffeae8daad85f8}
+Update rows into a table according to conditions 
+\begin{DoxyParams}{Parameters}
+{\em \$new\-Value} & update value \\
+\hline
+{\em \$cond} & update condition \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+-\/1 if problem 
+\end{DoxyReturn}
+
+
+\subsection{Field Documentation}
+\hypertarget{class_table_a1fa3127fc82f96b1436d871ef02be319}{\index{Table@{Table}!\$db@{\$db}}
+\index{\$db@{\$db}!Table@{Table}}
+\subsubsection[{\$db}]{\setlength{\rightskip}{0pt plus 5cm}\$db\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_table_a1fa3127fc82f96b1436d871ef02be319}
+
+
+Database. 
+
+\hypertarget{class_table_ab2303c817e3b402b77b7f99627b9c319}{\index{Table@{Table}!\$fields@{\$fields}}
+\index{\$fields@{\$fields}!Table@{Table}}
+\subsubsection[{\$fields}]{\setlength{\rightskip}{0pt plus 5cm}\$fields\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_table_ab2303c817e3b402b77b7f99627b9c319}
+\hypertarget{class_table_ab2fc40d43824ea3e1ce5d86dee0d763b}{\index{Table@{Table}!\$name@{\$name}}
+\index{\$name@{\$name}!Table@{Table}}
+\subsubsection[{\$name}]{\setlength{\rightskip}{0pt plus 5cm}\$name\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_table_ab2fc40d43824ea3e1ce5d86dee0d763b}
+
+
+table name 
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+lib/\hyperlink{_table_8php}{Table.\-php}\end{DoxyCompactItemize}

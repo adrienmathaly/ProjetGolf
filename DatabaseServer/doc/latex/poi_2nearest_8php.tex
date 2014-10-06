@@ -1,0 +1,85 @@
+\hypertarget{poi_2nearest_8php}{\section{poi/nearest.php File Reference}
+\label{poi_2nearest_8php}\index{poi/nearest.\-php@{poi/nearest.\-php}}
+}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{poi_2nearest_8php_aabb5b5c018fed3789fce382e336cfa47}{\$longitude} = \$\-\_\-\-G\-E\-T\mbox{[}'lg'\mbox{]}
+\begin{DoxyCompactList}\small\item\em Longitude retrieving in the url. \end{DoxyCompactList}\item 
+\hyperlink{poi_2nearest_8php_a5635a7326fb0b96e184ca6f5baa13e94}{\$latitude} = \$\-\_\-\-G\-E\-T\mbox{[}'lt'\mbox{]}
+\begin{DoxyCompactList}\small\item\em Latitude retrieving in the url. \end{DoxyCompactList}\item 
+\hyperlink{poi_2nearest_8php_afc1939ed7d0e8629546e2bc27b02dbc1}{\$population} = 3000
+\begin{DoxyCompactList}\small\item\em Population. \end{DoxyCompactList}\item 
+\hyperlink{poi_2nearest_8php_a00de150c5780d1d74512d2f6c6477d22}{\$limit\-\_\-km} = 30
+\begin{DoxyCompactList}\small\item\em Limit of km. \end{DoxyCompactList}\item 
+\hyperlink{poi_2nearest_8php_a5b9ddd3e3a69d8901270064346bdef49}{\$city} = new \hyperlink{class_city}{City}()
+\item 
+\hyperlink{poi_2nearest_8php_ad20bfb1568497d36431fbd90847417cc}{\$array\-\_\-nearest\-\_\-city} = \$city-\/$>$get\-Nearest\-City(\$longitude,\$latitude,\$population)
+\item 
+\hyperlink{poi_2nearest_8php_a15278c25ad2a899afd235d0093857e4c}{\$poi} = new \hyperlink{class_poi}{Poi}()
+\item 
+\hyperlink{poi_2nearest_8php_a0919b64d32b8806e2d59272d197f32e7}{\$array\-\_\-nearest\-\_\-poi} = \$poi-\/$>$get\-Nearest\-Poi(\$longitude,\$latitude,\$limit\-\_\-km)
+\item 
+\hyperlink{poi_2nearest_8php_abf6b27fab4f9b20ea05f510f3b597d52}{\$nearest\-\_\-city}
+\item 
+\hyperlink{poi_2nearest_8php_a0b142ae8ff992c1fff670c905b46e066}{\$nearest\-\_\-city\-\_\-json} = json\-\_\-encode(\$nearest\-\_\-city, J\-S\-O\-N\-\_\-\-U\-N\-E\-S\-C\-A\-P\-E\-D\-\_\-\-U\-N\-I\-C\-O\-D\-E $\vert$ J\-S\-O\-N\-\_\-\-U\-N\-E\-S\-C\-A\-P\-E\-D\-\_\-\-S\-L\-A\-S\-H\-E\-S)
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\hypertarget{poi_2nearest_8php_ad20bfb1568497d36431fbd90847417cc}{\index{poi/nearest.\-php@{poi/nearest.\-php}!\$array\-\_\-nearest\-\_\-city@{\$array\-\_\-nearest\-\_\-city}}
+\index{\$array\-\_\-nearest\-\_\-city@{\$array\-\_\-nearest\-\_\-city}!poi/nearest.php@{poi/nearest.\-php}}
+\subsubsection[{\$array\-\_\-nearest\-\_\-city}]{\setlength{\rightskip}{0pt plus 5cm}\$array\-\_\-nearest\-\_\-city = \$city-\/$>$get\-Nearest\-City(\$longitude,\$latitude,\$population)}}\label{poi_2nearest_8php_ad20bfb1568497d36431fbd90847417cc}
+\hypertarget{poi_2nearest_8php_a0919b64d32b8806e2d59272d197f32e7}{\index{poi/nearest.\-php@{poi/nearest.\-php}!\$array\-\_\-nearest\-\_\-poi@{\$array\-\_\-nearest\-\_\-poi}}
+\index{\$array\-\_\-nearest\-\_\-poi@{\$array\-\_\-nearest\-\_\-poi}!poi/nearest.php@{poi/nearest.\-php}}
+\subsubsection[{\$array\-\_\-nearest\-\_\-poi}]{\setlength{\rightskip}{0pt plus 5cm}\$array\-\_\-nearest\-\_\-poi = \$poi-\/$>$get\-Nearest\-Poi(\$longitude,\$latitude,\$limit\-\_\-km)}}\label{poi_2nearest_8php_a0919b64d32b8806e2d59272d197f32e7}
+\hypertarget{poi_2nearest_8php_a5b9ddd3e3a69d8901270064346bdef49}{\index{poi/nearest.\-php@{poi/nearest.\-php}!\$city@{\$city}}
+\index{\$city@{\$city}!poi/nearest.php@{poi/nearest.\-php}}
+\subsubsection[{\$city}]{\setlength{\rightskip}{0pt plus 5cm}\$city = new {\bf City}()}}\label{poi_2nearest_8php_a5b9ddd3e3a69d8901270064346bdef49}
+\hypertarget{poi_2nearest_8php_a5635a7326fb0b96e184ca6f5baa13e94}{\index{poi/nearest.\-php@{poi/nearest.\-php}!\$latitude@{\$latitude}}
+\index{\$latitude@{\$latitude}!poi/nearest.php@{poi/nearest.\-php}}
+\subsubsection[{\$latitude}]{\setlength{\rightskip}{0pt plus 5cm}\$latitude = \$\-\_\-\-G\-E\-T\mbox{[}'lt'\mbox{]}}}\label{poi_2nearest_8php_a5635a7326fb0b96e184ca6f5baa13e94}
+
+
+Latitude retrieving in the url. 
+
+\hypertarget{poi_2nearest_8php_a00de150c5780d1d74512d2f6c6477d22}{\index{poi/nearest.\-php@{poi/nearest.\-php}!\$limit\-\_\-km@{\$limit\-\_\-km}}
+\index{\$limit\-\_\-km@{\$limit\-\_\-km}!poi/nearest.php@{poi/nearest.\-php}}
+\subsubsection[{\$limit\-\_\-km}]{\setlength{\rightskip}{0pt plus 5cm}\$limit\-\_\-km = 30}}\label{poi_2nearest_8php_a00de150c5780d1d74512d2f6c6477d22}
+
+
+Limit of km. 
+
+\hypertarget{poi_2nearest_8php_aabb5b5c018fed3789fce382e336cfa47}{\index{poi/nearest.\-php@{poi/nearest.\-php}!\$longitude@{\$longitude}}
+\index{\$longitude@{\$longitude}!poi/nearest.php@{poi/nearest.\-php}}
+\subsubsection[{\$longitude}]{\setlength{\rightskip}{0pt plus 5cm}\$longitude = \$\-\_\-\-G\-E\-T\mbox{[}'lg'\mbox{]}}}\label{poi_2nearest_8php_aabb5b5c018fed3789fce382e336cfa47}
+
+
+Longitude retrieving in the url. 
+
+\hypertarget{poi_2nearest_8php_abf6b27fab4f9b20ea05f510f3b597d52}{\index{poi/nearest.\-php@{poi/nearest.\-php}!\$nearest\-\_\-city@{\$nearest\-\_\-city}}
+\index{\$nearest\-\_\-city@{\$nearest\-\_\-city}!poi/nearest.php@{poi/nearest.\-php}}
+\subsubsection[{\$nearest\-\_\-city}]{\setlength{\rightskip}{0pt plus 5cm}\$nearest\-\_\-city}}\label{poi_2nearest_8php_abf6b27fab4f9b20ea05f510f3b597d52}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+= array(
+    \textcolor{stringliteral}{"name"} => \hyperlink{poi_2nearest_8php_ad20bfb1568497d36431fbd90847417cc}{$array\_nearest\_city}[0][\textcolor{stringliteral}{"ville\_nom\_reel"}],
+    \textcolor{stringliteral}{"lg"}   => \hyperlink{poi_2nearest_8php_ad20bfb1568497d36431fbd90847417cc}{$array\_nearest\_city}[0][\textcolor{stringliteral}{"ville\_longitude\_deg"}],
+    \textcolor{stringliteral}{"lt"}   => \hyperlink{poi_2nearest_8php_ad20bfb1568497d36431fbd90847417cc}{$array\_nearest\_city}[0][\textcolor{stringliteral}{"ville\_latitude\_deg"}],
+    \textcolor{stringliteral}{"url"}  => \hyperlink{poi_2nearest_8php_ad20bfb1568497d36431fbd90847417cc}{$array\_nearest\_city}[0][\textcolor{stringliteral}{"ville\_url\_wiki"}],
+    \textcolor{stringliteral}{"listOfPoi"} => \hyperlink{poi_2nearest_8php_a0919b64d32b8806e2d59272d197f32e7}{$array\_nearest\_poi}
+)
+\end{DoxyCode}
+\hypertarget{poi_2nearest_8php_a0b142ae8ff992c1fff670c905b46e066}{\index{poi/nearest.\-php@{poi/nearest.\-php}!\$nearest\-\_\-city\-\_\-json@{\$nearest\-\_\-city\-\_\-json}}
+\index{\$nearest\-\_\-city\-\_\-json@{\$nearest\-\_\-city\-\_\-json}!poi/nearest.php@{poi/nearest.\-php}}
+\subsubsection[{\$nearest\-\_\-city\-\_\-json}]{\setlength{\rightskip}{0pt plus 5cm}\$nearest\-\_\-city\-\_\-json = json\-\_\-encode(\$nearest\-\_\-city, J\-S\-O\-N\-\_\-\-U\-N\-E\-S\-C\-A\-P\-E\-D\-\_\-\-U\-N\-I\-C\-O\-D\-E $\vert$ J\-S\-O\-N\-\_\-\-U\-N\-E\-S\-C\-A\-P\-E\-D\-\_\-\-S\-L\-A\-S\-H\-E\-S)}}\label{poi_2nearest_8php_a0b142ae8ff992c1fff670c905b46e066}
+\hypertarget{poi_2nearest_8php_a15278c25ad2a899afd235d0093857e4c}{\index{poi/nearest.\-php@{poi/nearest.\-php}!\$poi@{\$poi}}
+\index{\$poi@{\$poi}!poi/nearest.php@{poi/nearest.\-php}}
+\subsubsection[{\$poi}]{\setlength{\rightskip}{0pt plus 5cm}\$poi = new {\bf Poi}()}}\label{poi_2nearest_8php_a15278c25ad2a899afd235d0093857e4c}
+\hypertarget{poi_2nearest_8php_afc1939ed7d0e8629546e2bc27b02dbc1}{\index{poi/nearest.\-php@{poi/nearest.\-php}!\$population@{\$population}}
+\index{\$population@{\$population}!poi/nearest.php@{poi/nearest.\-php}}
+\subsubsection[{\$population}]{\setlength{\rightskip}{0pt plus 5cm}\$population = 3000}}\label{poi_2nearest_8php_afc1939ed7d0e8629546e2bc27b02dbc1}
+
+
+Population. 
+

@@ -1,11 +1,27 @@
 <?php
 
+/**
+    * @file Table.php
+    * @author Loïc TRICJAUD
+    * @version 1.0
+    * @date 01/10/2014
+*/
+
+/**
+	* @class Table
+	* @brief This class contains functions to read/write/delete from the database
+*/
+
 abstract class Table{
 
-	protected $db;
-	protected $name;
+	protected $db; //!< Database
+	protected $name; //!< table name
 	protected $fields;
 	
+	/**
+        * @brief This function returns the entire table
+        * @return $allRows Data list
+    */
 	public function getAll(){
 
 		$query = "SELECT * FROM ".$this->name;
@@ -14,11 +30,10 @@ abstract class Table{
 		return $allRows;
 	}
 	
-	/* Récupérer certaines uplets d'une table d'apres certaines
-     * condition contenu le tableau $cond.
-     * Ex : $cond = array("CLI_NOM" => "'Roland'", "CLI_PRENOM" => "'Marshall'");
-	 * Les valeurs de chaines de caractères doivent êtres sous quote 'valeur'
-	 * Comme 'Roland' dans l'exemple si dessus
+    /**
+        * @brief Collect some tuples of a table after some content provided $cond table.
+        * @param $cond select conditions
+        * @return $rows Data list
     */
 	public function getRows($cond){
 
@@ -47,12 +62,12 @@ abstract class Table{
 	
 	}
 	
-	/*
-	 * Il doit y avoir toutes les valeurs.
-	 * Les valeurs non remplis sont à NULL
-	 * Et les VARCHAR sont entourés par des quotes 'chaine'
-	 *	exemple : $client->insertRow("NULL, 'sdqgds', 'test2', NULL, NULL, NULL, NULL");
-	 */
+
+	/**
+        * Inserting rows into a table
+        * @param $valeurs value list to insert
+        * @return $idInsere id of the inserted row
+    */
 	public function insertRow($valeurs){
 	
 		$queryInsertRow = "INSERT INTO ".$this->name."(";
@@ -82,6 +97,11 @@ abstract class Table{
 		
 	}
 	
+	/**
+        * Delete rows into a table according to conditions
+        * @param $cond delete condition
+        * @return 0
+    */
 	public function deleteRow($cond){
 	
 		$queryDeleteRow = "DELETE FROM ".$this->name." WHERE ";
@@ -108,6 +128,12 @@ abstract class Table{
 		
 	}
 	
+	/**
+        * Update rows into a table according to conditions
+        * @param $newValue update value
+        * @param $cond update condition
+        * @return -1 if problem
+    */
 	public function updateRow($newValue, $cond){
 	
 		$queryUpdateRow = "UPDATE ".$this->name." SET ";
@@ -143,6 +169,9 @@ abstract class Table{
 		$this->db->getResponse($queryUpdateRow);
 	}
 
+	/**
+        * Database deconnect
+    */
     public function deconnect(){
 
         $this->db->deconnect();
