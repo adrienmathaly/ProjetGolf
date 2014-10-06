@@ -13,48 +13,77 @@ var map = null;
 
 //Marker
 var devicePositionMarker = null;
-
+var errorDevicePositionMarker = null;
 
 //Position
 var pokeballPosition = null;
 
-//Own event when localisation works
-var localisedEvent = new Event('Event');
-localisedEvent.initEvent('localised', true, true);
+//Tab of position (last POI) to fit auto
+var poiBounds = new google.maps.LatLngBounds();
 
 //When the body is full loaded initialize carto on France
 function initializeCarto() {
-    var mapOptions = {
-        center: { lat: 46.5643202, lng: 2.5282764},
-        zoom: 6,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-    var divMap = document.getElementById("map-google");
+  var mapOptions = {
+      center: { lat: 46.5643202, lng: 2.5282764},
+      zoom: 6,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+  map = new google.maps.Map(document.getElementById('map-google'), mapOptions);
 
-    //get element upper and botton the map to set the dimmension
-    var upperElement = document.getElementById("upper_map");
-    var bottomElement = document.getElementById("bottom_map");
-
-    //height of map = height of screen - height of data upper - height of data bottom - 25px because of action bar
-    var displayHeight = screen.height - upperElement.offsetHeight - bottomElement.offsetHeight - 25;
-    
-    divMap.style.width = screen.width + "px";
-    divMap.style.height = displayHeight + "px";
-
-    map = new google.maps.Map(document.getElementById('map-google'), mapOptions);
-    //projection = map.getProjection();
+  var bottomElement = document.getElementById('movementZone');
+  bottomElement.style.display = 'block';
 }
 
-// onSucess localisation zoom on it and mark the position
-var onLocaliseSuccess = function(position) {
-  map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-  map.setZoom(10);
+//Update the size on the html page
+function updateSizeCarto(){
+  //get map element
+  var divMap = document.getElementById("map-google");
 
-  devicePositionMarker = new google.maps.Marker({
-      position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-      map: map,
-      title: 'Je te vois :D'
-  });
+  //get element upper and botton map to set the dimmension
+  var upperElement = document.getElementById("upper_map");
+  var bottomElement = document.getElementById("bottom_map");
+
+  //height of map = height of screen - height of data upper - height of data bottom - 25px because of action bar
+  var displayHeight = window.innerHeight - upperElement.offsetHeight - bottomElement.offsetHeight;
+  var displayWidth = window.innerWidth;
+
+  divMap.style.width = displayWidth + "px";
+  divMap.style.height = displayHeight + "px";  
+  google.maps.event.trigger(map, 'resize'); 
+}
+
+//Update the size on the google map
+function updateSizeMap(){
+  
+}
+
+
+// change center of map
+function changeMapCenterFromLatLng(position) {
+  map.setCenter(new google.maps.LatLng(position.lat(), position.lng()));
+}
+
+// change center of map
+function changeMapCenterFromMarker(marker) {
+  changeMapCenterFromLatLng(marker.getPosition());
+}
+
+// onSucess localisation mark the position
+var onLocaliseSuccess = function(position) {
+  if(errorDevicePositionMarker !== null){
+    errorDevicePositionMarker.setMap(null);
+    errorDevicePositionMarker = null;
+  }
+
+  if(devicePositionMarker === null){
+      devicePositionMarker = new google.maps.Marker({
+        position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+        map: map,
+        title: 'Je te vois :D'
+    });
+  }
+
+  devicePositionMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
 };
 
 // onError Callback receives a PositionError object
@@ -96,6 +125,15 @@ function disableMovement(disable) {
         };
     }
     map.setOptions(mapOptions);
+}
+
+//function rezoom auto between device localisation and ball localisation
+function zoomAutoDeviceBall(){
+    var ballDeviceBounds = new google.maps.LatLngBounds();
+    ballDeviceBounds.extend(pokeballPosition);
+    var pos = devicePositionMarker.getPosition();
+    ballDeviceBounds.extend(pos);
+    map.fitBounds(ballDeviceBounds);
 }
 
 
