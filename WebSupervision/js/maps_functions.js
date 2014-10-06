@@ -11,6 +11,9 @@ var lng_IMERIR = 2.847754;
 
 function initialiser()
 {
+	my_table = document.getElementById("table_infos");
+
+
 	lat_home = 42.674547;
 	lng_home = 2.847754;
 

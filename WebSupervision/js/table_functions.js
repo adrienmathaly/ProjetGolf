@@ -8,7 +8,7 @@ function clean_table(_table)
 		{
 			for (var j=1;j<length;j++)
 			{
-				table.deleteRow(1);
+				_table.deleteRow(1);
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
 var waiting_mode = 0;
-var refresh_frequency = 500;
+var refresh_frequency = 1000;
 
 //VARIABLES JSON REQUESTS
 var timer_amount;
@@ -64,12 +64,13 @@ function HttpGET(request)
 						if (request == "/users/lastKnownLocations")
 						{
 							JSON_lastKnownLocations = xmlHttp.responseText;
-							document.getElementById("textarea_submit").value = JSON_lastKnownLocations;
+							//document.getElementById("textarea_submit").value = JSON_lastKnownLocations;
 						}
 
-						if (request == "/users/travelledDistance")
+						if (request == "/users/travelledDistances")
 						{
-							JSON_travelledDistance = xmlHttp.responseText;
+							JSON_travelledDistances = xmlHttp.responseText;
+							document.getElementById("textarea_submit").value = JSON_travelledDistances;
 						}
 
 						if (request == "/numberOfConnected")
@@ -153,7 +154,7 @@ function setIntervals()
 	timer_amount 				= setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);;
 	timer_totalDistances  		= setInterval( function() {HttpGET("/totalDistances")}, refresh_frequency);;
 	timer_lastKnownLocations 	= setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
-	timer_travelledDistance 	= setInterval( function() {HttpGET("/users/travelledDistance")}, refresh_frequency);
+	timer_travelledDistance 	= setInterval( function() {HttpGET("/users/travelledDistances")}, refresh_frequency);
 	timer_numberOfConnected 	= setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
 }
 
@@ -273,9 +274,6 @@ function submit_response()
 	}
 
 
-
-
-
 	//---------------------------------------------------------------------------------
 	//USERS LAST KNOWN LOCATIONS
 	//---------------------------------------------------------------------------------
@@ -284,13 +282,12 @@ function submit_response()
 	if (parse_JSON_lastKnownLocations != undefined)
 	{
 		var i = 0;
-		parse_JSON_lastKnownLocations.forEach(function(row)
+		parse_JSON_lastKnownLocations["lastKnownLocations"].forEach(function(JSON_row)
 		{
 			//ADD A MARKER WITH THE EXACT POSITION
-			var lat_user = row["lt"];
-			var lng_user = row["lg"];
+			var lat_user = JSON_row["lt"];
+			var lng_user = JSON_row["lg"];
 			add_marker(lat_user,lng_user,"(0)");
-
 
 			//CREATE ROW AND CELLS WITH ROUNDED VALUES
 			var row = my_table.insertRow(i+1);
@@ -301,8 +298,8 @@ function submit_response()
 
 			//INSERT ROUNDED VALUES
 			cell_user.innerHTML = "Anonymous#"+(i+1);
-			cell_lat.innerHTML = parseFloat(row["lt"]).toFixed(5);
-			cell_lng.innerHTML = parseFloat(row["lg"]).toFixed(5);
+			cell_lat.innerHTML = parseFloat(JSON_row["lt"]).toFixed(5);
+			cell_lng.innerHTML = parseFloat(JSON_row["lg"]).toFixed(5);
 
 			i++;
 		});
@@ -318,16 +315,16 @@ function submit_response()
 	//---------------------------------------------------------------------------------
 	//USERS TRAVELLED DISTANCE
 	//---------------------------------------------------------------------------------
-	var parse_JSON_travelledDistance = eval("(" +JSON_travelledDistance + ")");
+	var parse_JSON_travelledDistances = eval("(" +JSON_travelledDistances + ")");
 
-	if (parse_JSON_travelledDistance != undefined)
+	if (parse_JSON_travelledDistances != undefined)
 	{
 		var i = 1;
 
-		parse_JSON_travelledDistance.forEach(function(row)
+		parse_JSON_travelledDistances["travelledDistances"].forEach(function(JSON_row)
 		{
 			var cell_dist = my_table.rows[i].insertCell(3);
-			cell_dist.innerHTML = parseFloat(row["dist"]).toFixed(0);
+			cell_dist.innerHTML = parseFloat(JSON_row["dist"]).toFixed(3);
 
 			i++;
 		});
