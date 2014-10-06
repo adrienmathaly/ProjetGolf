@@ -112,7 +112,6 @@
 						      <h4 class="panel-title">
 						        <a data-toggle="collapse" data-parent="false" href="#collapseTwo">
 						         Details  
-						         <!--<span class="badge badge-info" id="badge_connected_users">0</span>-->
 						         <span class="glyphicon glyphicon-chevron-down" style="float : right;"></span>
 						        </a>
 						      </h4>
@@ -120,17 +119,18 @@
 						    <div id="collapseTwo" class="panel-collapse collapse in">
 						      	<div class="panel-body" >
 
-									<div>
-										<table class="table table-condensed" id="table_infos">
-											<thead>
+									<div style="height:250px; overflow-y:scroll;">
+
+										<table class="table table-condensed" id="table_infos" style="overflow:hidden;">
+											<thead id="thead_table">
 											   	<tr>
-											    	<th id="total_users">Users</th>
+											    	<th>Users</th>
 											    	<th>Latitude</th> 
 											    	<th>Longitude</th>
-											    	<th id="total_distances">Distance</th>
+											    	<th>Distance</th>
 											  	</tr>
 											</thead>
-											<tbody id="body_table"></tbody>
+											<tbody id="tbody_table"></tbody>
 										</table> 
 									</div>
 
@@ -147,7 +147,7 @@
 					        		</a>
 					      		</h4>
 					    	</div>
-					    	<div id="collapseThree" class="panel-collapse collapse in" id="collapse_submit_JSON">
+					    	<div id="collapseThree" class="panel-collapse collapse" id="collapse_submit_JSON">
 					      		<div class="panel-body">
 									<div>
 										<textarea class="form-control" id="textarea_submit" rows="7" style="width : 100%;"></textarea>
