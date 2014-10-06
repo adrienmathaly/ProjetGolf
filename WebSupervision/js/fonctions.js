@@ -8,20 +8,19 @@ var timer_amount;
 var timer_totalDistances;
 var timer_lastKnownLocations;
 var timer_numberOfConnected;
+var timer_travelledDistance;
 
 var JSON_amount;
 var JSON_totalDistances;
 var JSON_lastKnownLocations;
 var JSON_numberOfConnected;
+var JSON_travelledDistance;
 
 //MAPPING VARIABLES
-var my_map;
 var my_table;
 var marker_array = [];
 var lat_array = [];
 var lng_array = [];
-var lat_home = 42.674564;
-var lng_home = 2.847732;
 
 
 function HttpGET(request)
@@ -43,17 +42,13 @@ function HttpGET(request)
 		xmlHttp.setRequestHeader("Origin", "*");
 
 
-		//BOOLEAN FOR THE CONNECTION
-		if (xmlHttp.status == 200)
-			connected = 1;
-		else
-			connected = 0;
-
 		//FUNCTION PREPARATION
 		xmlHttp.onreadystatechange = function()
 			{
 				if ((xmlHttp.status == 200 || xmlHttp.status == 0))
 				{
+					connected = 1;
+
 					if (xmlHttp.responseText != "")
 					{
 						if (request == "/amountOfUsers")
@@ -69,6 +64,12 @@ function HttpGET(request)
 						if (request == "/users/lastKnownLocations")
 						{
 							JSON_lastKnownLocations = xmlHttp.responseText;
+							document.getElementById("textarea_submit").value = JSON_lastKnownLocations;
+						}
+
+						if (request == "/users/travelledDistance")
+						{
+							JSON_travelledDistance = xmlHttp.responseText;
 						}
 
 						if (request == "/numberOfConnected")
@@ -78,26 +79,16 @@ function HttpGET(request)
 					}
 				}
 				else
+				{
 					console.log("Connection failed");
+					connected = 0;
+				}
+					
 			}
 
 		xmlHttp.send();
 		submit_response();
 	}
-}
-
-
-function initialiser()
-{
-	var latlng = new google.maps.LatLng(lat_home, lng_home);
-
-	var options = {
-		center: latlng,
-		zoom: 10,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
-	};
-
-	my_map = new google.maps.Map(document.getElementById("my_map"), options);
 }
 
 
@@ -153,22 +144,46 @@ function clearIntervals()
 	clearInterval(timer_totalDistances);
 	clearInterval(timer_lastKnownLocations);
 	clearInterval(timer_numberOfConnected);
+	clearInterval(timer_travelledDistance);
 }
 
 
 function setIntervals()
 {
-	timer_amount = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);;
-	timer_totalDistances  = setInterval( function() {HttpGET("/totalDistances")}, refresh_frequency);;
-	timer_lastKnownLocations = setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
-	timer_numberOfConnected = setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
+	timer_amount 				= setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);;
+	timer_totalDistances  		= setInterval( function() {HttpGET("/totalDistances")}, refresh_frequency);;
+	timer_lastKnownLocations 	= setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
+	timer_travelledDistance 	= setInterval( function() {HttpGET("/users/travelledDistance")}, refresh_frequency);
+	timer_numberOfConnected 	= setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
 }
 
 
 function connect_to_server()
 {
+	if (connected == 1)
+	{
+		connected = 0;
+		clearIntervals();
+
+		$("#connect").removeClass("btn-info");
+		$("#connect").addClass("btn-danger");
+		$("#connect").html("Disconnected");
+		document.getElementById('ipServer').disabled = false;
+	}
+	else
+	{
+		connected = 1;
+		setIntervals();
+
+		$("#connect").removeClass("btn-danger");
+		$("#connect").addClass("btn-info");
+		$("#connect").html("Connected");
+		document.getElementById('ipServer').disabled = true;
+	}
+
+
 	//IF SERVER NOT CONNECTED OR IN WAITING-MODE	
-	if (connected == 0)
+	/*if (connected == 0)
 	{
 		//IF WAITING MODE IS ON
 		if (waiting_mode == 1)
@@ -192,7 +207,14 @@ function connect_to_server()
 			document.getElementById('ipServer').disabled = true;
 
 			//TEST STATUS OF THE CONNECTION
-			timer_amount = setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);
+
+			console.log(connected);
+
+			while(connected == 0)
+			{
+				HttpGET("/amountOfUsers");
+				console.log(connected);
+			}
 
 			//IF SERVER CONNECTED
 			if (connected == 1)
@@ -221,7 +243,7 @@ function connect_to_server()
 		document.getElementById('ipServer').disabled = false;
 
 		clearIntervals();
-	}
+	}*/
 	//console.log("Connected : " + connected + "; Waiting : " + waiting_mode);
 }
 
@@ -248,50 +270,69 @@ function submit_response()
 	{
 		var value = parse_JSON_numberOfConnected["nbConnected"];
 		document.getElementById("stats_users_connected").value = value;
-		document.getElementById("badge_connected_users").value = value;
 	}
 
 
-	//LAST KNOWN LOCATIONS
+
+
+
+	//---------------------------------------------------------------------------------
+	//USERS LAST KNOWN LOCATIONS
+	//---------------------------------------------------------------------------------
 	var parse_JSON_lastKnownLocations = eval("(" +JSON_lastKnownLocations + ")");
-	//console.log(JSON_lastKnownLocations);
 
-
-	//-------------------------------------------------------------------------------------
-	//-----------------------------------OLD FUNCTION--------------------------------------
-
-	//VARIABMES
-	/*var parsed_JSON_objet;
-
-	my_table = document.getElementById("table_infos");
-	parsed_JSON_objet = eval("(" + $("#textarea_submit").val() + ")");
-
-	var i = 0;
-	parsed_JSON_objet.forEach(function(row)
+	if (parse_JSON_lastKnownLocations != undefined)
 	{
-		//AMOUNT USERS
-		document.getElementById("total_users").innerHTML = "Users (" + row["amount"] + ")";
+		var i = 0;
+		parse_JSON_lastKnownLocations.forEach(function(row)
+		{
+			//ADD A MARKER WITH THE EXACT POSITION
+			var lat_user = row["lt"];
+			var lng_user = row["lg"];
+			add_marker(lat_user,lng_user,"(0)");
 
-		//INSERT ROW AND CELLS
-		var new_row = my_table.insertRow(i+1)
-		var cell_user = new_row.insertCell(0);
-		var cell_lat = new_row.insertCell(1);
-		var cell_lng = new_row.insertCell(2);
-		var cell_dist = new_row.insertCell(3);
 
-		//INDICATE CELLS CONTENTS
-		cell_user.innerHTML = "Anonymous#"+(i+1);
-		cell_lat.innerHTML = parseFloat(row["lt"]).toFixed(5);
-		cell_lng.innerHTML = parseFloat(row["lg"]).toFixed(5);
-		cell_dist.innerHTML = parseFloat(row["dist"]).toFixed(0);
+			//CREATE ROW AND CELLS WITH ROUNDED VALUES
+			var row = my_table.insertRow(i+1);
+			var cell_user = row.insertCell(0);
+			var cell_lat = row.insertCell(1);
+			var cell_lng = row.insertCell(2);
+			//var cell_dist = row.insertCell(3);
 
-		//INSERT A MARKER FOR EACH USER
-		var user_info = cell_user.innerHTML + " (" + cell_dist.innerHTML + ")";
-		add_marker(cell_lat.innerHTML,cell_lng.innerHTML,user_info);
+			//INSERT ROUNDED VALUES
+			cell_user.innerHTML = "Anonymous#"+(i+1);
+			cell_lat.innerHTML = parseFloat(row["lt"]).toFixed(5);
+			cell_lng.innerHTML = parseFloat(row["lg"]).toFixed(5);
 
-		i++;
-	});*/
+			i++;
+		});
+	}
+	//---------------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------------------
-	//-------------------------------------------------------------------------------------
+
+
+
+
+
+
+	//---------------------------------------------------------------------------------
+	//USERS TRAVELLED DISTANCE
+	//---------------------------------------------------------------------------------
+	var parse_JSON_travelledDistance = eval("(" +JSON_travelledDistance + ")");
+
+	if (parse_JSON_travelledDistance != undefined)
+	{
+		var i = 1;
+
+		parse_JSON_travelledDistance.forEach(function(row)
+		{
+			var cell_dist = my_table.rows[i].insertCell(3);
+			cell_dist.innerHTML = parseFloat(row["dist"]).toFixed(0);
+
+			i++;
+		});
+	}
+	//---------------------------------------------------------------------------------
+
+
 }

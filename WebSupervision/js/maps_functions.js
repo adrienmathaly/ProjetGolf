@@ -1,7 +1,49 @@
+var my_map;
+
+var marker_home;
+var latlng_home;
+var lat_home;
+var lng_home;
+
+var lat_IMERIR = 42.674547;
+var lng_IMERIR = 2.847754;
+
+
+function initialiser()
+{
+	lat_home = 42.674547;
+	lng_home = 2.847754;
+
+	latlng_home = new google.maps.LatLng(lat_home, lng_home);
+
+	var options = {
+		center: latlng_home,
+		zoom: 10,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+
+	my_map = new google.maps.Map(document.getElementById("my_map"), options);
+
+
+	marker_home = new google.maps.Marker({
+		position : latlng_home,
+		map : my_map,
+		icon : "css/images/home-icon.png",
+		title : "Home"
+	});
+
+	marker_home.setMap(my_map);
+	my_map.setCenter(latlng_home);
+}
+
+
 function go_home()
 {
-	var latlng = new google.maps.LatLng(lat_home, lng_home);
-	my_map.setCenter(latlng);
+	latlng_home = new google.maps.LatLng(lat_home, lng_home);
+	marker_home.setPosition(latlng_home);
+
+	marker_home.setMap(my_map);
+	my_map.setCenter(latlng_home);
 	my_map.setZoom(16);
 }
 
@@ -92,4 +134,9 @@ function resize_map()
 	}
 		
 	my_map.fitBounds(bounds);
+}
+
+function fill_IMERIR_position()
+{
+	document.getElementById("refresh_home_position").value = lat_IMERIR + "/" + lng_IMERIR;
 }
