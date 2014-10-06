@@ -23,36 +23,35 @@
 	<body onload="initialiser()">
 
 		<nav class="navbar navbar-default" role="navigation">
-		  	<div class="container-fluid">
-			    <div class="navbar-header">
-			    	<a class="navbar-brand" id="title_page">Website Supervision</a>
-			    </div>
+			<div class="container-fluid">
+		    	<div class="navbar-header">
+		      		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		        		<!--<span class="sr-only">Toggle navigation</span>-->
+		        		<span class="icon-bar"></span>
+		        		<span class="icon-bar"></span>
+		        		<span class="icon-bar"></span>
+		      		</button>
+		      		<a class="navbar-brand" id="title_page">Website Supervision</a>
+		    	</div>
 
-			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-			      	<form class="navbar-form navbar-left" role="connection">
-					    <div class="input-group">
+		    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      		
+		      		<form class="navbar-form navbar-left">
+		      			 <div class="input-group">
 					      	<input type="text" class="form-control" placeholder="172.0.0.1:8080" id="ipServer" value="172.31.1.191:8082">
 					      	<span class="input-group-btn">
 					        	<button class="btn btn-danger" id="connect" type="button" onclick="connect_to_server()">Disconnected</button>
 					      	</span>
 					 	</div>
-			      	</form>
+		      		</form>
 
-			      	<ul class="nav navbar-nav navbar-right" role="help">
-				 		<li>
-							<a title="Help" data-toggle="modal" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-question-sign"></span></a>
-				 		</li>
-
-				 		<li>
-							<a title="Parameters" data-toggle="modal" data-target=".parameters-modal-lg"><span class="glyphicon glyphicon-cog"></span></a>
-				 		</li>
-			      	</ul>
-
-			    </div>
+		      		<form class="nav navbar-nav navbar-right">
+						<li><a title="Help" data-toggle="modal" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-question-sign"></span></a></li>
+		 				<li><a title="Parameters" data-toggle="modal" data-target=".parameters-modal-lg"><span class="glyphicon glyphicon-cog"></span></a></li>
+		      		</form>
+		    	</div>
 		  	</div>
 		</nav>
-
 
 		<div class="container-fluid">
 			<div class="row-fluid">
@@ -156,7 +155,7 @@
 					      		</div>
 					    	</div>
 					  	</div>
-					</div>	<!--end group accordion-->
+					</div>
 				</div>
 
 			    <div class="col-md-7">
@@ -164,7 +163,7 @@
 
 					    <span class="input-group-btn">
 				        	<div class="dropdown">
-								<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Actions</button>
+								<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Actions <span class="glyphicon glyphicon-chevron-down"></button>
 							  	<ul class="dropdown-menu" role="menu">
 							    	<li><a role="menuitem" onclick="go_home()">Go home</a></li>
 							    	<li><a role="menuitem" onclick="resize_map()">View all users</a></li>
@@ -198,7 +197,7 @@
 			        	<h4 class="modal-title">You need help ?</h4>
 			      	</div>
 			      	<div class="modal-body">
-		        		<p>
+		        		<p class="lead"><img src="css/images/logo_imerir.png" class="pull-right" style="width : 100px;"/>
 			        	This webpage supervision allows you to view all the statistics related to GolfProject application.</br>
 							<li>To connect to the server, specify the IP address and the port. Click on the "Disconnected" button and wait until its specifies "Connected".</li>
 							<li>When the connection is made, you have the possibility to visualize some information : the general statistics and details users (name, position, distance travelled in km,...)</li>

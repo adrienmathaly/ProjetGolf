@@ -1,6 +1,5 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
-var waiting_mode = 0;
 var refresh_frequency = 1000;
 
 //VARIABLES JSON REQUESTS
@@ -16,16 +15,9 @@ var JSON_lastKnownLocations;
 var JSON_numberOfConnected;
 var JSON_travelledDistance;
 
-//MAPPING VARIABLES
-var my_table;
-var marker_array = [];
-var lat_array = [];
-var lng_array = [];
-
-
 function HttpGET(request)
 {
-	//SECURITE DU FORMAT DE L'ADRESSE
+	//ADDRESS SECURITY FORMAT
 	if ($("#ipServer").val() == null)
 	{
 		window.alert("empty address");	
@@ -158,7 +150,7 @@ function setIntervals()
 	timer_numberOfConnected 	= setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
 }
 
-
+//START THE CONNECTION TO THE SERVER (WITH ADDRESS:PORT)
 function connect_to_server()
 {
 	if (connected == 1)
@@ -181,71 +173,6 @@ function connect_to_server()
 		$("#connect").html("Connected");
 		document.getElementById('ipServer').disabled = true;
 	}
-
-
-	//IF SERVER NOT CONNECTED OR IN WAITING-MODE	
-	/*if (connected == 0)
-	{
-		//IF WAITING MODE IS ON
-		if (waiting_mode == 1)
-		{
-			waiting_mode = 0;
-			$("#connect").removeClass("btn-warning");
-			$("#connect").addClass("btn-danger");
-			$("#connect").html("Disconnected");
-			document.getElementById('ipServer').disabled = false;
-
-			//STOP TIMER EXECUTION
-			clearIntervals();
-		}
-		else if (waiting_mode == 0)
-		{
-			waiting_mode = 1;
-			$("#connect").removeClass("btn-info");
-			$("#connect").removeClass("btn-danger");
-			$("#connect").addClass("btn-warning");
-			$("#connect").html("Waiting ...");
-			document.getElementById('ipServer').disabled = true;
-
-			//TEST STATUS OF THE CONNECTION
-
-			console.log(connected);
-
-			while(connected == 0)
-			{
-				HttpGET("/amountOfUsers");
-				console.log(connected);
-			}
-
-			//IF SERVER CONNECTED
-			if (connected == 1)
-			{
-				//STOP THE WAITING MODE
-				waiting_mode = 0;
-
-				//START THE REQUESTS
-				setIntervals();
-
-				//CHANGE BUTTON CLASS
-				$("#connect").removeClass("btn-warning");
-				$("#connect").removeClass("btn-danger");
-				$("#connect").addClass("btn-info");
-				$("#connect").html("Connected");
-				document.getElementById('ipServer').disabled = true;
-			}
-		}
-	}
-	else if (connected == 1)
-	{
-		waiting_mode = 0;
-		$("#connect").removeClass("btn-info");
-		$("#connect").addClass("btn-danger");
-		$("#connect").html("Disconnected");
-		document.getElementById('ipServer').disabled = false;
-
-		clearIntervals();
-	}*/
-	//console.log("Connected : " + connected + "; Waiting : " + waiting_mode);
 }
 
 
@@ -258,12 +185,12 @@ function submit_response()
 	//AMOUNT OF USERS
 	var parse_JSON_amount = eval("(" + JSON_amount + ")");
 	if (parse_JSON_amount != undefined)
-		document.getElementById("stats_amount").value = parse_JSON_amount["amount"];
+		document.getElementById("stats_amount").value = parse_JSON_amount["amountOfUsers"];
 
 	//TOTAL DISTANCES
 	var parse_JSON_totalDistances = eval("(" + JSON_totalDistances + ")");
 	if (parse_JSON_totalDistances != undefined)
-		document.getElementById("stats_distances").value = parse_JSON_totalDistances["totalDist"];
+		document.getElementById("stats_distances").value = parse_JSON_totalDistances["totalDistances"];
 
 	//NUMBER OF CONNECTED
 	var parse_JSON_numberOfConnected = eval("(" +JSON_numberOfConnected + ")");
@@ -274,9 +201,7 @@ function submit_response()
 	}
 
 
-	//---------------------------------------------------------------------------------
 	//USERS LAST KNOWN LOCATIONS
-	//---------------------------------------------------------------------------------
 	var parse_JSON_lastKnownLocations = eval("(" +JSON_lastKnownLocations + ")");
 
 	if (parse_JSON_lastKnownLocations != undefined)
@@ -304,19 +229,9 @@ function submit_response()
 			i++;
 		});
 	}
-	//---------------------------------------------------------------------------------
 
 
-
-
-
-
-
-	//---------------------------------------------------------------------------------
-	//USERS TRAVELLED DISTANCE
-	//---------------------------------------------------------------------------------
 	var parse_JSON_travelledDistances = eval("(" +JSON_travelledDistances + ")");
-
 	if (parse_JSON_travelledDistances != undefined)
 	{
 		var i = 1;
@@ -329,7 +244,4 @@ function submit_response()
 			i++;
 		});
 	}
-	//---------------------------------------------------------------------------------
-
-
 }
