@@ -1,6 +1,5 @@
 var my_table;
 
-
 function clean_table(_table)
 {
 	if (_table != undefined)

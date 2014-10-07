@@ -3,7 +3,10 @@ var connected = 0;
 var refresh_frequency = 2000;
 
 //VARIABLES JSON REQUESTS
-var timer_amount;
+var timer;
+var JSON_request;
+
+/*var timer_amount;
 var timer_totalDistances;
 var timer_lastKnownLocations;
 var timer_numberOfConnected;
@@ -13,7 +16,7 @@ var JSON_amount;
 var JSON_totalDistances;
 var JSON_lastKnownLocations;
 var JSON_numberOfConnected;
-var JSON_travelledDistance;
+var JSON_travelledDistance;*/
 
 function HttpGET(request)
 {
@@ -41,42 +44,16 @@ function HttpGET(request)
 				{
 					connected = 1;
 
-					if (xmlHttp.responseText != "")
+					if (xmlHttp.responseText != "" && request == "/all")
 					{
-						if (request == "/amountOfUsers")
-						{
-							JSON_amount = xmlHttp.responseText;
-						}
-
-						if (request == "/totalDistances")
-						{
-							JSON_totalDistances = xmlHttp.responseText;
-						}
-
-						if (request == "/users/lastKnownLocations")
-						{
-							JSON_lastKnownLocations = xmlHttp.responseText;
-							//document.getElementById("textarea_submit").value = JSON_lastKnownLocations;
-						}
-
-						if (request == "/users/travelledDistances")
-						{
-							JSON_travelledDistances = xmlHttp.responseText;
-							document.getElementById("textarea_submit").value = JSON_travelledDistances;
-						}
-
-						if (request == "/numberOfConnected")
-						{
-							JSON_numberOfConnected = xmlHttp.responseText;
-						}
+						JSON_request = xmlHttp.responseText;
+						document.getElementById("textarea_submit").value = JSON_request;
 					}
 				}
 				else
 				{
-					console.log("Connection failed");
 					connected = 0;
 				}
-					
 			}
 
 		xmlHttp.send();
@@ -131,32 +108,13 @@ function refresh_parameters()
 }
 
 
-function clearIntervals()
-{
-	clearInterval(timer_amount);
-	clearInterval(timer_totalDistances);
-	clearInterval(timer_lastKnownLocations);
-	clearInterval(timer_numberOfConnected);
-	clearInterval(timer_travelledDistance);
-}
-
-
-function setIntervals()
-{
-	timer_amount 				= setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);;
-	timer_totalDistances  		= setInterval( function() {HttpGET("/totalDistances")}, refresh_frequency);;
-	timer_lastKnownLocations 	= setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
-	timer_travelledDistance 	= setInterval( function() {HttpGET("/users/travelledDistances")}, refresh_frequency);
-	timer_numberOfConnected 	= setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
-}
-
 //START THE CONNECTION TO THE SERVER (WITH ADDRESS:PORT)
 function connect_to_server()
 {
 	if (connected == 1)
 	{
 		connected = 0;
-		clearIntervals();
+		clearInterval(timer);
 
 		$("#connect").removeClass("btn-info");
 		$("#connect").addClass("btn-danger");
@@ -166,7 +124,7 @@ function connect_to_server()
 	else
 	{
 		connected = 1;
-		setIntervals();
+		setInterval( function() {HttpGET("/all")},refresh_frequency);
 
 		$("#connect").removeClass("btn-danger");
 		$("#connect").addClass("btn-info");
@@ -182,8 +140,44 @@ function submit_response()
 	clean_table(my_table);
 	delete_all_markers();
 
+	var parse_JSON_request = eval("(" + JSON_request + ")");
+
+	if (parse_JSON_request != undefined)
+	{
+		document.getElementById("stats_amount").value = parse_JSON_request["amountOfUsers"];
+		document.getElementById("stats_distances").value = parse_JSON_request["totalDistances"];
+		document.getElementById("stats_users_connected").value = parse_JSON_request["nbConnected"];
+
+		var i = 0;
+		parse_JSON_request["usersDetails"].forEach(function(JSON_row)
+		{
+			//ADD A MARKER WITH THE EXACT POSITION
+			var lat_user = JSON_row["lat"];
+			var lng_user = JSON_row["lng"];
+			var dist_user = JSON_row["distance"];
+			add_marker(lat_user,lng_user,dist_user);
+
+			//CREATE ROW AND CELLS WITH ROUNDED VALUES
+			var row = my_table.insertRow(i+1);
+			var cell_user = row.insertCell(0);
+			var cell_lat = row.insertCell(1);
+			var cell_lng = row.insertCell(2);
+			var cell_dist = row.insertCell(3);
+
+			//INSERT ROUNDED VALUES
+			cell_user.innerHTML = "Anonymous#"+(i+1);
+			cell_lat.innerHTML = parseFloat(JSON_row["lat"]).toFixed(7);
+			cell_lng.innerHTML = parseFloat(JSON_row["lng"]).toFixed(7);
+			cell_dist.innerHTML = parseFloat(JSON_row["distqnce"]).toFixed(2);
+
+			i++;
+		});
+
+	}
+
+
 	//AMOUNT OF USERS
-	var parse_JSON_amount = eval("(" + JSON_amount + ")");
+	/*var parse_JSON_amount = eval("(" + JSON_amount + ")");
 	if (parse_JSON_amount != undefined)
 		document.getElementById("stats_amount").value = parse_JSON_amount["amountOfUsers"];
 
@@ -243,5 +237,5 @@ function submit_response()
 
 			i++;
 		});
-	}
+	}*/
 }

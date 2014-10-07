@@ -151,12 +151,12 @@ function resize_map()
 	}
 
 	//IF THERE IS AN ONLY ONE MARKER
-	else if (marker_array.length == 1)
+	/*else if (marker_array.length == 1)
 	{
 
 
 
-	}
+	}*/
 
 	//if (my_map.getZoom() > 15)	my_map.setZoom(12);
 }
