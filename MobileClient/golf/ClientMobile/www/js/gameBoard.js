@@ -73,19 +73,51 @@ function changePokeballFromMarker(marker){
 
 //Callback of startEvent
 function onStartDragBall(event){
+	dragAccepted = false;
+	disableMovement(false);
+
 	var poke = document.getElementById('pokeball').getBoundingClientRect();
 
 	var posX = event.touches[0].clientX;
 	var posY = event.touches[0].clientY;
 
+	var gameMode = document.getElementById("gameMode").value;
+
+	var latDevice = devicePositionMarker.getPosition().lat();
+	var lngDevice = devicePositionMarker.getPosition().lng();
+
+	var latPoke = pokeballPosition.lat();
+	var lngPoke = pokeballPosition.lng();
+	
 	//Autorized only if the drag is in the ball rect
 	if(posX >= poke.left  && posX <= poke.right && posY >= poke.top && posY <= poke.bottom){
-		dragAccepted = true;
-		disableMovement(true);
-	}
-	else{
-		dragAccepted = false;
-		disableMovement(false);
+		
+		if(gameMode == '2'){
+
+			var indexMarker = 0;
+			for(indexMarker in markersPoi){
+				if( Math.abs(latDevice-markersPoi[indexMarker].getPosition().lat()) < 0.1 && Math.abs(lngDevice-markersPoi[indexMarker].getPosition().lng()) < 0.1 ){
+				dragAccepted = true;
+				disableMovement(true);
+				}
+			}
+			if( Math.abs(latDevice-latPoke) < 0.1 && Math.abs(lngDevice-lngPoke) < 0.1 ){
+				dragAccepted = true;
+				disableMovement(true);
+			}
+			
+		}
+		else if(gameMode == '3'){
+			if( Math.abs(latDevice-latPoke) < 0.1 && Math.abs(lngDevice-lngPoke) < 0.1 ){
+				dragAccepted = true;
+				disableMovement(true);
+			}
+		}
+		else{
+			dragAccepted = true;
+			disableMovement(true);
+
+		}
 	}
 }
 
@@ -122,8 +154,8 @@ function onRequestResponse(data){
 	}
 	markersPoi = [];
 
+	//alert('Ball : ' + data['ballLt'] + '/' + data['ballLg']);
 	//Move ball with response server
-	alert('Ball : ' + data['ballLt'] + '/' + data['ballLg']);
 	changePokeballFromLatLng(new google.maps.LatLng(data['ballLt'], data['ballLg']));
 
 	//Add a town marker

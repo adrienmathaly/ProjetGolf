@@ -41,7 +41,8 @@ function receivedEvent(id, received) {
 
 //On cordova ready event handler
 function onDeviceReady(){
-    checkPreviousGame();
+    initializeId();
+
     receivedEvent('deviceready', true);
     checkLocalisation(true);
     requestStartingGame();
@@ -67,11 +68,6 @@ function onOnline(){
     element.innerHTML = connectionStatement[networkState];
     
     receivedEvent('onOnline', true);
-
-    //GET an id and give it to callback saveID, verify the connection with server
-    if(gameID == 0){
-        getIDConnection(saveID);
-    }
 
     //Try to start the game if all connection is ready
     requestStartingGame();   
@@ -111,31 +107,9 @@ function onOrientationChanged(){
     var doNothing = true;
 }
 
-//Read the JSON server response, save the id token sending and update DOM
-function saveID(id){
-    id = id['token'];
-
-    var element = document.getElementById('userConnection');
-    element.innerHTML = 'id: ' + id;
-    
-    gameID = id;
-    
-    connectedToServer = true;
-    receivedEvent('onServerConnection', true);
-    requestStartingGame();
-}
-
 //Check if the device is ready to start the game
 function requestStartingGame(){
     if(connectedToDevice && connectedToInternet && connectedToGPS && connectedToServer){
         location.replace('gameBoard.html?id=' + gameID);
     }
-}
-
-function checkPreviousGame(){
-
-  /*  var param = 'test';
-    var writer = new FileWriter("/sdcard/write.txt");
-    writer.write(param + "\n", false);              
-    alert("file Written to SD Card");*/
 }

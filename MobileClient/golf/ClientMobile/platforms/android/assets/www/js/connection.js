@@ -30,12 +30,19 @@ function getIDConnection(callback){
 	var xhr = getXMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+			clearTimeout(xmlHttpTimeout); 
 			callback(JSON.parse(xhr.responseText));
 		}
 	};
 	
 	xhr.open("GET", serveurIp + serveurPort + "token", true);
 	xhr.send(null);
+
+	var xmlHttpTimeout=setTimeout(function(){
+												xhr.abort();
+												alert("Request timed out");
+											} 
+											, 5000);
 }
 
 //Post a shot and receive info POI and ball position
@@ -44,7 +51,12 @@ function postShot(userLT, userLG, ballLT, ballLG, gamerId, callback){
 	var xhr = getXMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && (xhr.status == 201 || xhr.status == 0)) {
+			clearTimeout(xmlHttpTimeout); 
 			callback(JSON.parse(xhr.responseText));
+		}
+		else if (xhr.readyState == 4 && xhr.status == 401) {
+			clearTimeout(xmlHttpTimeout); 
+			alert("Your gamer ID is not correct, please to delete golfChallengeSettings.txt (your session will be lost)");
 		}
 	};
 	xhr.open("POST", serveurIp + serveurPort + "shot", true);
@@ -57,25 +69,31 @@ function postShot(userLT, userLG, ballLT, ballLG, gamerId, callback){
 			"ballLg":ballLG,
 			"token":gamerId
 		};
-
 	xhr.send(JSON.stringify(data));
+
+	var xmlHttpTimeout=setTimeout(function(){
+												xhr.abort();
+												alert("Request timed out");
+											} 
+											, 5000);
 }
 
-function disconnect(){
+function resetGame(){
 	alert('test');
-	postDeco(gameID);
+	requestDeleteToken(gameID);
 }
 
 //Post a shot and receive info POI and ball position
-function postDeco(gamerId){
+function requestDeleteToken(gamerId){
 	//Create a connection
 	var xhr = getXMLHttpRequest();
 	xhr.onreadystatechange = function() {
-		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-			alert(xhr.responseText);
+		if (xhr.readyState == 4 && xhr.status == 204) {
+			clearTimeout(xmlHttpTimeout); 
+			alert("Reset done");
 		}
 	};
-	xhr.open("POST", serveurIp + serveurPort + "disconnection", true);
+	xhr.open("DELETE", serveurIp + serveurPort + "eraseid", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 
 	var data = {
@@ -83,4 +101,10 @@ function postDeco(gamerId){
 		};
 
 	xhr.send(JSON.stringify(data));
+
+	var xmlHttpTimeout=setTimeout(function(){
+												xhr.abort();
+												alert("Request timed out");
+											} 
+											, 5000);
 }
