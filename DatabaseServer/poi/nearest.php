@@ -5,7 +5,7 @@ header('Content-Type: application/json; charset=utf-8');
 $longitude  = $_GET['lg']; //!< Longitude retrieving  in the url
 $latitude   = $_GET['lt']; //!< Latitude retrieving  in the url
 $population = 5000;
-$limit_km = 10;
+$limit_km = 30;
 
 $db = new SQLite3('../db/db_golf.sqlite');
 
