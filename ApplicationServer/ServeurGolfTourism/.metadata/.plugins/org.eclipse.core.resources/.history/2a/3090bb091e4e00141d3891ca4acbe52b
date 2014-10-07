@@ -1,0 +1,28 @@
+package http.handlers;
+
+import java.io.IOException;
+import logger.Logger;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+
+import configuration.ConfLoader;
+
+public abstract class CustomizedHandler implements HttpHandler{
+
+	public CustomizedHandler(){
+	}
+
+	@Override
+	public void handle(HttpExchange t) throws IOException {
+		try{
+			doYourStuff(t);
+		    Logger.addLogToBeWritten(ConfLoader.getEntry("loggerEventsName"),"- Request: "+this.getClass().getSimpleName());
+		}catch(Exception e){
+			e.printStackTrace();
+			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), this.getClass().getName()+ " - " +e.getStackTrace()[0].getLineNumber()+  " - " +  e.toString());
+		}
+	}
+	
+	abstract protected void doYourStuff(HttpExchange t) throws Exception;
+	
+}

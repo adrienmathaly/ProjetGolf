@@ -21,7 +21,7 @@ public class HTTPGolfServersLauncher {
 		SetOfUsers.prepareUsers();
 		Logger.addLogToBeWritten("Events",ConfLoader.getEntry("onStartMsg"));
 		active=true;
-		headers=new HTTPResponseHeaderBuilder(new File(ConfLoader.getEntry("headersDirectory")));
+		//headers=new HTTPResponseHeaderBuilder(new File(ConfLoader.getEntry("headersDirectory")));
 		mobileServer = new HTTPGolfMobileServer("[MOBILE]", ConfLoader.getEntry("serverPortMobile"));
 		mobileServer.launchMePlease();
 		supvServer = new HTTPGolfSupervisionServer("[SUPERVISION]", ConfLoader.getEntry("serverPortSupervision"));

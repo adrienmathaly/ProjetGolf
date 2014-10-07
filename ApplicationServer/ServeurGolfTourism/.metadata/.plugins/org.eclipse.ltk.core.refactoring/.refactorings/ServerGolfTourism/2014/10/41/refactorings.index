@@ -4,3 +4,5 @@
 1412622954906	Rename local variable 'newPoint'
 1412623038473	Encapsulate field 'ballLongitude'
 1412623043184	Encapsulate field 'ballLatitude'
+1412685074888	Rename type 'Disconnection'
+1412688484576	Encapsulate field 'alive'

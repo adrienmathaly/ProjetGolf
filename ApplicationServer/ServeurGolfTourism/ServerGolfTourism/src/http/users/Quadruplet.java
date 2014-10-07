@@ -1,0 +1,20 @@
+package http.users;
+
+public class Quadruplet extends Triplet{
+
+	private Boolean alive;
+	
+	public Quadruplet(Float latitude, Float longitude, Float distance, Boolean alive) {
+		super(latitude, longitude, distance);
+		this.alive=alive;
+	}
+
+	public Boolean getAlive() {
+		return alive;
+	}
+
+	public void setAlive(Boolean alive) {
+		this.alive = alive;
+	}
+
+}

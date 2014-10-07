@@ -70,11 +70,11 @@ public class SetOfUsers {
 	}
 	
 	
-	public static LinkedList<Triplet> listOfEveryStats(){
-		LinkedList<Triplet> listOfEveryStats=new  LinkedList<Triplet>();
+	public static LinkedList<Quadruplet> listOfEveryStats(){
+		LinkedList<Quadruplet> listOfEveryStats=new  LinkedList<Quadruplet>();
 		for(Entry<String, User> e : users.entrySet()){
 			if(e.getValue().isFullyCreated()){
-				listOfEveryStats.add(new Triplet(e.getValue().getLatitude(),e.getValue().getLongitude(),e.getValue().getTravelledDistance()));
+				listOfEveryStats.add(new Quadruplet(e.getValue().getLatitude(),e.getValue().getLongitude(),e.getValue().getTravelledDistance(),e.getValue().isConnected()));
 			}
 		}
 		return listOfEveryStats;
@@ -108,5 +108,9 @@ public class SetOfUsers {
 			}
 		}
 		return maxDist;
+	}
+	
+	public static boolean containsToken(String token){
+		return users.containsKey(token);
 	}
 }
