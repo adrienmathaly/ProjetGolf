@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
-
 import logger.Logger;
 import configuration.ConfLoader;
 
@@ -45,7 +44,7 @@ public class HTTPResponseHeaderBuilder {
 			bf.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), e.toString());
+			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), this.getClass().getName()+ " - " +e.getStackTrace()[0].getLineNumber()+  " - " +  e.toString());
 		}
 		return s;
 	}

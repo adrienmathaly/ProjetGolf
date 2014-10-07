@@ -1,6 +1,5 @@
 package http.users;
 
-
 public class User {
 	
 	private boolean connected;
@@ -8,6 +7,8 @@ public class User {
 	private float longitude;
 	private float latitude;
 	private float travelledDistance;
+	private float ballLongitude;
+	private float ballLatitude;
 	
 	public User(){
 		this.setConnected(true);
@@ -51,6 +52,11 @@ public class User {
 		this.setLongitude(p.getLongitude());
 	}
 	
+	public void setBallLocation(Point p){
+		this.setLatitude(p.getLatitude());
+		this.setLongitude(p.getLongitude());
+	}
+	
 	public Point getLocation(){
 		return new Point(getLatitude(),getLongitude());
 	}
@@ -61,5 +67,21 @@ public class User {
 
 	public void setFullyCreated(boolean fullyCreated) {
 		this.fullyCreated = fullyCreated;
+	}
+
+	public float getBallLongitude() {
+		return ballLongitude;
+	}
+
+	public void setBallLongitude(float ballLongitude) {
+		this.ballLongitude = ballLongitude;
+	}
+
+	public float getBallLatitude() {
+		return ballLatitude;
+	}
+
+	public void setBallLatitude(float ballLatitude) {
+		this.ballLatitude = ballLatitude;
 	}
 }

@@ -1,0 +1,21 @@
+package http.handlers.mobile;
+
+import http.handlers.PostHandler;
+import http.users.Point;
+import http.users.SetOfUsers;
+import java.util.HashMap;
+
+
+import com.sun.net.httpserver.HttpExchange;
+
+public class Shot extends PostHandler{
+
+	@Override
+	protected void doYourStuff(HttpExchange t) throws Exception {
+		HashMap<String,Object> map = parseUserInfo(t);
+		if(!SetOfUsers.isUserFullyCreated((String)map.get("token"))){
+			SetOfUsers.setFirstLocationOf((String)map.get("token"),new Point((Float)(float)(double)map.get("userLt"),(Float)(float)(double)(map.get("userLg"))));
+		}
+		SetOfUsers.updateUserLocation((String)map.get("token"), new Point((Float)(float)(double)(map.get("ballLt")),(Float)(float)(double)(map.get("ballLg"))));
+	}
+}

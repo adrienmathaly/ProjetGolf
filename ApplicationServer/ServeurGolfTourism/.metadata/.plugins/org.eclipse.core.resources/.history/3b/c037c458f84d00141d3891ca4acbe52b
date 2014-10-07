@@ -1,0 +1,14 @@
+package http.handlers.supervision;
+
+import com.sun.net.httpserver.HttpExchange;
+
+import http.handlers.CustomizedHandler;
+
+public class BestDistance extends CustomizedHandler {
+
+	@Override
+	protected void doYourStuff(HttpExchange t) throws Exception {
+		
+	}
+
+}
