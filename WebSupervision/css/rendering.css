@@ -15,7 +15,6 @@ body
 #title_page
 {
 	color : #F1DDA8;
-	/*font-size: 25px;*/
 	font-family: Verdana;
 }
 
@@ -35,12 +34,7 @@ body
 	color :#626063;
 }
 
-span.glyphicon-info-sign
-{
-    font-size: 1.5em;
-}
-
-span.glyphicon-cog
+span.glyphicon-info-sign, span.glyphicon-cog
 {
     font-size: 1.5em;
 }
@@ -82,10 +76,10 @@ table>tbody
 
 span.input-group-addon
 {
-	width:145px;
-	text-align: left;
+	width : 145px;
+	text-align : left;
 	color : #F1DDA8;
-	background-color: #626063;
+	background-color : #626063;
 }
 
 .input-group
@@ -97,13 +91,10 @@ span.input-group-addon
 {
 	cursor : default;
 	color : 626063;
-	background-color: #F1DDA8; 
+	background-color : #F1DDA8; 
 }
 
-.navbar-default .navbar-toggle {
-border-color: transparent !important;
-}
-
-.navbar-default .navbar-collapse, .navbar-default .navbar-form {
-border-color: transparent !important;
+.navbar-default .navbar-toggle, .navbar-default .navbar-collapse, .navbar-default .navbar-form
+{
+	border-color: transparent !important;
 }

@@ -1,19 +1,10 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
-var refresh_frequency = 2000;
+var refresh_frequency = 500;
 
 //VARIABLES JSON REQUESTS
-var timer_amount;
-var timer_totalDistances;
-var timer_lastKnownLocations;
-var timer_numberOfConnected;
-var timer_travelledDistance;
-
-var JSON_amount;
-var JSON_totalDistances;
-var JSON_lastKnownLocations;
-var JSON_numberOfConnected;
-var JSON_travelledDistance;
+var timer;
+var JSON_request;
 
 function HttpGET(request)
 {
@@ -31,78 +22,65 @@ function HttpGET(request)
 
 		//CONNECTION OPENING
 		xmlHttp.open("GET",URI, true);
-		xmlHttp.setRequestHeader("Origin", "*");
+		//xmlHttp.setRequestHeader("Origin", "172.31.1.49");
 
 
 		//FUNCTION PREPARATION
 		xmlHttp.onreadystatechange = function()
+		{
+			if ((xmlHttp.status == 200 || xmlHttp.status == 0))
 			{
-				if ((xmlHttp.status == 200 || xmlHttp.status == 0))
+				connected = 1;
+
+				if (xmlHttp.responseText != "" && request == "/all")
 				{
-					connected = 1;
-
-					if (xmlHttp.responseText != "")
-					{
-						if (request == "/amountOfUsers")
-						{
-							JSON_amount = xmlHttp.responseText;
-						}
-
-						if (request == "/totalDistances")
-						{
-							JSON_totalDistances = xmlHttp.responseText;
-						}
-
-						if (request == "/users/lastKnownLocations")
-						{
-							JSON_lastKnownLocations = xmlHttp.responseText;
-							//document.getElementById("textarea_submit").value = JSON_lastKnownLocations;
-						}
-
-						if (request == "/users/travelledDistances")
-						{
-							JSON_travelledDistances = xmlHttp.responseText;
-							document.getElementById("textarea_submit").value = JSON_travelledDistances;
-						}
-
-						if (request == "/numberOfConnected")
-						{
-							JSON_numberOfConnected = xmlHttp.responseText;
-						}
-					}
+					JSON_request = xmlHttp.responseText;
+					document.getElementById("textarea_submit").value = JSON_request;
 				}
-				else
-				{
-					console.log("Connection failed");
-					connected = 0;
-				}
-					
 			}
+		}
 
 		xmlHttp.send();
 		submit_response();
 	}
 }
 
-
-function refresh_parameters()
+function validate_refresh()
 {
-	var refresh_frequency_value = document.getElementById("refresh_value").value;
-	var refresh_home_position_value = document.getElementById("refresh_home_position").value;
+	var refresh = parseInt(document.getElementById("refresh_value").value);
 
-	if (refresh_frequency_value > 0)
+	if (refresh >= 200 && refresh <= 10000)
 	{
-		refresh_frequency = value;
-		$('#parameters_modal').modal('hide');
+		refresh_frequency = refresh;
+		$('#refresh_value_form').removeClass("has-error");
+		$('#refresh_value_form').addClass("has-success");
 	}
-
-	if (refresh_home_position_value != "")
+	else
 	{
-		var arrayOfCoordinates = refresh_home_position_value.split("/");
+		$('#refresh_value_form').removeClass("has-success");
+		$('#refresh_value_form').addClass("has-error");
+	}
+}
+
+function validate_position()
+{
+	//alert("pop");
+
+	var position = document.getElementById("home_position_value").value;
+	
+	if (position == "")
+	{
+		$('#home_position_form').removeClass("has-success");
+		$('#home_position_form').removeClass("has-error");	
+	}
+	else
+	{
+		var arrayOfCoordinates = position.split("/");
 
 		if (arrayOfCoordinates.length != 2)
 		{
-			alert("Invalid coordinates");			
+			$('#home_position_form').removeClass("has-success");
+			$('#home_position_form').addClass("has-error");	
 		}
 		else
 		{
@@ -111,19 +89,25 @@ function refresh_parameters()
 			
 			if (latitude > 90 || latitude < -90)
 			{
-				alert("Latitude problem");
+				$('#home_position_form').removeClass("has-success");
+				$('#home_position_form').addClass("has-error");	
 			}
 			else
 			{
 				if (longitude > 180 || longitude < -180)
 				{
-					alert("Longitude problem");
+					$('#home_position_form').removeClass("has-success");
+					$('#home_position_form').addClass("has-error");	
 				}
+
 				else
 				{
 					lat_home = latitude;
 					lng_home = longitude;
-					$('#parameters_modal').modal('hide');
+
+					$('#home_position_form').removeClass("has-error");
+					$('#home_position_form').addClass("has-success");
+					//$('#parameters_modal').modal('hide');
 				}
 			}
 		}
@@ -131,32 +115,13 @@ function refresh_parameters()
 }
 
 
-function clearIntervals()
-{
-	clearInterval(timer_amount);
-	clearInterval(timer_totalDistances);
-	clearInterval(timer_lastKnownLocations);
-	clearInterval(timer_numberOfConnected);
-	clearInterval(timer_travelledDistance);
-}
-
-
-function setIntervals()
-{
-	timer_amount 				= setInterval( function() {HttpGET("/amountOfUsers")}, refresh_frequency);;
-	timer_totalDistances  		= setInterval( function() {HttpGET("/totalDistances")}, refresh_frequency);;
-	timer_lastKnownLocations 	= setInterval( function() {HttpGET("/users/lastKnownLocations")}, refresh_frequency);
-	timer_travelledDistance 	= setInterval( function() {HttpGET("/users/travelledDistances")}, refresh_frequency);
-	timer_numberOfConnected 	= setInterval( function() {HttpGET("/numberOfConnected")}, refresh_frequency);
-}
-
 //START THE CONNECTION TO THE SERVER (WITH ADDRESS:PORT)
 function connect_to_server()
 {
 	if (connected == 1)
 	{
 		connected = 0;
-		clearIntervals();
+		clearInterval(timer);
 
 		$("#connect").removeClass("btn-info");
 		$("#connect").addClass("btn-danger");
@@ -166,7 +131,7 @@ function connect_to_server()
 	else
 	{
 		connected = 1;
-		setIntervals();
+		timer = setInterval( function() {HttpGET("/all")},refresh_frequency);
 
 		$("#connect").removeClass("btn-danger");
 		$("#connect").addClass("btn-info");
@@ -182,65 +147,41 @@ function submit_response()
 	clean_table(my_table);
 	delete_all_markers();
 
-	//AMOUNT OF USERS
-	var parse_JSON_amount = eval("(" + JSON_amount + ")");
-	if (parse_JSON_amount != undefined)
-		document.getElementById("stats_amount").value = parse_JSON_amount["amountOfUsers"];
+	var parse_JSON_request = eval("(" + JSON_request + ")");
 
-	//TOTAL DISTANCES
-	var parse_JSON_totalDistances = eval("(" + JSON_totalDistances + ")");
-	if (parse_JSON_totalDistances != undefined)
-		document.getElementById("stats_distances").value = parse_JSON_totalDistances["totalDistances"];
-
-	//NUMBER OF CONNECTED
-	var parse_JSON_numberOfConnected = eval("(" +JSON_numberOfConnected + ")");
-	if (parse_JSON_numberOfConnected != undefined)
+	if (parse_JSON_request != undefined)
 	{
-		var value = parse_JSON_numberOfConnected["nbConnected"];
-		document.getElementById("stats_users_connected").value = value;
-	}
+		document.getElementById("stats_amount").value = parse_JSON_request["amountOfUsers"];
+		document.getElementById("stats_distances").value = parse_JSON_request["totalDistances"];
+		document.getElementById("stats_users_connected").value = parse_JSON_request["nbConnected"];
+		document.getElementById("stats_best_distance").value = parse_JSON_request["bestDistance"];
 
-
-	//USERS LAST KNOWN LOCATIONS
-	var parse_JSON_lastKnownLocations = eval("(" +JSON_lastKnownLocations + ")");
-
-	if (parse_JSON_lastKnownLocations != undefined)
-	{
 		var i = 0;
-		parse_JSON_lastKnownLocations["lastKnownLocations"].forEach(function(JSON_row)
+		parse_JSON_request["usersDetails"].forEach(function(JSON_row)
 		{
 			//ADD A MARKER WITH THE EXACT POSITION
-			var lat_user = JSON_row["lt"];
-			var lng_user = JSON_row["lg"];
-			add_marker(lat_user,lng_user,"(0)");
+			var lat_user = JSON_row["lat"];
+			var lng_user = JSON_row["lng"];
+			var dist_user = JSON_row["distance"];
+			var alive = JSON_row["alive"];
+
+			//add_marker(lat_user,lng_user,String(dist_user),"logos/location-icon.png");
+
+			if (alive == "true")			add_marker(lat_user,lng_user,String(dist_user),"logos/location-icon.png");
+			else if (alive == "false")		add_marker(lat_user,lng_user,String(dist_user),"logos/dead-icon.png");
 
 			//CREATE ROW AND CELLS WITH ROUNDED VALUES
 			var row = my_table.insertRow(i+1);
 			var cell_user = row.insertCell(0);
 			var cell_lat = row.insertCell(1);
 			var cell_lng = row.insertCell(2);
-			//var cell_dist = row.insertCell(3);
+			var cell_dist = row.insertCell(3);
 
 			//INSERT ROUNDED VALUES
 			cell_user.innerHTML = "Anonymous#"+(i+1);
-			cell_lat.innerHTML = parseFloat(JSON_row["lt"]).toFixed(7);
-			cell_lng.innerHTML = parseFloat(JSON_row["lg"]).toFixed(7);
-
-			i++;
-		});
-	}
-
-
-	var parse_JSON_travelledDistances = eval("(" +JSON_travelledDistances + ")");
-	if (parse_JSON_travelledDistances != undefined)
-	{
-		var i = 1;
-
-		parse_JSON_travelledDistances["travelledDistances"].forEach(function(JSON_row)
-		{
-			var cell_dist = my_table.rows[i].insertCell(3);
-			cell_dist.innerHTML = parseFloat(JSON_row["dist"]).toFixed(3);
-
+			cell_lat.innerHTML = parseFloat(JSON_row["lat"]).toFixed(5);
+			cell_lng.innerHTML = parseFloat(JSON_row["lng"]).toFixed(5);
+			cell_dist.innerHTML = parseFloat(JSON_row["distance"]).toFixed(2);
 			i++;
 		});
 	}
