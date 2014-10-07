@@ -131,7 +131,7 @@
 						    </div>
 					  	</div>
 
-						<!--ACCORDION FOR THE JSON TEST BOX-->
+						<!--ACCORDION FOR THE JSON TEST BOX
 					  	<div class="panel panel-default" style="opacity : 0.95;">
 					    	<div class="panel-heading">
 					      		<h4 class="panel-title">
@@ -148,7 +148,7 @@
 
 					      		</div>
 					    	</div>
-					  	</div>
+					  	</div>-->
 
 					</div>
 				</div>
@@ -195,7 +195,7 @@
 		        		<p class="lead"><img src="css/images/info-icon.png" class="pull-right" style="width : 80px;"/>
 			        	This webpage supervision allows you to view all the statistics related to the GolfProject application</br></br>
 							<li>To connect to the server, specify the IP address and the port. Click on the "Disconnected" button and wait until its specifies "Connected".</li>
-							<li>When connected, you have the possibility to visualize some information : the general statistics and users details (name, position, distance travelled, ...)</li>
+							<li>When connected, you have the possibility to visualize some information : the general statistics and users details (latitude, longitude, distance travelled, ...)</li>
 							<li>The "Actions" button give you the possibility to return to your Home point, and to view all users with an adapted zoom.</li>
 							<li>The "Search" button allows you to go to the GPS position previously indicated in the text field.</li>
 			        	</p>
@@ -216,36 +216,40 @@
 			      	</div>
 
 					<div class="modal-body">
+
 						<form class="form-horizontal">
 							<div class="form-group" id="refresh_value_form">
-								<label class="control-label col-sm-4" for="refresh_value">Refresh frequency</label>
-								<div class="col-sm-8">
-							  		<input type="text" class="form-control" id="refresh_value" placeholder="between 200 and 10000 ms" onkeypress="validate_refresh()">
+								<label class="control-label col-sm-3" for="refresh_value">Refresh</label>
+								<div class="col-sm-9">
+									<div class="input-group">
+								  		<input type="text" class="form-control" id="refresh_value" placeholder="Between 200 and 10,000 ms" onkeyup="analyze_refresh()">
+								  		<span class="input-group-btn">
+									        <button class="btn btn-info" type="button" style="height:33px;" onclick="validate_refresh()"><span class="glyphicon glyphicon-ok"></button>
+									    </span>
+									</div>
 								</div>
 							</div>
 						</form>
 
 						<form class="form-horizontal">
 							<div class="form-group" id="home_position_form">
-								<label class="control-label col-sm-4" for="home_position_value">Home position</label>
-								<div class="col-sm-8">
+								<label class="control-label col-sm-3" for="home_position_value">Home position</label>
+								<div class="col-sm-9">
 									<div class="input-group">
-										<input type="text" class="form-control" placeholder="Latitude/Longitude" id="home_position_value" onkeypress="validate_position()">
+										<input type="text" class="form-control" placeholder="Latitude/Longitude" id="home_position_value" onkeyup="analyze_position()">
 								      	<span class="input-group-btn">
-								        	<button class="btn btn-default" id="home_IMERIR" type="button" onclick="fill_IMERIR_position()">
-								        	<img src="logos/icon_imerir.png" style="height : 20px">
-								        	</button>
+								      		<button class="btn btn-default" type="button" style="height:34px;" onclick="fill_IMERIR_position()">
+								      			<img src="logos/icon_imerir.png" style="width:30px;">
+								      		</button>
+								      		<button class="btn btn-info" type="button" style="height:34px;" onclick="validate_position()">
+								      			<span class="glyphicon glyphicon-ok">
+								      		</button>
 								      	</span>
 								     </div>
 								</div>
 							</div>							
 						</form>
 			      	</div>
-
-				    <div class="modal-footer">
-				        <!--<button type="button" class="btn btn-info" onclick="refresh_parameters()">Validate</button>-->
-				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				    </div>
 			    </div>
 		  	</div>
 		</div>

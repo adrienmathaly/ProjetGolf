@@ -105,13 +105,13 @@ function search_position()
 }
 
 
-function add_marker(_lat,_lng,_name)
+function add_marker(_lat,_lng,_name,_logo)
 {
 	//CREATE A NEW MARKER
 		marker = new google.maps.Marker({
     		position : new google.maps.LatLng(_lat,_lng),
     		map : my_map,
-    		icon: "logos/location-icon.png",
+    		icon: _logo,
     		title : _name
 		});
 
