@@ -1,6 +1,6 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
-var refresh_frequency = 500;
+var refresh_frequency = 2000;
 
 //VARIABLES JSON REQUESTS
 var timer;
@@ -35,7 +35,7 @@ function HttpGET(request)
 				if (xmlHttp.responseText != "" && request == "/all")
 				{
 					JSON_request = xmlHttp.responseText;
-					document.getElementById("textarea_submit").value = JSON_request;
+					//document.getElementById("textarea_submit").value = JSON_request;
 				}
 			}
 		}
@@ -45,27 +45,25 @@ function HttpGET(request)
 	}
 }
 
-function validate_refresh()
+function analyze_refresh()
 {
-	var refresh = parseInt(document.getElementById("refresh_value").value);
+	var refresh = document.getElementById("refresh_value").value;
 
 	if (refresh >= 200 && refresh <= 10000)
 	{
-		refresh_frequency = refresh;
-		$('#refresh_value_form').removeClass("has-error");
+		//alert("pop");
+		//$('#refresh_value_form').removeClass("has-error");
 		$('#refresh_value_form').addClass("has-success");
 	}
 	else
 	{
 		$('#refresh_value_form').removeClass("has-success");
-		$('#refresh_value_form').addClass("has-error");
+		//$('#refresh_value_form').addClass("has-error");
 	}
 }
 
-function validate_position()
+function analyze_position()
 {
-	//alert("pop");
-
 	var position = document.getElementById("home_position_value").value;
 	
 	if (position == "")
@@ -102,12 +100,8 @@ function validate_position()
 
 				else
 				{
-					lat_home = latitude;
-					lng_home = longitude;
-
 					$('#home_position_form').removeClass("has-error");
 					$('#home_position_form').addClass("has-success");
-					//$('#parameters_modal').modal('hide');
 				}
 			}
 		}
@@ -165,10 +159,14 @@ function submit_response()
 			var dist_user = JSON_row["distance"];
 			var alive = JSON_row["alive"];
 
-			//add_marker(lat_user,lng_user,String(dist_user),"logos/location-icon.png");
+			var content_title =
+			"Details user : \nLatitude : " + lat_user
+			+ "\nLongitude : "	+ lng_user
+			+ "\nDistance travelled : " + dist_user
+			+ "\nConnected : " + alive;
 
-			if (alive == "true")			add_marker(lat_user,lng_user,String(dist_user),"logos/location-icon.png");
-			else if (alive == "false")		add_marker(lat_user,lng_user,String(dist_user),"logos/dead-icon.png");
+			if (alive == "true")	add_marker(lat_user,lng_user,content_title,"logos/location-icon.png");
+			else					add_marker(lat_user,lng_user,content_title,"logos/dead-icon.png");
 
 			//CREATE ROW AND CELLS WITH ROUNDED VALUES
 			var row = my_table.insertRow(i+1);
