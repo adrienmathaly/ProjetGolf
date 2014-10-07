@@ -1,6 +1,6 @@
 //VARIABLES DE CONNEXION
 var connected = 0;
-var refresh_frequency = 2000;
+var refresh_frequency = 500;
 
 //VARIABLES JSON REQUESTS
 var timer;
@@ -22,7 +22,7 @@ function HttpGET(request)
 
 		//CONNECTION OPENING
 		xmlHttp.open("GET",URI, true);
-		xmlHttp.setRequestHeader("Origin", "*");
+		//xmlHttp.setRequestHeader("Origin", "172.31.1.49");
 
 
 		//FUNCTION PREPARATION
@@ -48,22 +48,33 @@ function HttpGET(request)
 
 function refresh_parameters()
 {
-	var refresh_frequency_value = document.getElementById("refresh_value").value;
-	var refresh_home_position_value = document.getElementById("refresh_home_position").value;
+	var refresh_frequency_value = parseInt(document.getElementById("refresh_value").value);
 
-	if (refresh_frequency_value > 0)
+	if (refresh_frequency_value >= 200 && refresh_frequency_value <= 10000)
 	{
-		refresh_frequency = value;
-		$('#parameters_modal').modal('hide');
+		refresh_frequency = refresh_frequency_value;
+		$('#refresh_value_form').removeClass("has-error");
+		$('#refresh_value_form').addClass("has-success");
+		//$('#parameters_modal').modal('hide');
+	}
+	else
+	{
+		$('#refresh_value_form').removeClass("has-success");
+		$('#refresh_value_form').addClass("has-error");
 	}
 
+		
+	var refresh_home_position_value = document.getElementById("home_position_value").value;
+	
 	if (refresh_home_position_value != "")
 	{
 		var arrayOfCoordinates = refresh_home_position_value.split("/");
 
 		if (arrayOfCoordinates.length != 2)
 		{
-			alert("Invalid coordinates");			
+			console.log("Invalid coordinates");
+			$('#home_position_form').removeClass("has-sucess");
+			$('#home_position_form').addClass("has-error");	
 		}
 		else
 		{
@@ -72,19 +83,26 @@ function refresh_parameters()
 			
 			if (latitude > 90 || latitude < -90)
 			{
-				alert("Latitude problem");
+				console.log("Latitude problem");
+				$('#home_position_form').removeClass("has-sucess");
+				$('#home_position_form').addClass("has-error");	
 			}
 			else
 			{
 				if (longitude > 180 || longitude < -180)
 				{
-					alert("Longitude problem");
+					console.log("Longitude problem");
+					$('#home_position_form').removeClass("has-sucess");
+					$('#home_position_form').addClass("has-error");	
 				}
 				else
 				{
 					lat_home = latitude;
 					lng_home = longitude;
-					$('#parameters_modal').modal('hide');
+
+					$('#home_position_form').removeClass("has-error");
+					$('#home_position_form').addClass("has-success");
+					//$('#parameters_modal').modal('hide');
 				}
 			}
 		}
@@ -151,8 +169,8 @@ function submit_response()
 
 			//INSERT ROUNDED VALUES
 			cell_user.innerHTML = "Anonymous#"+(i+1);
-			cell_lat.innerHTML = parseFloat(JSON_row["lat"]).toFixed(7);
-			cell_lng.innerHTML = parseFloat(JSON_row["lng"]).toFixed(7);
+			cell_lat.innerHTML = parseFloat(JSON_row["lat"]).toFixed(5);
+			cell_lng.innerHTML = parseFloat(JSON_row["lng"]).toFixed(5);
 			cell_dist.innerHTML = parseFloat(JSON_row["distance"]).toFixed(2);
 			i++;
 		});
