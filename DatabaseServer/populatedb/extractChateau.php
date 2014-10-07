@@ -9,14 +9,7 @@
 */
 
 $file = fopen("chateaux.asc", "r");
-
-$host = "localhost";
-$user = "root";
-$bdd  = "DB_GLF";
-$pwd  = "";
-
-mysql_connect($host, $user, $pwd) or die("Erreur de connexion au serveur");
-mysql_select_db($bdd) or die("Erreur de connexion a la base de donnees");
+$db = new SQLite3('../db/db_golf.sqlite');
 
 $i =0;
 while( !feof($file) ){
@@ -24,6 +17,8 @@ while( !feof($file) ){
     $row = fgets($file);
 
     if( !empty($row) ){
+
+        //echo "row : ".$row."<br>";
 
         $row = str_replace(" (", ",", $row);
         $row = str_replace("\"", "", $row);
@@ -52,19 +47,18 @@ while( !feof($file) ){
             $nomville = substr($nomville, 0, $pos);
         }
 
-        //echo "$nomville | $nomChtx | $departement<br>";
- 
+        $departement = (string)$departement;
+        $departement = substr($departement, 1);
+
         $query = '
         SELECT ville_id, ville_nom_simple
         FROM t_ville
-        WHERE ville_nom_simple = "'.$nomville.'" and ville_departement = '.$departement.'
+        WHERE ville_nom_simple = "'.$nomville.'" and ville_departement = "'.$departement.'"
         ';
 
-        $result = mysql_query($query);
-        $res = mysql_fetch_array($result);
-        //echo "$query <br>";
-        //if(!empty($res[0]))
-        //echo "<b>villeBD:</b> $res[1] || <b>villeFile:</b> $nomville || <b>dep</b> = $departement || <b>res[0]</b> = $res[0] <br>";
+        $result = $db->query($query);
+        $res = $result->fetchArray();
+
 
         $poi_ville_id  = $res[0];
         $poi_longitude = $explode_chtx[0];
@@ -73,18 +67,24 @@ while( !feof($file) ){
         $poi_nom = $nomChtx;
         $poi_type_id = 4;
         $poi_etoile = 0;
-         
+
+        $poi_ville_id  = utf8_encode($poi_ville_id);
+        $poi_longitude  = utf8_encode($poi_longitude);
+        $poi_latitude  = utf8_encode($poi_latitude);
+        $poi_nom  = utf8_encode($poi_nom);
+        $poi_type_id  = utf8_encode($poi_type_id);
+        $poi_etoile  = utf8_encode($poi_etoile);
+
+
         if( !empty($res[0]) ){
-        
-            $query = "
+            
+            $query = '
             INSERT INTO t_poi (poi_ville_id, poi_longitude, poi_latitude, poi_nom, poi_type_id, poi_etoile) VALUES
-            ( $poi_ville_id, $poi_longitude, $poi_latitude, '$poi_nom', $poi_type_id, $poi_etoile )
-            ";
-
-
-            //echo $query."<br>";        
-            $result = mysql_query($query);
-                $i++;
+            ( '.$poi_ville_id.', '.$poi_longitude.', '.$poi_latitude.', "'.$poi_nom.'", '.$poi_type_id.', '.$poi_etoile.' )
+            ';
+            
+            $result = $db->exec($query);
+            $i++;
         
         }
         
@@ -92,7 +92,8 @@ while( !feof($file) ){
 }
 
 echo $i;
-mysql_close();
+$db->close();
+
 
 fclose($file);
 
