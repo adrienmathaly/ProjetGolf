@@ -21,7 +21,7 @@ public abstract class CustomizedHandler implements HttpHandler{
 		    Logger.addLogToBeWritten(ConfLoader.getEntry("loggerEventsName"),"- Request: "+this.getClass().getSimpleName());
 		}catch(Exception e){
 			e.printStackTrace();
-			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), this.getClass().getName() + e.toString() + e.getStackTrace()[0].getLineNumber());
+			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), this.getClass().getName()+ " - " +e.getStackTrace()[0].getLineNumber()+  " - " +  e.toString());
 		}
 	}
 	

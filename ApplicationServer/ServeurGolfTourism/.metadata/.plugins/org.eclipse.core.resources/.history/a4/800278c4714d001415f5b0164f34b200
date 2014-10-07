@@ -1,0 +1,59 @@
+package http.handlers.mobile;
+
+import http.database.DatabaseManager;
+import http.handlers.CustomizedHandler;
+import java.io.OutputStream;
+import com.sun.net.httpserver.HttpExchange;
+import configuration.ConfLoader;
+
+public class NearestPOIFromCoords extends CustomizedHandler {
+
+	private static Float filtreLg=0.0f;
+	private static Float filtreLt=0.0f;
+	
+	@Override
+	protected void doYourStuff(HttpExchange t) throws Exception {
+		
+		DatabaseManager dbm = new DatabaseManager(formatDbRequest(t));
+		dbm.connect("GET");
+		String response = dbm.getResponse();
+		t.getResponseHeaders().add("Content-type", "json;charset=utf-8");
+		t.sendResponseHeaders(200, response.length());
+		OutputStream os = t.getResponseBody();
+		os.write(response.getBytes());
+		os.close();
+	}
+
+	private String formatDbRequest(HttpExchange t) {
+		String[] s = t.getRequestURI().toString().split("/");
+		return ConfLoader.getEntry("databaseURL") + "/" + s[s.length - 2] + "/" + s[s.length - 1].replace("?", ".php?");
+	}
+	
+	private String filtreLongitude(String lg){
+		return ""+(Float.parseFloat(lg)+filtreLg);
+	}
+	
+	private String filtreLatitude(String lt){
+		return ""+(Float.parseFloat(lt)+filtreLt);
+	}
+	
+	private boolean isRequestValid(HttpExchange t){
+		return t.getRequestURI().toString().matches("http://172.31.1.191:8081/poi/nearest?lg=lt=");
+	}
+
+	public static Float getFiltreLt() {
+		return filtreLt;
+	}
+
+	public static void setFiltreLt(Float filtreLt) {
+		NearestPOIFromCoords.filtreLt = filtreLt;
+	}
+
+	public static Float getFiltreLg() {
+		return filtreLg;
+	}
+
+	public static void setFiltreLg(Float filtreLg) {
+		NearestPOIFromCoords.filtreLg = filtreLg;
+	}
+}

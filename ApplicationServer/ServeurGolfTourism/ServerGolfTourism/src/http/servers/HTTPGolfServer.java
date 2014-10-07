@@ -19,7 +19,7 @@ abstract class HTTPGolfServer{
 		    server.setExecutor(null);
 		} catch (NumberFormatException | IOException e) {
 			e.printStackTrace();
-			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), e.toString());
+			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), this.getClass().getName()+ " - " +e.getStackTrace()[0].getLineNumber()+  " - " +  e.toString());
 		}
 	}
 	

@@ -1,0 +1,35 @@
+package http.handlers.mobile;
+
+import http.database.DatabaseManager;
+import http.handlers.PostHandler;
+import http.users.Point;
+import http.users.SetOfUsers;
+
+import java.util.HashMap;
+
+
+
+
+import com.sun.net.httpserver.HttpExchange;
+
+import configuration.ConfLoader;
+
+public class Shot extends PostHandler{
+
+	@Override
+	protected void doYourStuff(HttpExchange t) throws Exception {
+		HashMap<String,Object> map = parseUserInfo(t);
+		DatabaseManager dbm = new DatabaseManager(formatDbRequest((float)map.get("lg"),(float)map.get("lt")));
+		dbm.connect("GET");
+		String response = dbm.getResponse();
+		if(!SetOfUsers.isUserFullyCreated((String)map.get("token"))){
+			SetOfUsers.setFirstLocationOf((String)map.get("token"),new Point((Float)(float)(double)map.get("userLt"),(Float)(float)(double)(map.get("userLg"))));
+		}
+		SetOfUsers.updateUserLocation((String)map.get("token"), new Point((Float)(float)(double)(map.get("ballLt")),(Float)(float)(double)(map.get("ballLg"))));
+	}
+	
+	
+	private String formatDbRequest(Float lg,Float lt) {
+		return ConfLoader.getEntry("databaseURL")+"/"+"poi/"+"nearest.php?lg="+lg+"lt="+lt;
+	}
+}

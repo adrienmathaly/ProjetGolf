@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import configuration.ConfLoader;
 import logger.Logger;
 
@@ -20,7 +19,7 @@ public class DatabaseManager {
 			url = new URL(URL);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), e.toString());
+			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), this.getClass().getName()+ " - " +e.getStackTrace()[0].getLineNumber()+  " - " +  e.toString());
 		}
 	}
 
@@ -34,7 +33,7 @@ public class DatabaseManager {
 			connection.connect();
 		} catch (IOException e) {
 			e.printStackTrace();
-			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), e.toString());
+			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), this.getClass().getName()+ " - " +e.getStackTrace()[0].getLineNumber()+  " - " +  e.toString());
 		}
 	}
 
@@ -51,7 +50,7 @@ public class DatabaseManager {
 			s.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), e.toString());
+			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), this.getClass().getName()+ " - " +e.getStackTrace()[0].getLineNumber()+  " - " +  e.toString());
 		}
 		return response;
 	}

@@ -1,0 +1,6 @@
+1412608620866	Encapsulate field 'filtreLt'
+1412608628685	Encapsulate field 'filtreLg'
+1412620705679	Delete element
+1412622954906	Rename local variable 'newPoint'
+1412623038473	Encapsulate field 'ballLongitude'
+1412623043184	Encapsulate field 'ballLatitude'

@@ -19,10 +19,6 @@ public class UsersTravelledDistances extends CustomizedHandler  {
 
 	@Override
 	protected void doYourStuff(HttpExchange t) throws Exception {
-	//	  LinkedList<Float> list = SetOfUsers.listOfDistances();
-	//	  while(!list.isEmpty()){
-	//		  System.out.println(list.pop());
-	//	  }
 	      String response = JSONBuilder.buildJSONBasicMsg("travelledDistances",prepareListOfDistances(SetOfUsers.listOfDistances()));
 	      t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
 	      t.sendResponseHeaders(200, response.length());

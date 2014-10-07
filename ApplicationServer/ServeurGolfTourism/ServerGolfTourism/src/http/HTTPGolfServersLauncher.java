@@ -15,7 +15,6 @@ public class HTTPGolfServersLauncher {
 	private HTTPGolfMobileServer mobileServer;
 	private HTTPGolfSupervisionServer supvServer;
 
-	
 	public HTTPGolfServersLauncher() {
 		ConfLoader.loadConfigFile();
 		launchLoggers();
@@ -40,8 +39,8 @@ public class HTTPGolfServersLauncher {
 	private void killEverything(){
 		mobileServer.killMePlease();
 		supvServer.killMePlease();
-		killLoggers();
 		Logger.addLogToBeWritten("Events",ConfLoader.getEntry("onStopMsg"));
+		killLoggers();
 	}
 	
 	private void launchLoggers(){

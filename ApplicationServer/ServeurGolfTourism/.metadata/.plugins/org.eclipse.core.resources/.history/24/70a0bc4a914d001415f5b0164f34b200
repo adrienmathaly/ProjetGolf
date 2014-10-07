@@ -1,0 +1,5 @@
+package http.users;
+
+public class Triplet {
+
+}
