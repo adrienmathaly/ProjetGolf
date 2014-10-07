@@ -5,7 +5,6 @@ var mouseLng = 0;
 var mouseLat = 0;
 
 var flightPath = null;
-var flightPath2 = null;
 
 var forceBall = 1;
 
@@ -96,8 +95,6 @@ function onStopDragBall(event){
 	if(flightPath !== null){
 		flightPath.setMap(null);
 		flightPath = null;
-		flightPath2.setMap(null);
-		flightPath2 = null;
 
 		var elem = document.getElementById('information');
 		elem.innerHTML = 'Send data :' +  mouseLat + ':' + mouseLng;
@@ -188,10 +185,7 @@ function onMoveDragBall(event){
 		flightPath.setMap(null);
 		flightPath = null;
 	}
-	if(flightPath2 !== null){
-		flightPath2.setMap(null);
-		flightPath2 = null;
-	}
+
 	//If drag was accepted in callback of eventStart
 	if(dragAccepted){
 		//Finger position
@@ -232,17 +226,8 @@ function onMoveDragBall(event){
 										    strokeWeight: 6
 		  								});
 
-		//Create the line object 
-		flightPath2 = new google.maps.Polyline({
-		    								path: flightPlanCoordinates2,
-										    geodesic: true,
-										    strokeColor: '#330099',
-										    strokeOpacity: 1.0,
-										    strokeWeight: 6
-		  								});
 		//Display it
 		flightPath.setMap(map);
-		flightPath2.setMap(map);
 	}
 }
 
