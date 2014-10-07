@@ -5,7 +5,6 @@ var mouseLng = 0;
 var mouseLat = 0;
 
 var flightPath = null;
-var flightPath2 = null;
 
 var forceBall = 1;
 
@@ -74,19 +73,51 @@ function changePokeballFromMarker(marker){
 
 //Callback of startEvent
 function onStartDragBall(event){
+	dragAccepted = false;
+	disableMovement(false);
+
 	var poke = document.getElementById('pokeball').getBoundingClientRect();
 
 	var posX = event.touches[0].clientX;
 	var posY = event.touches[0].clientY;
 
+	var gameMode = document.getElementById("gameMode").value;
+
+	var latDevice = devicePositionMarker.getPosition().lat();
+	var lngDevice = devicePositionMarker.getPosition().lng();
+
+	var latPoke = pokeballPosition.lat();
+	var lngPoke = pokeballPosition.lng();
+	
 	//Autorized only if the drag is in the ball rect
 	if(posX >= poke.left  && posX <= poke.right && posY >= poke.top && posY <= poke.bottom){
-		dragAccepted = true;
-		disableMovement(true);
-	}
-	else{
-		dragAccepted = false;
-		disableMovement(false);
+		
+		if(gameMode == '2'){
+
+			var indexMarker = 0;
+			for(indexMarker in markersPoi){
+				if( Math.abs(latDevice-markersPoi[indexMarker].getPosition().lat()) < 0.1 && Math.abs(lngDevice-markersPoi[indexMarker].getPosition().lng()) < 0.1 ){
+				dragAccepted = true;
+				disableMovement(true);
+				}
+			}
+			if( Math.abs(latDevice-latPoke) < 0.1 && Math.abs(lngDevice-lngPoke) < 0.1 ){
+				dragAccepted = true;
+				disableMovement(true);
+			}
+			
+		}
+		else if(gameMode == '3'){
+			if( Math.abs(latDevice-latPoke) < 0.1 && Math.abs(lngDevice-lngPoke) < 0.1 ){
+				dragAccepted = true;
+				disableMovement(true);
+			}
+		}
+		else{
+			dragAccepted = true;
+			disableMovement(true);
+
+		}
 	}
 }
 
@@ -96,8 +127,6 @@ function onStopDragBall(event){
 	if(flightPath !== null){
 		flightPath.setMap(null);
 		flightPath = null;
-		flightPath2.setMap(null);
-		flightPath2 = null;
 
 		var elem = document.getElementById('information');
 		elem.innerHTML = 'Send data :' +  mouseLat + ':' + mouseLng;
@@ -125,8 +154,8 @@ function onRequestResponse(data){
 	}
 	markersPoi = [];
 
+	//alert('Ball : ' + data['ballLt'] + '/' + data['ballLg']);
 	//Move ball with response server
-	alert('Ball : ' + data['ballLt'] + '/' + data['ballLg']);
 	changePokeballFromLatLng(new google.maps.LatLng(data['ballLt'], data['ballLg']));
 
 	//Add a town marker
@@ -188,10 +217,7 @@ function onMoveDragBall(event){
 		flightPath.setMap(null);
 		flightPath = null;
 	}
-	if(flightPath2 !== null){
-		flightPath2.setMap(null);
-		flightPath2 = null;
-	}
+
 	//If drag was accepted in callback of eventStart
 	if(dragAccepted){
 		//Finger position
@@ -232,17 +258,8 @@ function onMoveDragBall(event){
 										    strokeWeight: 6
 		  								});
 
-		//Create the line object 
-		flightPath2 = new google.maps.Polyline({
-		    								path: flightPlanCoordinates2,
-										    geodesic: true,
-										    strokeColor: '#330099',
-										    strokeOpacity: 1.0,
-										    strokeWeight: 6
-		  								});
 		//Display it
 		flightPath.setMap(map);
-		flightPath2.setMap(map);
 	}
 }
 
