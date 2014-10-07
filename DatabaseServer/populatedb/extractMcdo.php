@@ -9,14 +9,7 @@
 */
 
 $file = fopen("mcdo.asc", "r");
-
-$host = "localhost";
-$user = "root";
-$bdd  = "DB_GLF";
-$pwd  = "";
-
-mysql_connect($host, $user, $pwd) or die("Erreur de connexion au serveur");
-mysql_select_db($bdd) or die("Erreur de connexion a la base de donnees");
+$db = new SQLite3('../db/db_golf.sqlite');
 
 $i =0;
 while( !feof($file) ){
@@ -39,16 +32,17 @@ while( !feof($file) ){
         $ville = str_replace("-", " ", $ville);
         $ville = strtolower($ville);
 
+        $departement = (string)$departement;
+        $departement = substr($departement, 1);
+        
         $query = '
         SELECT ville_id, ville_nom_simple
         FROM t_ville
-        WHERE ville_nom_simple = "'.$ville.'"
+        WHERE ville_nom_simple = "'.$ville.'" and ville_departement = "'.$departement.'"
         ';
 
-        $result = mysql_query($query);
-        $res = mysql_fetch_array($result);
- 
-        //echo "quer = $query || ville = $ville || Dep = $departement || res[0] = $res[0] <br>";
+        $result = $db->query($query);
+        $res = $result->fetchArray();
 
         $poi_ville_id  = $res[0];
         $poi_longitude = $explode_mcdo[0];
@@ -56,17 +50,23 @@ while( !feof($file) ){
         $poi_nom = "Mcdo ".$ville;
         $poi_type_id = 2;
         $poi_etoile = mb_substr_count( $explode_mcdo[2], "*");
+
+        $poi_ville_id  = utf8_encode($poi_ville_id);
+        $poi_longitude  = utf8_encode($poi_longitude);
+        $poi_latitude  = utf8_encode($poi_latitude);
+        $poi_nom  = utf8_encode($poi_nom);
+        $poi_type_id  = utf8_encode($poi_type_id);
+        $poi_etoile  = utf8_encode($poi_etoile);
          
         if( !empty($res[0]) ){
         
-            $query = "
+            $query = '
             INSERT INTO t_poi (poi_ville_id, poi_longitude, poi_latitude, poi_nom, poi_type_id, poi_etoile) VALUES
-            ( $poi_ville_id, $poi_longitude, $poi_latitude, '$poi_nom', $poi_type_id, $poi_etoile )
-            ";
-
+            ( '.$poi_ville_id.', '.$poi_longitude.', '.$poi_latitude.', "'.$poi_nom.'", '.$poi_type_id.', '.$poi_etoile.' )
+            ';
 
             //echo $query."<br>";        
-            $result = mysql_query($query);
+            $result = $db->exec($query);
                 $i++;
         
         }
@@ -75,7 +75,7 @@ while( !feof($file) ){
 }
 
 echo $i;
-mysql_close();
+$db->close();
 
 fclose($file);
 
