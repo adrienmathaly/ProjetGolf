@@ -17,10 +17,8 @@ function initialiser()
 {
 	my_table = document.getElementById("table_infos");
 
-
 	lat_home = 42.674547;
 	lng_home = 2.847754;
-
 	latlng_home = new google.maps.LatLng(lat_home, lng_home);
 
 	var options = {
@@ -31,11 +29,10 @@ function initialiser()
 
 	my_map = new google.maps.Map(document.getElementById("my_map"), options);
 
-
-	marker_home = new google.maps.Marker({
+	var marker_home = new google.maps.Marker({
 		position : latlng_home,
 		map : my_map,
-		icon : "css/images/home-icon.png",
+		icon: "logos/home-icon.png",
 		title : "Home"
 	});
 
@@ -107,20 +104,18 @@ function search_position()
 }
 
 
-function add_marker(_lat,_lng,_name)
+function add_marker(_lat,_lng,_name,_logo)
 {
 	//CREATE A NEW MARKER
 		marker = new google.maps.Marker({
     		position : new google.maps.LatLng(_lat,_lng),
     		map : my_map,
-    		icon: "logos/location-icon.png",
+    		icon: _logo,
     		title : _name
 		});
 
 	marker_array.push(marker);
 	marker.setMap(my_map);
-
-	//resize_map();
 }
 
 function delete_all_markers()
@@ -133,32 +128,30 @@ function delete_all_markers()
 
 function resize_map()
 {
-	var bounds = new google.maps.LatLngBounds();
-		
-	for(i = 0; i < marker_array.length; i++)
-	{
-		//var position = marker_array[i].getPosition();
-		bounds.extend(marker_array[i].getPosition());
-	}
-		
-	my_map.fitBounds(bounds);
-
-	//IF THERE IS NO MARKER
+	//IF THERE IS ONLY THE HOME
 	if (marker_array.length == 0)
 	{
 		my_map.setCenter(latlng_home);
-		my_map.setCenter(15);
+		my_map.setCenter(12);
 	}
 
-	//IF THERE IS AN ONLY ONE MARKER
-	/*else if (marker_array.length == 1)
+	else if (marker_array.length == 1)
 	{
-
-
-
-	}*/
-
-	//if (my_map.getZoom() > 15)	my_map.setZoom(12);
+		my_map.setCenter(marker_array[0].getPosition());
+		my_map.setCenter(12);
+	}
+	
+	else
+	{
+		var bounds = new google.maps.LatLngBounds();
+			
+		for(i = 0; i < marker_array.length; i++)
+		{
+			bounds.extend(marker_array[i].getPosition());
+		}
+			
+		my_map.fitBounds(bounds);
+	}
 }
 
 function fill_IMERIR_position()

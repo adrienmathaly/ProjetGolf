@@ -6,18 +6,6 @@ var refresh_frequency = 2000;
 var timer;
 var JSON_request;
 
-/*var timer_amount;
-var timer_totalDistances;
-var timer_lastKnownLocations;
-var timer_numberOfConnected;
-var timer_travelledDistance;
-
-var JSON_amount;
-var JSON_totalDistances;
-var JSON_lastKnownLocations;
-var JSON_numberOfConnected;
-var JSON_travelledDistance;*/
-
 function HttpGET(request)
 {
 	//ADDRESS SECURITY FORMAT
@@ -39,22 +27,18 @@ function HttpGET(request)
 
 		//FUNCTION PREPARATION
 		xmlHttp.onreadystatechange = function()
+		{
+			if ((xmlHttp.status == 200 || xmlHttp.status == 0))
 			{
-				if ((xmlHttp.status == 200 || xmlHttp.status == 0))
-				{
-					connected = 1;
+				connected = 1;
 
-					if (xmlHttp.responseText != "" && request == "/all")
-					{
-						JSON_request = xmlHttp.responseText;
-						document.getElementById("textarea_submit").value = JSON_request;
-					}
-				}
-				else
+				if (xmlHttp.responseText != "" && request == "/all")
 				{
-					connected = 0;
+					JSON_request = xmlHttp.responseText;
+					//document.getElementById("textarea_submit").value = JSON_request;
 				}
 			}
+		}
 
 		xmlHttp.send();
 		submit_response();
@@ -124,7 +108,7 @@ function connect_to_server()
 	else
 	{
 		connected = 1;
-		setInterval( function() {HttpGET("/all")},refresh_frequency);
+		timer = setInterval( function() {HttpGET("/all")},refresh_frequency);
 
 		$("#connect").removeClass("btn-danger");
 		$("#connect").addClass("btn-info");
@@ -147,6 +131,7 @@ function submit_response()
 		document.getElementById("stats_amount").value = parse_JSON_request["amountOfUsers"];
 		document.getElementById("stats_distances").value = parse_JSON_request["totalDistances"];
 		document.getElementById("stats_users_connected").value = parse_JSON_request["nbConnected"];
+		document.getElementById("stats_best_distance").value = parse_JSON_request["bestDistance"];
 
 		var i = 0;
 		parse_JSON_request["usersDetails"].forEach(function(JSON_row)
@@ -155,7 +140,7 @@ function submit_response()
 			var lat_user = JSON_row["lat"];
 			var lng_user = JSON_row["lng"];
 			var dist_user = JSON_row["distance"];
-			add_marker(lat_user,lng_user,dist_user);
+			add_marker(lat_user,lng_user,String(dist_user),"logos/location-icon.png");
 
 			//CREATE ROW AND CELLS WITH ROUNDED VALUES
 			var row = my_table.insertRow(i+1);
@@ -168,74 +153,8 @@ function submit_response()
 			cell_user.innerHTML = "Anonymous#"+(i+1);
 			cell_lat.innerHTML = parseFloat(JSON_row["lat"]).toFixed(7);
 			cell_lng.innerHTML = parseFloat(JSON_row["lng"]).toFixed(7);
-			cell_dist.innerHTML = parseFloat(JSON_row["distqnce"]).toFixed(2);
-
-			i++;
-		});
-
-	}
-
-
-	//AMOUNT OF USERS
-	/*var parse_JSON_amount = eval("(" + JSON_amount + ")");
-	if (parse_JSON_amount != undefined)
-		document.getElementById("stats_amount").value = parse_JSON_amount["amountOfUsers"];
-
-	//TOTAL DISTANCES
-	var parse_JSON_totalDistances = eval("(" + JSON_totalDistances + ")");
-	if (parse_JSON_totalDistances != undefined)
-		document.getElementById("stats_distances").value = parse_JSON_totalDistances["totalDistances"];
-
-	//NUMBER OF CONNECTED
-	var parse_JSON_numberOfConnected = eval("(" +JSON_numberOfConnected + ")");
-	if (parse_JSON_numberOfConnected != undefined)
-	{
-		var value = parse_JSON_numberOfConnected["nbConnected"];
-		document.getElementById("stats_users_connected").value = value;
-	}
-
-
-	//USERS LAST KNOWN LOCATIONS
-	var parse_JSON_lastKnownLocations = eval("(" +JSON_lastKnownLocations + ")");
-
-	if (parse_JSON_lastKnownLocations != undefined)
-	{
-		var i = 0;
-		parse_JSON_lastKnownLocations["lastKnownLocations"].forEach(function(JSON_row)
-		{
-			//ADD A MARKER WITH THE EXACT POSITION
-			var lat_user = JSON_row["lt"];
-			var lng_user = JSON_row["lg"];
-			add_marker(lat_user,lng_user,"(0)");
-
-			//CREATE ROW AND CELLS WITH ROUNDED VALUES
-			var row = my_table.insertRow(i+1);
-			var cell_user = row.insertCell(0);
-			var cell_lat = row.insertCell(1);
-			var cell_lng = row.insertCell(2);
-			//var cell_dist = row.insertCell(3);
-
-			//INSERT ROUNDED VALUES
-			cell_user.innerHTML = "Anonymous#"+(i+1);
-			cell_lat.innerHTML = parseFloat(JSON_row["lt"]).toFixed(7);
-			cell_lng.innerHTML = parseFloat(JSON_row["lg"]).toFixed(7);
-
+			cell_dist.innerHTML = parseFloat(JSON_row["distance"]).toFixed(2);
 			i++;
 		});
 	}
-
-
-	var parse_JSON_travelledDistances = eval("(" +JSON_travelledDistances + ")");
-	if (parse_JSON_travelledDistances != undefined)
-	{
-		var i = 1;
-
-		parse_JSON_travelledDistances["travelledDistances"].forEach(function(JSON_row)
-		{
-			var cell_dist = my_table.rows[i].insertCell(3);
-			cell_dist.innerHTML = parseFloat(JSON_row["dist"]).toFixed(3);
-
-			i++;
-		});
-	}*/
 }
