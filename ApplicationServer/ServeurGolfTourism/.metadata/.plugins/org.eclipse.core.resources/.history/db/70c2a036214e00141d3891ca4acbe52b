@@ -1,0 +1,72 @@
+package http.handlers.mobile;
+
+import http.database.DatabaseManager;
+import http.handlers.PostHandler;
+import http.users.Point;
+import http.users.SetOfUsers;
+
+import java.io.OutputStream;
+import java.util.HashMap;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import com.sun.net.httpserver.HttpExchange;
+
+import configuration.ConfLoader;
+
+public class Shot extends PostHandler{
+
+	@Override
+	protected void doYourStuff(HttpExchange t) throws Exception {
+		HashMap<String,Object> map = parseUserInfo(t);
+		System.out.println((String) map.get("token"));
+		if(SetOfUsers.containsToken((String) map.get("token"))){
+			Point p = applyWeather((float)(double)map.get("ballLt"),(float)(double)map.get("ballLg"));
+			DatabaseManager dbm = new DatabaseManager(formatDbRequest(p));
+			dbm.connect("GET");
+			String response = dbm.getResponse();
+			if(!SetOfUsers.isUserFullyCreated((String)map.get("token"))){
+				SetOfUsers.setFirstLocationOf((String)map.get("token"),new Point((Float)(float)(double)map.get("userLt"),(Float)(float)(double)(map.get("userLg"))));
+			}
+			JSONObject jsono = (JSONObject) new JSONParser().parse(response);
+			jsono.put("ballLg", p.getLongitude());
+			jsono.put("ballLt", p.getLatitude());
+			SetOfUsers.updateUserLocation((String)map.get("token"),p,new Point(Float.parseFloat((String)jsono.get("ltCity")),Float.parseFloat((String)jsono.get("lgCity"))));
+			t.getResponseHeaders().add("Content-type", "json;charset=utf-8");
+			response = jsono.toJSONString();
+			t.sendResponseHeaders(201, response.length());
+			OutputStream os = t.getResponseBody();
+			os.write(response.getBytes());
+			os.close();
+		}else{
+			t.sendResponseHeaders(401, 100);
+			System.out.println(t.getRequestHeaders());
+		}
+	}
+	
+	private String formatDbRequest(Point p) {
+		return ConfLoader.getEntry("databaseURL")+"/poi/nearest.php?lg="+p.getLongitude()+"&"+"lt="+p.getLatitude();
+	}
+	
+	private Point applyWeather(Float lg, Float lt){
+		Float neg=(Float)(float)Math.random();
+		Point p;
+		if(neg<0.5){
+			Float neg2=(Float)(float)Math.random();
+			if(neg2<0.5){
+				p=new Point(lg-(neg/4),lt-(neg2/4));
+			}else{
+				p=new Point(lg-(neg/4),lt+(neg2/4));
+			}
+		}else{
+			Float neg2=(Float)(float)Math.random();
+			if(neg2<0.5){
+				p=new Point(lg+(neg/4),lt-(neg2/4));
+			}else{
+				p=new Point(lg+(neg/4),lt+(neg2/4));
+			}
+		}
+		return p;
+	}
+}

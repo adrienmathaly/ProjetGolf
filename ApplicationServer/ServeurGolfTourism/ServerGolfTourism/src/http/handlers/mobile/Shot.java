@@ -4,15 +4,11 @@ import http.database.DatabaseManager;
 import http.handlers.PostHandler;
 import http.users.Point;
 import http.users.SetOfUsers;
-
 import java.io.OutputStream;
 import java.util.HashMap;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import com.sun.net.httpserver.HttpExchange;
-
 import configuration.ConfLoader;
 
 public class Shot extends PostHandler{
@@ -20,23 +16,31 @@ public class Shot extends PostHandler{
 	@Override
 	protected void doYourStuff(HttpExchange t) throws Exception {
 		HashMap<String,Object> map = parseUserInfo(t);
-		Point p = applyWeather((float)(double)map.get("ballLt"),(float)(double)map.get("ballLg"));
-		DatabaseManager dbm = new DatabaseManager(formatDbRequest(p));
-		dbm.connect("GET");
-		String response = dbm.getResponse();
-		if(!SetOfUsers.isUserFullyCreated((String)map.get("token"))){
-			SetOfUsers.setFirstLocationOf((String)map.get("token"),new Point((Float)(float)(double)map.get("userLt"),(Float)(float)(double)(map.get("userLg"))));
+		String response="";
+		if(SetOfUsers.containsToken((String) map.get("token"))){
+			Point p = applyWeather((float)(double)map.get("ballLt"),(float)(double)map.get("ballLg"));
+			DatabaseManager dbm = new DatabaseManager(formatDbRequest(p));
+			dbm.connect("GET");
+			response = dbm.getResponse();
+			if(!SetOfUsers.isUserFullyCreated((String)map.get("token"))){
+				SetOfUsers.setFirstLocationOf((String)map.get("token"),new Point((Float)(float)(double)map.get("userLt"),(Float)(float)(double)(map.get("userLg"))));
+			}
+			JSONObject jsono = (JSONObject) new JSONParser().parse(response);
+			jsono.put("ballLg", p.getLongitude());
+			jsono.put("ballLt", p.getLatitude());
+			SetOfUsers.updateUserLocation((String)map.get("token"),p,new Point(Float.parseFloat((String)jsono.get("ltCity")),Float.parseFloat((String)jsono.get("lgCity"))));
+			t.getResponseHeaders().add("Content-type", "json;charset=utf-8");
+			response = jsono.toJSONString();
+			t.sendResponseHeaders(201, response.length());
+			OutputStream os = t.getResponseBody();
+			os.write(response.getBytes());
+			os.close();
+		}else{
+			t.sendResponseHeaders(401, response.length());
+			OutputStream os = t.getResponseBody();
+			os.write(response.getBytes());
+			os.close();
 		}
-		JSONObject jsono = (JSONObject) new JSONParser().parse(response);
-		jsono.put("ballLg", p.getLongitude());
-		jsono.put("ballLt", p.getLatitude());
-		SetOfUsers.updateUserLocation((String)map.get("token"),p,new Point(Float.parseFloat((String)jsono.get("ltCity")),Float.parseFloat((String)jsono.get("lgCity"))));
-		t.getResponseHeaders().add("Content-type", "json;charset=utf-8");
-		response = jsono.toJSONString();
-		t.sendResponseHeaders(201, response.length());
-		OutputStream os = t.getResponseBody();
-		os.write(response.getBytes());
-		os.close();
 	}
 	
 	private String formatDbRequest(Point p) {

@@ -7,8 +7,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import com.sun.net.httpserver.HttpExchange;
 import http.handlers.CustomizedHandler;
+import http.users.Quadruplet;
 import http.users.SetOfUsers;
-import http.users.Triplet;
 
 public class AllTheData extends CustomizedHandler{
 
@@ -30,14 +30,15 @@ public class AllTheData extends CustomizedHandler{
 	      os.close();
 	}
 	
-	private JSONArray prepareListOfEveryStats(LinkedList<Triplet> list){
+	private JSONArray prepareListOfEveryStats(LinkedList<Quadruplet> list){
 		JSONArray listOfEveryStats=new JSONArray();
 		while(!list.isEmpty()){
-			Triplet t=list.pop();
+			Quadruplet t=list.pop();
 			JSONObject jo = new JSONObject();
 			jo.put("lat",t.getLatitude());
 			jo.put("lng",t.getLongitude());
 			jo.put("distance",t.getDistance());
+			jo.put("alive",t.getAlive().toString());
 			listOfEveryStats.add(jo);
 		}
 		return listOfEveryStats;

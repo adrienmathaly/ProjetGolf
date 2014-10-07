@@ -10,12 +10,12 @@ import configuration.ConfLoader;
 
 public class HTTPResponseHeaderBuilder {
 
-	private File HeadersDirectory;
-	private HashMap<String, String> HeadersList;
+	private static File HeadersDirectory;
+	private static HashMap<String, HashMap<String,String>> HeadersList;
 
 	public HTTPResponseHeaderBuilder(File HeadersDirectory) {
 		this.HeadersDirectory = HeadersDirectory;
-		HeadersList = new HashMap<String, String>();
+		HeadersList = new HashMap<String, HashMap<String,String>>();
 		loadHeadersCollection();
 	}
 
@@ -30,26 +30,26 @@ public class HTTPResponseHeaderBuilder {
 		}
 	}
 
-	private String readFile(File f) {
+	private HashMap<String,String> readFile(File f) {
+		HashMap<String,String> h = new HashMap<String,String>();
 		FileReader fr;
-		String s = "";
 		try {
 			fr = new FileReader(f);
 			BufferedReader bf = new BufferedReader(fr);
 			String line;
 
 			while ((line = bf.readLine()) != null) {
-				s = s + "\n" + line;
+				h.put(line.split(":")[0], line.split(":")[1]);
 			}
 			bf.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			Logger.addLogToBeWritten(ConfLoader.getEntry("loggerErrorsName"), this.getClass().getName()+ " - " +e.getStackTrace()[0].getLineNumber()+  " - " +  e.toString());
 		}
-		return s;
+		return h;
 	}
 
-	public String getHeaderOf(String response) {
-		return this.HeadersList.get(response);
+	public static HashMap<String,String> getHeaderOf(String response) {
+		return HeadersList.get(response);
 	}
 }

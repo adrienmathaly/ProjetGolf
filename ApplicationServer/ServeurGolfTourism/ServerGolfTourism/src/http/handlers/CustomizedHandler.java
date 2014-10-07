@@ -1,12 +1,12 @@
 package http.handlers;
 
+import http.servers.HTTPResponseHeaderBuilder;
 import java.io.IOException;
-
+import java.util.HashMap;
+import java.util.Map.Entry;
 import logger.Logger;
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import configuration.ConfLoader;
 
 public abstract class CustomizedHandler implements HttpHandler{
@@ -25,6 +25,12 @@ public abstract class CustomizedHandler implements HttpHandler{
 		}
 	}
 	
-	abstract protected void doYourStuff(HttpExchange t) throws Exception;
+	protected void setHeaders(HttpExchange t,String headerName){
+		HashMap<String,String> h = HTTPResponseHeaderBuilder.getHeaderOf(headerName);
+		for(Entry<String, String> e : h.entrySet()){
+			t.getResponseHeaders().add(e.getKey(),e.getValue());
+		}
+	}
 	
+	abstract protected void doYourStuff(HttpExchange t) throws Exception;
 }
