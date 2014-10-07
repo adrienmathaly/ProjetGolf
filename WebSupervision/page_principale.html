@@ -47,7 +47,7 @@
 
 		      		<form class="nav navbar-nav navbar-right">
 						<li><a title="Information" data-toggle="modal" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-info-sign"></span></a></li>
-		 				<li><a title="Parameters" data-toggle="modal" data-target=".parameters-modal-lg"><span class="glyphicon glyphicon-cog"></span></a></li>
+		 				<li><a title="Settings" data-toggle="modal" data-target=".parameters-modal-lg"><span class="glyphicon glyphicon-cog"></span></a></li>
 		      		</form>
 		    	</div>
 		  	</div>
@@ -80,7 +80,7 @@
 									</div>
 
 									<div class="input-group">
-									  	<span class="input-group-addon">Users connected</span>
+									  	<span class="input-group-addon">Current games</span>
 									  	<input type="text" class="form-control stats" id="stats_users_connected" placeholder="---"  disabled>
 									</div>
 
@@ -131,7 +131,7 @@
 						    </div>
 					  	</div>
 
-						<!--ACCORDION FOR THE JSON TEST BOX
+						<!--ACCORDION FOR THE JSON TEST BOX-->
 					  	<div class="panel panel-default" style="opacity : 0.95;">
 					    	<div class="panel-heading">
 					      		<h4 class="panel-title">
@@ -148,7 +148,7 @@
 
 					      		</div>
 					    	</div>
-					  	</div>-->
+					  	</div>
 
 					</div>
 				</div>
@@ -212,7 +212,7 @@
 		  	<div class="modal-dialog">
 			    <div class="modal-content">
 			      	<div class="modal-header">
-			        	<h4 class="modal-title">Parameters</h4>
+			        	<h4 class="modal-title">Settings</h4>
 			      	</div>
 
 					<div class="modal-body">
@@ -220,7 +220,7 @@
 							<div class="form-group" id="refresh_value_form">
 								<label class="control-label col-sm-4" for="refresh_value">Refresh frequency</label>
 								<div class="col-sm-8">
-							  		<input type="text" class="form-control" id="refresh_value" placeholder="between 200 and 10000 ms">
+							  		<input type="text" class="form-control" id="refresh_value" placeholder="between 200 and 10000 ms" onkeypress="validate_refresh()">
 								</div>
 							</div>
 						</form>
@@ -230,7 +230,7 @@
 								<label class="control-label col-sm-4" for="home_position_value">Home position</label>
 								<div class="col-sm-8">
 									<div class="input-group">
-										<input type="text" class="form-control" placeholder="Latitude/Longitude" id="home_position_value" >
+										<input type="text" class="form-control" placeholder="Latitude/Longitude" id="home_position_value" onkeypress="validate_position()">
 								      	<span class="input-group-btn">
 								        	<button class="btn btn-default" id="home_IMERIR" type="button" onclick="fill_IMERIR_position()">
 								        	<img src="logos/icon_imerir.png" style="height : 20px">
@@ -243,8 +243,8 @@
 			      	</div>
 
 				    <div class="modal-footer">
-				        <button type="button" class="btn btn-info" onclick="refresh_parameters()">Validate</button>
-				        <button type="button" class="btn btn-default" data-dismiss="modal">Quit</button>
+				        <!--<button type="button" class="btn btn-info" onclick="refresh_parameters()">Validate</button>-->
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				    </div>
 			    </div>
 		  	</div>

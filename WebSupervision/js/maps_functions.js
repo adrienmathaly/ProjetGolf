@@ -5,12 +5,7 @@ var latlng_home;
 var lat_home;
 var lng_home;
 
-var lat_IMERIR = 42.674547;
-var lng_IMERIR = 2.847754;
-
 var marker_array = [];
-var lat_array = [];
-var lng_array = [];
 
 
 function initialiser()
@@ -19,9 +14,11 @@ function initialiser()
 
 	lat_home = 42.674547;
 	lng_home = 2.847754;
+
 	latlng_home = new google.maps.LatLng(lat_home, lng_home);
 
-	var options = {
+	var options =
+	{
 		center: latlng_home,
 		zoom: 10,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -29,13 +26,18 @@ function initialiser()
 
 	my_map = new google.maps.Map(document.getElementById("my_map"), options);
 
-	var marker_home = new google.maps.Marker({
-		position : latlng_home,
-		map : my_map,
-		icon: "logos/home-icon.png",
-		title : "Home"
-	});
+	//CREATE THE FIRST HOME MARKER 
+	marker_home = new google.maps.Marker
+	(
+		{
+			position : latlng_home,
+			map : my_map,
+			icon: "logos/home-icon.png",
+			title : "Home"
+		}
+	);
 
+	//DISPLAY MARKER ON THE MAP AND CENTER IT
 	marker_home.setMap(my_map);
 	my_map.setCenter(latlng_home);
 }
@@ -43,15 +45,11 @@ function initialiser()
 
 function go_home()
 {
-	latlng_home = new google.maps.LatLng(lat_home, lng_home);
-
-	if (latlng_home != undefined)
-	{
-		marker_home.setPosition(latlng_home);
-		marker_home.setMap(my_map);
-		my_map.setCenter(latlng_home);
-		my_map.setZoom(16);
-	}
+	latlng_home = new google.maps.LatLng(lat_home,lng_home)
+	marker_home.setPosition(latlng_home);
+	marker_home.setMap(my_map);
+	my_map.setCenter(latlng_home);
+	my_map.setZoom(10);
 }
 
 
@@ -107,13 +105,13 @@ function search_position()
 }
 
 
-function add_marker(_lat,_lng,_name,_logo)
+function add_marker(_lat,_lng,_name)
 {
 	//CREATE A NEW MARKER
 		marker = new google.maps.Marker({
     		position : new google.maps.LatLng(_lat,_lng),
     		map : my_map,
-    		icon: _logo,
+    		icon: "logos/location-icon.png",
     		title : _name
 		});
 
@@ -135,13 +133,13 @@ function resize_map()
 	if (marker_array.length == 0)
 	{
 		my_map.setCenter(latlng_home);
-		my_map.setCenter(12);
+		my_map.setZoom(12);
 	}
 
 	else if (marker_array.length == 1)
 	{
 		my_map.setCenter(marker_array[0].getPosition());
-		my_map.setCenter(12);
+		my_map.setZoom(12);
 	}
 
 	else
@@ -159,5 +157,5 @@ function resize_map()
 
 function fill_IMERIR_position()
 {
-	document.getElementById("home_position_value").value = lat_IMERIR + "/" + lng_IMERIR;
+	document.getElementById("home_position_value").value = "42.674547/2.847754";
 }

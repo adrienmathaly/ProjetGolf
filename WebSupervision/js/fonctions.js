@@ -35,7 +35,7 @@ function HttpGET(request)
 				if (xmlHttp.responseText != "" && request == "/all")
 				{
 					JSON_request = xmlHttp.responseText;
-					//document.getElementById("textarea_submit").value = JSON_request;
+					document.getElementById("textarea_submit").value = JSON_request;
 				}
 			}
 		}
@@ -45,35 +45,41 @@ function HttpGET(request)
 	}
 }
 
-
-function refresh_parameters()
+function validate_refresh()
 {
-	var refresh_frequency_value = parseInt(document.getElementById("refresh_value").value);
+	var refresh = parseInt(document.getElementById("refresh_value").value);
 
-	if (refresh_frequency_value >= 200 && refresh_frequency_value <= 10000)
+	if (refresh >= 200 && refresh <= 10000)
 	{
-		refresh_frequency = refresh_frequency_value;
+		refresh_frequency = refresh;
 		$('#refresh_value_form').removeClass("has-error");
 		$('#refresh_value_form').addClass("has-success");
-		//$('#parameters_modal').modal('hide');
 	}
 	else
 	{
 		$('#refresh_value_form').removeClass("has-success");
 		$('#refresh_value_form').addClass("has-error");
 	}
+}
 
-		
-	var refresh_home_position_value = document.getElementById("home_position_value").value;
+function validate_position()
+{
+	//alert("pop");
+
+	var position = document.getElementById("home_position_value").value;
 	
-	if (refresh_home_position_value != "")
+	if (position == "")
 	{
-		var arrayOfCoordinates = refresh_home_position_value.split("/");
+		$('#home_position_form').removeClass("has-success");
+		$('#home_position_form').removeClass("has-error");	
+	}
+	else
+	{
+		var arrayOfCoordinates = position.split("/");
 
 		if (arrayOfCoordinates.length != 2)
 		{
-			console.log("Invalid coordinates");
-			$('#home_position_form').removeClass("has-sucess");
+			$('#home_position_form').removeClass("has-success");
 			$('#home_position_form').addClass("has-error");	
 		}
 		else
@@ -83,18 +89,17 @@ function refresh_parameters()
 			
 			if (latitude > 90 || latitude < -90)
 			{
-				console.log("Latitude problem");
-				$('#home_position_form').removeClass("has-sucess");
+				$('#home_position_form').removeClass("has-success");
 				$('#home_position_form').addClass("has-error");	
 			}
 			else
 			{
 				if (longitude > 180 || longitude < -180)
 				{
-					console.log("Longitude problem");
-					$('#home_position_form').removeClass("has-sucess");
+					$('#home_position_form').removeClass("has-success");
 					$('#home_position_form').addClass("has-error");	
 				}
+
 				else
 				{
 					lat_home = latitude;
@@ -158,7 +163,12 @@ function submit_response()
 			var lat_user = JSON_row["lat"];
 			var lng_user = JSON_row["lng"];
 			var dist_user = JSON_row["distance"];
-			add_marker(lat_user,lng_user,String(dist_user),"logos/location-icon.png");
+			var alive = JSON_row["alive"];
+
+			//add_marker(lat_user,lng_user,String(dist_user),"logos/location-icon.png");
+
+			if (alive == "true")			add_marker(lat_user,lng_user,String(dist_user),"logos/location-icon.png");
+			else if (alive == "false")		add_marker(lat_user,lng_user,String(dist_user),"logos/dead-icon.png");
 
 			//CREATE ROW AND CELLS WITH ROUNDED VALUES
 			var row = my_table.insertRow(i+1);
