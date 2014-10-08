@@ -1,0 +1,20 @@
+/**   \author Adrien ORTOLA */
+package launcher;
+
+import http.HTTPGolfServersLauncher;
+
+/**
+ * \class 
+ * \brief 
+ * */
+public class Main {
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public static void main(String[] args) {
+		HTTPGolfServersLauncher httpServer = new HTTPGolfServersLauncher();
+	}
+}

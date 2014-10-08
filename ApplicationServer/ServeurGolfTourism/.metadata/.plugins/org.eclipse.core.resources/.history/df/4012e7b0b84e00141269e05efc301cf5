@@ -1,0 +1,40 @@
+package http.handlers.mobile;
+
+import java.io.OutputStream;
+
+import org.json.simple.JSONObject;
+
+import json.JSONBuilder;
+
+import com.sun.net.httpserver.HttpExchange;
+
+import http.handlers.CustomizedHandler;
+import http.users.SetOfUsers;
+import http.users.User;
+
+public class LastPosition extends CustomizedHandler {
+
+	@Override
+	protected void doYourStuff(HttpExchange t) throws Exception {
+		String token = parseToken(t);
+		String response="";
+		if(SetOfUsers.containsToken(token)){
+			JSONObject jsono = new JSONObject();
+			
+			jsono.put(arg0, arg1)
+		      response = 
+		      t.sendResponseHeaders(200, response.length());
+		}else{
+			
+		}
+	      OutputStream os = t.getResponseBody();
+	      os.write(response.getBytes());
+	      os.close();	
+	}
+	
+	private String parseToken(HttpExchange t){
+		String req = t.getRequestURI().getQuery();
+		return req=req.split("token=")[1];
+	}
+
+}

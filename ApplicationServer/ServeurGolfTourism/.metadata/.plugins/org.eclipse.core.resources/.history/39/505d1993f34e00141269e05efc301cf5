@@ -1,0 +1,79 @@
+/**   \author Adrien ORTOLA */
+package http.users;
+
+/**
+ * \class 
+ * \brief 
+ * */
+public class Triplet {
+
+	private Float latitude;
+	private Float longitude;
+	private Float distance;
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public Triplet(Float latitude, Float longitude, Float distance) {
+		super();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.distance = distance;
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public Float getLatitude() {
+		return latitude;
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setLatitude(Float latitude) {
+		this.latitude = latitude;
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public Float getLongitude() {
+		return longitude;
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setLongitude(Float longitude) {
+		this.longitude = longitude;
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public Float getDistance() {
+		return distance;
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setDistance(Float distance) {
+		this.distance = distance;
+	}
+}

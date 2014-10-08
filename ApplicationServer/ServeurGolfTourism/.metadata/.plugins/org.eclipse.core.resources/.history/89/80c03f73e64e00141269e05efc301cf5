@@ -1,0 +1,36 @@
+/**   \author Adrien ORTOLA */
+package http.servers;
+
+import http.handlers.mobile.BindTokenId;
+import http.handlers.mobile.EraseId;
+import http.handlers.mobile.LastLocation;
+import http.handlers.mobile.Shot;
+
+/**
+ * \class 
+ * \brief 
+ * */
+public class HTTPGolfMobileServer extends HTTPGolfServer{
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public HTTPGolfMobileServer(String name ,String port) {
+		super(name, port);
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	@Override
+	protected void createMultiEntriesContext() {
+		getServer().createContext("/token", new BindTokenId());
+		getServer().createContext("/shot", new Shot());
+		getServer().createContext("/eraseid", new EraseId());
+		getServer().createContext("/lastlocation", new LastLocation());
+	}
+}

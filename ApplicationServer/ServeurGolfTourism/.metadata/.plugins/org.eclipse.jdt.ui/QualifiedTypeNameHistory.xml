@@ -40,14 +40,17 @@
 <fullyQualifiedTypeName name="java.util.LinkedList"/>
 <fullyQualifiedTypeName name="http.users.Point"/>
 <fullyQualifiedTypeName name="org.json.simple.JSONArray"/>
-<fullyQualifiedTypeName name="http.users.SetOfUsers"/>
 <fullyQualifiedTypeName name="http.handlers.PostHandler"/>
 <fullyQualifiedTypeName name="http.handlers.mobile.Disconnection"/>
-<fullyQualifiedTypeName name="http.handlers.CustomizedHandler"/>
-<fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="json.JSONBuilder"/>
 <fullyQualifiedTypeName name="http.handlers.supervision.AllTheData"/>
 <fullyQualifiedTypeName name="org.json.simple.JSONObject"/>
 <fullyQualifiedTypeName name="org.json.simple.parser.JSONParser"/>
 <fullyQualifiedTypeName name="http.users.Triplet"/>
+<fullyQualifiedTypeName name="http.handlers.CustomizedHandler"/>
+<fullyQualifiedTypeName name="http.handlers.supervision.BestDistance"/>
+<fullyQualifiedTypeName name="http.users.SetOfUsers"/>
+<fullyQualifiedTypeName name="http.users.Quadruplet"/>
+<fullyQualifiedTypeName name="http.servers.HTTPResponseHeaderBuilder"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
 </qualifiedTypeNameHistroy>

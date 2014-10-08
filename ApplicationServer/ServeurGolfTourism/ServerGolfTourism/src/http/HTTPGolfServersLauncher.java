@@ -1,41 +1,58 @@
+/**   \author Adrien ORTOLA */
 package http;
 
 import http.servers.HTTPGolfMobileServer;
 import http.servers.HTTPGolfSupervisionServer;
 import http.servers.HTTPResponseHeaderBuilder;
 import http.users.SetOfUsers;
-import java.io.File;
 import configuration.ConfLoader;
 import logger.Logger;
 
+/**
+ * \class HTTPGolfServersLauncher
+ * \brief The purpose of this class is to prepare the running environment for the different HTTP servers and then launch them.
+ * */
 public class HTTPGolfServersLauncher {
 
+	/** Specify if the servers are allowed to run or not */
 	private boolean active;
-	private HTTPResponseHeaderBuilder headers;
+	/** The HTTP server dedicated to the handling of mobile clients */
 	private HTTPGolfMobileServer mobileServer;
+	/** The HTTP server dedicated to the handling of web supervision clients */
 	private HTTPGolfSupervisionServer supvServer;
 
+	/** 
+	 * \param none
+	 * \return void
+	 * \brief Constructor. Prepares, launches and maintains active the HTTP servers. 
+	 * */
 	public HTTPGolfServersLauncher() {
-		ConfLoader.loadConfigFile();
-		launchLoggers();
-		SetOfUsers.prepareUsers();
-		Logger.addLogToBeWritten("Events",ConfLoader.getEntry("onStartMsg"));
-		active=true;
-		//headers=new HTTPResponseHeaderBuilder(new File(ConfLoader.getEntry("headersDirectory")));
-		mobileServer = new HTTPGolfMobileServer("[MOBILE]", ConfLoader.getEntry("serverPortMobile"));
-		mobileServer.launchMePlease();
-		supvServer = new HTTPGolfSupervisionServer("[SUPERVISION]", ConfLoader.getEntry("serverPortSupervision"));
-		supvServer.launchMePlease();
+		ConfLoader.loadConfigFile();/** Loading of the configuration file */
+		launchLoggers();/** preparation and launch of the loggers */
+		SetOfUsers.prepareUsers();/** initialization of the set of users */
+		Logger.addLogToBeWritten("Events",ConfLoader.getEntry("onStartMsg"));/** logging a welcome message */
+		active=true;/** set active the handling of the servers */
+		//headers=new HTTPResponseHeaderBuilder(new File(ConfLoader.getEntry("headersDirectory")));/** preparation of the different headers */
+		mobileServer = new HTTPGolfMobileServer("[MOBILE]", ConfLoader.getEntry("serverPortMobile"));/** initialization of the mobile server */
+		mobileServer.launchMePlease();/** launch of the mobile server */
+		supvServer = new HTTPGolfSupervisionServer("[SUPERVISION]", ConfLoader.getEntry("serverPortSupervision"));/** initialization of the supervision server */
+		supvServer.launchMePlease();/** launch of the web supervision server */
 		while(active){
 			try {
-				Thread.sleep(100);
+				Thread.sleep(100);/** keep active */
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+		/** end everything properly */
 		killEverything();
 	}
 	
+	/** 
+	 * \param none
+	 * \return void
+	 * \brief Ends every active entity of the running environment.
+	 * */
 	private void killEverything(){
 		mobileServer.killMePlease();
 		supvServer.killMePlease();
@@ -43,6 +60,11 @@ public class HTTPGolfServersLauncher {
 		killLoggers();
 	}
 	
+	/** 
+	 * \param none
+	 * \return void
+	 * \brief Creates then launches each logger.
+	 * */
 	private void launchLoggers(){
 		Logger.prepareLoggers();
 		Logger.createLogger(new Logger(ConfLoader.getEntry("loggerEventsName"), ConfLoader.getEntry("loggerEventsPath"),10));
@@ -50,14 +72,29 @@ public class HTTPGolfServersLauncher {
 		Logger.startAllLoggers();
 	}
 	
+	/** 
+	 * \param none
+	 * \return void
+	 * \brief End all the active loggers.
+	 * */
 	private void killLoggers(){
 		Logger.killAllloggers();
 	}
 	
+	/** 
+	 * \param none
+	 * \return boolean
+	 * \brief returns the activity state of the application
+	 * */
 	public boolean isActive() {
 		return active;
 	}
 
+	/** 
+	 * \param boolean active
+	 * \return void
+	 * \brief Sets the activity state of the application
+	 * */
 	public void setActive(boolean active) {
 		this.active = active;
 	}

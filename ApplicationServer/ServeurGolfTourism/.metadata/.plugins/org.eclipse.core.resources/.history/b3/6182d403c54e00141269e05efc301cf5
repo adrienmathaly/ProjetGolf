@@ -1,0 +1,41 @@
+/**   \author Adrien ORTOLA */
+package http.handlers.mobile;
+
+import java.io.OutputStream;
+
+import org.json.simple.JSONObject;
+import com.sun.net.httpserver.HttpExchange;
+import http.handlers.CustomizedHandler;
+import http.users.Point;
+import http.users.SetOfUsers;
+
+/**
+ * \class 
+ * \brief 
+ * */
+public class LastLocation extends CustomizedHandler {
+
+	@Override
+	protected void doYourStuff(HttpExchange t) throws Exception {
+		String token = parseToken(t);
+		String response="";
+		if(SetOfUsers.containsToken(token) && SetOfUsers.isUserFullyCreated(token)){
+			JSONObject jsono = new JSONObject();
+			Point p = SetOfUsers.getLastLocationOf(token);
+			jsono.put("lt", p.getLatitude());
+			jsono.put("lg", p.getLongitude());
+		    response = jsono.toJSONString();
+		    t.sendResponseHeaders(200, response.length());
+		}else{
+			t.sendResponseHeaders(404,-1);
+		}
+        OutputStream os = t.getResponseBody();
+        os.write(response.getBytes());
+        os.close();	
+	}
+	
+	private String parseToken(HttpExchange t){
+		String req = t.getRequestURI().getQuery();
+		return req=req.split("token=")[1];
+	}
+}

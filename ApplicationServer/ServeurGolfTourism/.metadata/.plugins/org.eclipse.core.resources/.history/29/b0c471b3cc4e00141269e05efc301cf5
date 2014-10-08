@@ -1,0 +1,45 @@
+/**   \author Adrien ORTOLA */
+package http.handlers.mobile;
+
+import http.handlers.CustomizedHandler;
+import http.users.SetOfUsers;
+import http.users.User;
+import java.io.OutputStream;
+import java.util.UUID;
+import json.JSONBuilder;
+import com.sun.net.httpserver.HttpExchange;
+
+/**
+ * \class BindTokenId
+ * \brief The purpose of this class is to handle the request for a new token id. It creates a new user in consequence.
+ * */
+public class BindTokenId extends CustomizedHandler {
+
+	/** Integer used in symbolic customized modification of the UUIDs */
+	private static int i=0;
+	
+	/** 
+	 * \param none
+	 * \return String
+	 * \brief Generates a supposedly unique token id for a new user. 
+	 * */
+	private String generateUID(){
+		return UUID.randomUUID().toString().replaceAll("-", "");
+	}
+
+	/** 
+	 * \param HttpExchange t
+	 * \return void
+	 * \brief Handles a "new incoming user" request by generating a token, inserting it into the general set of users and giving it back to the client.
+	 * */
+	@Override
+	protected void doYourStuff(HttpExchange t) throws Exception {
+	      String response = generateUID()+i++;
+	      SetOfUsers.addUser(response, new User());
+	      response=JSONBuilder.buildJSONBasicMsg("token",response);
+	      t.sendResponseHeaders(200, response.length());
+	      OutputStream os = t.getResponseBody();
+	      os.write(response.getBytes());
+	      os.close();
+	}
+}

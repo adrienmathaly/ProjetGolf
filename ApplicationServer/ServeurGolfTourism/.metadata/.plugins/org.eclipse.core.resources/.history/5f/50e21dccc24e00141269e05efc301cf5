@@ -1,0 +1,10 @@
+package launcher;
+
+import http.HTTPGolfServersLauncher;
+
+public class Main {
+
+	public static void main(String[] args) {
+		HTTPGolfServersLauncher httpServer = new HTTPGolfServersLauncher();
+	}
+}

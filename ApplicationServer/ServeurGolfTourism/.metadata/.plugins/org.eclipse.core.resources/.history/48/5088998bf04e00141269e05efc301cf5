@@ -1,0 +1,248 @@
+/**   \author Adrien ORTOLA */
+package logger;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map.Entry;
+
+/**
+ * \class Logger
+ * \brief Implements Runnable.
+ * The purpose of this class is to provide a general logging system.
+ * */
+public class Logger implements Runnable{
+
+	/** The name of the logger */
+	private String loggerName;
+	/** path where to actually log */
+	private String path;
+	/** waiting list of logs to be written by the current logger */
+	private LinkedList<String> logsToBeWritten;
+	/** activity status of the current logger */
+	private boolean loggerActive;
+	/** Interval of writing between two logs */
+	private long interval;
+	/** A writer */
+	private PrintWriter out;
+	/** pattern of the date being logged */
+	private SimpleDateFormat dateFormat;
+	/** general set of loggers mapped by name */
+	private static HashMap<String,Logger> loggers;
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public Logger(String loggerName, String path, long interval) {
+		this.loggerName = loggerName;
+		this.path = path;
+		this.logsToBeWritten = new LinkedList<String>();
+		this.loggerActive = false;
+		this.interval = interval;
+		this.dateFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
+		loggers.put(loggerName, this);
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void startLogger() {
+		if (!loggerActive) {
+			loggerActive = true;
+			while (loggerActive) {
+				if ((!logsToBeWritten.isEmpty())) {
+					writeAwaitingLog();
+				}
+				try {
+					Thread.sleep(interval);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void stopLogger() {
+		setLoggerActive(false);
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	private void writeAwaitingLog() {
+		String currentDate = dateFormat.format(new Date());
+		try {
+			out = new PrintWriter(new BufferedWriter(new FileWriter(path,true)));
+			out.println("[" + loggerName + "] " + currentDate + " "+ logsToBeWritten.poll());
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	@Override
+	public void run() {
+		startLogger();
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public static void addLogToBeWritten(String logger,String log) {
+		loggers.get(logger).logsToBeWritten.add(log);
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public static void prepareLoggers(){
+		loggers=new HashMap<String,Logger>();
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public static void createLogger(Logger newLogger){
+		loggers.put(newLogger.getLoggerName(), newLogger);
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public static void startAllLoggers(){
+		for(Entry<String,Logger> e : loggers.entrySet()){
+			Thread t = new Thread(e.getValue());
+			t.start();
+		}
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public static void killAllloggers(){
+		for(Entry<String,Logger> e : loggers.entrySet()){
+			e.getValue().stopLogger();
+		}
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public String getLoggerName() {
+		return loggerName;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setLoggerName(String loggerName) {
+		this.loggerName = loggerName;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public String getPath() {
+		return path;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public boolean isLoggerActive() {
+		return loggerActive;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setLoggerActive(boolean loggerActive) {
+		this.loggerActive = loggerActive;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public long getInterval() {
+		return interval;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setInterval(long interval) {
+		this.interval = interval;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public SimpleDateFormat getDateFormat() {
+		return dateFormat;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setDateFormat(SimpleDateFormat dateFormat) {
+		this.dateFormat = dateFormat;
+	}
+}
