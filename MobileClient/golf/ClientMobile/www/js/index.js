@@ -8,5 +8,5 @@ function helper(){
           'Device Version: '  + device.version  + '\n' +
           'Application version: 0.1'            + '\n\n' +
           'In order to start the application all information of the page must be green' + '\n\n' +
-          'GolfChallenge require an internet and GPS connection' + '\n');
+          'GolfChallenge requires an internet and GPS connection' + '\n');
 }
