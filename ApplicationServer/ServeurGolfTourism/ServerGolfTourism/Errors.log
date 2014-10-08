@@ -1,6 +1,0 @@
-[Errors] 07/10/2014 - 14:16:34 http.handlers.mobile.Shot - 98 - java.lang.NullPointerException
-[Errors] 07/10/2014 - 14:16:39 http.handlers.mobile.Shot - 98 - java.lang.NullPointerException
-[Errors] 07/10/2014 - 14:17:36 http.handlers.mobile.Shot - 98 - java.lang.NullPointerException
-[Errors] 07/10/2014 - 15:11:03 http.handlers.mobile.EraseId - -1 - sun.net.httpserver.StreamClosedException
-[Errors] 07/10/2014 - 15:58:19 http.handlers.mobile.Shot - 35 - java.lang.ClassCastException: java.lang.Double cannot be cast to java.lang.String
-[Errors] 07/10/2014 - 15:58:37 http.handlers.mobile.Shot - 35 - java.lang.ClassCastException: java.lang.Double cannot be cast to java.lang.String

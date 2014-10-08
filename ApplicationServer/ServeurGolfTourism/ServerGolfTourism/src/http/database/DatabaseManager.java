@@ -1,3 +1,4 @@
+/**   \author Adrien ORTOLA */
 package http.database;
 
 import java.io.BufferedReader;
@@ -9,11 +10,22 @@ import java.net.URL;
 import configuration.ConfLoader;
 import logger.Logger;
 
+/**
+ * \class DatabaseManager
+ * \brief The purpose of this class is to manage the relation to the database server.
+ * */
 public class DatabaseManager {
 
+	/** the url of the database server */
 	private URL url;
+	/** the client of the connection */
 	private HttpURLConnection connection;
 
+	/** 
+	 * \param URL
+	 * \return void
+	 * \brief Constructor of the manager.
+	 * */
 	public DatabaseManager(String URL) {
 		try {
 			url = new URL(URL);
@@ -23,6 +35,11 @@ public class DatabaseManager {
 		}
 	}
 
+	/** 
+	 * \param String method
+	 * \return void
+	 * \brief Connects to the database server
+	 * */
 	public void connect(String method) {
 		try {
 			connection = (HttpURLConnection) url.openConnection();
@@ -37,6 +54,11 @@ public class DatabaseManager {
 		}
 	}
 
+	/** 
+	 * \param none
+	 * \return String
+	 * \brief Returns the response to the connection to the database server
+	 * */
 	public String getResponse() {
 		String line;
 		String response = "";
@@ -55,10 +77,20 @@ public class DatabaseManager {
 		return response;
 	}
 
+	/** 
+	 * \param none
+	 * \return URL
+	 * \brief Gets the url of the database server
+	 * */
 	public URL getUrl() {
 		return url;
 	}
 
+	/** 
+	 * \param URL url
+	 * \return void
+	 * \brief Sets the url of the database server
+	 * */
 	public void setUrl(URL url) {
 		this.url = url;
 	}

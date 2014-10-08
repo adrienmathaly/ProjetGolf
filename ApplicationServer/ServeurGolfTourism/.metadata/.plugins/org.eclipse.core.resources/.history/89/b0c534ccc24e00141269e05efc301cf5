@@ -1,0 +1,20 @@
+package http.handlers;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.sun.net.httpserver.HttpExchange;
+
+public abstract class PostHandler extends CustomizedHandler{
+
+	protected JSONObject parseUserInfo(HttpExchange t) throws IOException, ParseException {
+		InputStreamReader isr = new InputStreamReader(t.getRequestBody());
+		BufferedReader bfr = new BufferedReader(isr);
+		return(JSONObject) new JSONParser().parse(bfr);
+	}
+}

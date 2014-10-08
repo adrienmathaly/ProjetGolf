@@ -1,0 +1,100 @@
+/**   \author Adrien ORTOLA */
+package http;
+
+import http.servers.HTTPGolfMobileServer;
+import http.servers.HTTPGolfSupervisionServer;
+import http.servers.HTTPResponseHeaderBuilder;
+import http.users.SetOfUsers;
+import configuration.ConfLoader;
+import logger.Logger;
+
+/**
+ * \class HTTPGolfServersLauncher
+ * \brief The purpose of this class is to prepare the running environment for the different HTTP servers and then launch them.
+ * */
+public class HTTPGolfServersLauncher {
+
+	/** Specify if the servers are allowed to run or not */
+	private boolean active;
+	/** The HTTP server dedicated to the handling of mobile clients */
+	private HTTPGolfMobileServer mobileServer;
+	/** The HTTP server dedicated to the handling of web supervision clients */
+	private HTTPGolfSupervisionServer supvServer;
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public HTTPGolfServersLauncher() {
+		ConfLoader.loadConfigFile();
+		launchLoggers();
+		SetOfUsers.prepareUsers();
+		Logger.addLogToBeWritten("Events",ConfLoader.getEntry("onStartMsg"));
+		active=true;
+		//headers=new HTTPResponseHeaderBuilder(new File(ConfLoader.getEntry("headersDirectory")));
+		mobileServer = new HTTPGolfMobileServer("[MOBILE]", ConfLoader.getEntry("serverPortMobile"));
+		mobileServer.launchMePlease();
+		supvServer = new HTTPGolfSupervisionServer("[SUPERVISION]", ConfLoader.getEntry("serverPortSupervision"));
+		supvServer.launchMePlease();
+		while(active){
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		killEverything();
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	private void killEverything(){
+		mobileServer.killMePlease();
+		supvServer.killMePlease();
+		Logger.addLogToBeWritten("Events",ConfLoader.getEntry("onStopMsg"));
+		killLoggers();
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	private void launchLoggers(){
+		Logger.prepareLoggers();
+		Logger.createLogger(new Logger(ConfLoader.getEntry("loggerEventsName"), ConfLoader.getEntry("loggerEventsPath"),10));
+		Logger.createLogger(new Logger(ConfLoader.getEntry("loggerErrorsName"), ConfLoader.getEntry("loggerErrorsPath"),10));
+		Logger.startAllLoggers();
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	private void killLoggers(){
+		Logger.killAllloggers();
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public boolean isActive() {
+		return active;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+}

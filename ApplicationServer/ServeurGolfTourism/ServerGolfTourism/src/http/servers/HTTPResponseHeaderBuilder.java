@@ -1,3 +1,4 @@
+/**   \author Adrien ORTOLA */
 package http.servers;
 
 import java.io.BufferedReader;
@@ -8,17 +9,35 @@ import java.util.HashMap;
 import logger.Logger;
 import configuration.ConfLoader;
 
+/**
+ * \class HTTPResponseHeaderBuilder
+ * \brief The purpose of this class is to load and provide an acces to a list of customized http headers.
+ * */
 public class HTTPResponseHeaderBuilder {
 
+	/** The directory dedicated to the headers */
 	private static File HeadersDirectory;
+	
+	/** HashMap of HasMap of HTTP headers and their value */
 	private static HashMap<String, HashMap<String,String>> HeadersList;
 
+	/** 
+	 * \param File HeadersDirectory
+	 * \return void
+	 * \brief Constructor.
+	 * Initialize the builder and loads the files containing the headers.
+	 * */
 	public HTTPResponseHeaderBuilder(File HeadersDirectory) {
 		this.HeadersDirectory = HeadersDirectory;
 		HeadersList = new HashMap<String, HashMap<String,String>>();
 		loadHeadersCollection();
 	}
 
+	/** 
+	 * \param none
+	 * \return void
+	 * \brief Loads the files listed in the given directory and insert their content properly into the headers list
+	 * */
 	private void loadHeadersCollection() {
 		if (HeadersDirectory.isDirectory()) {
 			File[] list = HeadersDirectory.listFiles();
@@ -30,6 +49,11 @@ public class HTTPResponseHeaderBuilder {
 		}
 	}
 
+	/** 
+	 * \param File f
+	 * \return HashMap<String,String>
+	 * \brief Read the given file and interpret its pairs of <headers - value>
+	 * */
 	private HashMap<String,String> readFile(File f) {
 		HashMap<String,String> h = new HashMap<String,String>();
 		FileReader fr;
@@ -37,7 +61,6 @@ public class HTTPResponseHeaderBuilder {
 			fr = new FileReader(f);
 			BufferedReader bf = new BufferedReader(fr);
 			String line;
-
 			while ((line = bf.readLine()) != null) {
 				h.put(line.split(":")[0], line.split(":")[1]);
 			}
@@ -49,6 +72,11 @@ public class HTTPResponseHeaderBuilder {
 		return h;
 	}
 
+	/** 
+	 * \param String response
+	 * \return HashMap<String,String>
+	 * \brief returns a fully parsed specific http header
+	 * */
 	public static HashMap<String,String> getHeaderOf(String response) {
 		return HeadersList.get(response);
 	}

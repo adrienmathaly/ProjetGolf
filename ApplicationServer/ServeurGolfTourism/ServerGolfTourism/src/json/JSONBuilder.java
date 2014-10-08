@@ -1,3 +1,4 @@
+/**   \author Adrien ORTOLA */
 package json;
 
 import java.io.IOException;
@@ -6,8 +7,17 @@ import logger.Logger;
 import org.json.simple.JSONObject;
 import configuration.ConfLoader;
 
+/**
+ * \class JSONBuilder
+ * \brief The purpose of this class is to provide
+ * */
 public class JSONBuilder {
 
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
 	public static String buildJSONBasicMsg(String key, Object value) {
 		StringWriter out = new StringWriter();
 		JSONObject jsono = new JSONObject();

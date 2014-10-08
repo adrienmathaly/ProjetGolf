@@ -1,0 +1,40 @@
+/**   \author Adrien ORTOLA */
+package http.users;
+
+/**
+ * \class 
+ * \brief 
+ * */
+public class Quadruplet extends Triplet{
+
+	private Boolean alive;
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public Quadruplet(Float latitude, Float longitude, Float distance, Boolean alive) {
+		super(latitude, longitude, distance);
+		this.alive=alive;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public Boolean getAlive() {
+		return alive;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setAlive(Boolean alive) {
+		this.alive = alive;
+	}
+
+}

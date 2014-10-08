@@ -1,0 +1,182 @@
+/**   \author Adrien ORTOLA */
+package http.users;
+
+/**
+ * \class 
+ * \brief 
+ * */
+public class User {
+	
+	private boolean connected;
+	private boolean fullyCreated;
+	private float longitude;
+	private float latitude;
+	private float traveledDistance;
+	private float ballLongitude;
+	private float ballLatitude;
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public User(){
+		this.setConnected(true);
+		this.setFullyCreated(false);
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public boolean isConnected() {
+		return connected;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setConnected(boolean connected) {
+		this.connected = connected;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public float getLongitude() {
+		return longitude;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setLongitude(float longitude) {
+		this.longitude = longitude;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public float getLatitude() {
+		return latitude;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setLatitude(float latitude) {
+		this.latitude = latitude;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public float getTraveledDistance() {
+		return traveledDistance;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setTravelledDistance(float travelledDistance) {
+		this.traveledDistance = travelledDistance;
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setLocation(Point p){
+		this.setLatitude(p.getLatitude());
+		this.setLongitude(p.getLongitude());
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setBallLocation(Point p){
+		this.setLatitude(p.getLatitude());
+		this.setLongitude(p.getLongitude());
+	}
+	
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public Point getLocation(){
+		return new Point(getLatitude(),getLongitude());
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public boolean isFullyCreated() {
+		return fullyCreated;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setFullyCreated(boolean fullyCreated) {
+		this.fullyCreated = fullyCreated;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public float getBallLongitude() {
+		return ballLongitude;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setBallLongitude(float ballLongitude) {
+		this.ballLongitude = ballLongitude;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public float getBallLatitude() {
+		return ballLatitude;
+	}
+
+	/** 
+	 * \param
+	 * \return
+	 * \brief 
+	 * */
+	public void setBallLatitude(float ballLatitude) {
+		this.ballLatitude = ballLatitude;
+	}
+}

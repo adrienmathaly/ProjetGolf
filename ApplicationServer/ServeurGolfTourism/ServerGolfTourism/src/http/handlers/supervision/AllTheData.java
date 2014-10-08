@@ -1,3 +1,4 @@
+/**   \author Adrien ORTOLA */
 package http.handlers.supervision;
 
 import java.io.OutputStream;
@@ -10,13 +11,24 @@ import http.handlers.CustomizedHandler;
 import http.users.Quadruplet;
 import http.users.SetOfUsers;
 
+/**
+ * \class AllTheData
+ * \brief Extends CustomizedHandler.
+ *  The purpose of this class is to get all the data concerning the users and forwarding them to a supervision client.
+ * */
 public class AllTheData extends CustomizedHandler{
 
+	/** 
+	 * \param HttpExchange t
+	 * \return void
+	 * \brief Collects all possible data from the general set of users. 
+	 * (Amount of users, number of current games, total of all summed distances, best summed distance, personal users details...)
+	 * */
 	@Override
 	protected void doYourStuff(HttpExchange t) throws Exception {
 		  HashMap<String,Object> response = new HashMap<String,Object>();
 	      response.put("amountOfUsers", SetOfUsers.amountOfUsers());
-	      response.put("nbConnected", SetOfUsers.numberOfConnected());
+	      response.put("currentGames", SetOfUsers.numberOfActiveGames());
 	      response.put("totalDistances", SetOfUsers.totalOfAllDistances());
 	      response.put("bestDistance", SetOfUsers.getBestDistance());
 	      response.put("usersDetails", prepareListOfEveryStats(SetOfUsers.listOfEveryStats()));
@@ -30,6 +42,11 @@ public class AllTheData extends CustomizedHandler{
 	      os.close();
 	}
 	
+	/** 
+	 * \param LinkedList<Quadruplet> list
+	 * \return JSONArray 
+	 * \brief Prepares a list of every statistics into a JSONArray
+	 * */
 	private JSONArray prepareListOfEveryStats(LinkedList<Quadruplet> list){
 		JSONArray listOfEveryStats=new JSONArray();
 		while(!list.isEmpty()){

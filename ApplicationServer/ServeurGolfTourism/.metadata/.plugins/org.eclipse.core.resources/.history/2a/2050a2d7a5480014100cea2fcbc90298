@@ -1,9 +1,0 @@
-package http;
-
-public class CommunicationManager implements Runnable{
-
-	@Override
-	public void run() {
-	}
-
-}
