@@ -1,7 +1,11 @@
-//VARIABLES
+//Variables
 var my_table;		//Contents the details users table 
 
-//DELETE ALL OLD ROWS EXCEPT HEADER
+/**
+	* @desc Delete all old rows except header
+	* @param Object _table - the table to be cleaned
+	* @return nothing
+*/
 function clean_table(_table)
 {
 	//If the table in parameter exists
