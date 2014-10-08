@@ -88,13 +88,13 @@ var onLocaliseSuccess = function(position) {
   }
 
   if(! initializedCenter){
-    changeMapCenterFromMarker(devicePositionMarker);
-    pokeballPosition = devicePositionMarker.getPosition();
-    changePokeballFromLatLng(pokeballPosition);
+    
     initializedCenter = true;
 
     var bottomElement = document.getElementById('pokeball');
     bottomElement.style.display = 'inline';
+    
+    getInformation('lastlocation?token=' + gameID, initializeBall),
     updateSizeCarto();
   }
 };

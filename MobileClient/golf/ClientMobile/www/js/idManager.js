@@ -12,8 +12,13 @@ function writeNewId(id){
 }
 
 function resetGame(){
+    //Clean POI marker on map
+    for(marker in markersPoi){
+        markersPoi[marker].setMap(null);
+    }
+    markersPoi = [];
     requestDeleteToken(gameID);
-    getIDConnection(writeNewId);
+    getInformation('token', writeNewId);
 }
 
 //Get the correct file or create if not exist
@@ -33,7 +38,7 @@ function readAsText(file) {
     var reader = new FileReader();
     reader.onloadend = function(evt) {
         if(evt.target.result == ''){
-            getIDConnection(writeNewId);
+            getInformation('token', writeNewId);
         }
         else{
             alert("Nice to see you again");
@@ -51,6 +56,7 @@ function gotFileWriter(writer) {
         requestStartingGame();
     };
     writer.write(gameID);
+    getInformation('lastlocation?token=' + gameID, initializeBall);
 }
 
 function fail(evt) {

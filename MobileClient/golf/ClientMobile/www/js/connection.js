@@ -25,17 +25,22 @@ function getXMLHttpRequest() {
 
 
 //Ask for an ID
-function getIDConnection(callback){
+function getInformation(info, callback){
+	alert(info);
 	//Create a connection
 	var xhr = getXMLHttpRequest();
 	xhr.onreadystatechange = function() {
-		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+		if (xhr.readyState == 4 && xhr.status == 200) {
 			clearTimeout(xmlHttpTimeout); 
 			callback(JSON.parse(xhr.responseText));
 		}
+		if (xhr.readyState == 4 && xhr.status == 404) {
+			clearTimeout(xmlHttpTimeout); 
+			callback('Erreur 404, ressource not available');
+		}
 	};
 	
-	xhr.open("GET", serveurIp + serveurPort + "token", true);
+	xhr.open("GET", serveurIp + serveurPort + info, true);
 	xhr.send(null);
 
 	var xmlHttpTimeout=setTimeout(function(){
@@ -56,7 +61,7 @@ function postShot(userLT, userLG, ballLT, ballLG, gamerId, callback){
 		}
 		else if (xhr.readyState == 4 && xhr.status == 401) {
 			clearTimeout(xmlHttpTimeout); 
-			alert("Your gamer ID is not correct, please to delete golfChallengeSettings.txt (your session will be lost)");
+			alert("Your gamer ID is not correct, please to reset the game (your session will be lost)");
 		}
 	};
 	xhr.open("POST", serveurIp + serveurPort + "shot", true);

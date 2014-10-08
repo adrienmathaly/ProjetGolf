@@ -304,5 +304,31 @@ function changePokeball(id){
 	}
 }
 
+function initializeBall(data){
+	
+	if(data == 'Erreur 404, ressource not available'){
+		changeMapCenterFromMarker(devicePositionMarker);
+	    pokeballPosition = devicePositionMarker.getPosition();
+	    changePokeballFromLatLng(pokeballPosition);
+	}
+	else{
+		var lt = data['lt'];
+		var lg = data['lg'];
+		if( lt != '' && lg != ''){
+			pokeballPosition = new google.maps.LatLng(lt, lg);
+	    	changePokeballFromLatLng(pokeballPosition);
+	    	changeMapCenterFromMarker(devicePositionMarker);
+	    	var list = [];
+	    	list.push(devicePositionMarker);
+	    	zoomAutoListMarker(list);
+		}
+		else{
+			changeMapCenterFromMarker(devicePositionMarker);
+		    pokeballPosition = devicePositionMarker.getPosition();
+		    changePokeballFromLatLng(pokeballPosition);
+		}
+	}
+}
+
 
   
