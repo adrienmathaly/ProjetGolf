@@ -1,37 +1,38 @@
-//VARIABLES DE CONNEXION
-var connected = 0;
-var refresh_frequency = 2000;
+//VARIABLES
+var connected = 0;			//Contents the status of the connection between user and server
+var timer;					//Timer managing the GET request
+var JSON_request;			//Contents the response of the server in JSON
 
-//VARIABLES JSON REQUESTS
-var timer;
-var JSON_request;
 
+//FUNCTION SENDING THE HTTP REQUEST
 function HttpGET(request)
 {
-	//ADDRESS SECURITY FORMAT
+	//Security address
 	if ($("#ipServer").val() == null)
 	{
+		//Informs the user about the input error
 		window.alert("empty address");	
 	}
 	else
 	{
-		//VARIABLES CREATION AND INITIALIZATION 
-		var URI = "http://"+$("#ipServer").val() + request;
-		var xmlHttp = new XMLHttpRequest();
+		//LOCAL VARIABLES
+		var URI = "http://"+$("#ipServer").val() + request;			//Contents all the URI sent to the server
+		var xmlHttp = new XMLHttpRequest();							//new XMLHttpRequest instantiated
 
-
-		//CONNECTION OPENING
+		//Open the connexion
 		xmlHttp.open("GET",URI, true);
-		//xmlHttp.setRequestHeader("Origin", "172.31.1.49");
 
 
-		//FUNCTION PREPARATION
+		//Sending preparation
 		xmlHttp.onreadystatechange = function()
 		{
+			//If the server is ok
 			if ((xmlHttp.status == 200 || xmlHttp.status == 0))
 			{
+				//Change the connection status
 				connected = 1;
 
+				//If the response isn't null and the request in parameter is /all
 				if (xmlHttp.responseText != "" && request == "/all")
 				{
 					JSON_request = xmlHttp.responseText;
@@ -40,71 +41,11 @@ function HttpGET(request)
 			}
 		}
 
+		//Send the request
 		xmlHttp.send();
+
+		//Response submit (format JSON)
 		submit_response();
-	}
-}
-
-function analyze_refresh()
-{
-	var refresh = document.getElementById("refresh_value").value;
-
-	if (refresh >= 200 && refresh <= 10000)
-	{
-		//alert("pop");
-		//$('#refresh_value_form').removeClass("has-error");
-		$('#refresh_value_form').addClass("has-success");
-	}
-	else
-	{
-		$('#refresh_value_form').removeClass("has-success");
-		//$('#refresh_value_form').addClass("has-error");
-	}
-}
-
-function analyze_position()
-{
-	var position = document.getElementById("home_position_value").value;
-	
-	if (position == "")
-	{
-		$('#home_position_form').removeClass("has-success");
-		$('#home_position_form').removeClass("has-error");	
-	}
-	else
-	{
-		var arrayOfCoordinates = position.split("/");
-
-		if (arrayOfCoordinates.length != 2)
-		{
-			$('#home_position_form').removeClass("has-success");
-			$('#home_position_form').addClass("has-error");	
-		}
-		else
-		{
-			var latitude = arrayOfCoordinates[0];
-			var longitude = arrayOfCoordinates[1];
-			
-			if (latitude > 90 || latitude < -90)
-			{
-				$('#home_position_form').removeClass("has-success");
-				$('#home_position_form').addClass("has-error");	
-			}
-			else
-			{
-				if (longitude > 180 || longitude < -180)
-				{
-					$('#home_position_form').removeClass("has-success");
-					$('#home_position_form').addClass("has-error");	
-				}
-
-				else
-				{
-					$('#home_position_form').removeClass("has-error");
-					$('#home_position_form').addClass("has-success");
-				}
-			}
-		}
 	}
 }
 

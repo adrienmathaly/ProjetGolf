@@ -119,6 +119,7 @@ function add_marker(_lat,_lng,_name,_logo)
 	marker.setMap(my_map);
 }
 
+
 function delete_all_markers()
 {
 	for (var i=0;i<marker_array.length;i++)
@@ -153,9 +154,4 @@ function resize_map()
 			
 		my_map.fitBounds(bounds);
 	}
-}
-
-function fill_IMERIR_position()
-{
-	document.getElementById("home_position_value").value = "42.674547/2.847754";
 }

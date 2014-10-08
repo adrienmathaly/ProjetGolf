@@ -10,6 +10,7 @@
 		<script src="js/fonctions.js"></script>
 		<script src="js/table_functions.js"></script>
 		<script src="js/maps_functions.js"></script>
+		<script src="js/parameters_functions.js"></script>
 
 		<script src="bootstrap/js/bootstrap.js"></script>
 		
@@ -224,7 +225,7 @@
 									<div class="input-group">
 								  		<input type="text" class="form-control" id="refresh_value" placeholder="Between 200 and 10,000 ms" onkeyup="analyze_refresh()">
 								  		<span class="input-group-btn">
-									        <button class="btn btn-info" type="button" style="height:33px;" onclick="validate_refresh()"><span class="glyphicon glyphicon-ok"></button>
+									        <button class="btn btn-info" type="button" style="height:33px;" onclick="validate_refresh()" id="refresh_button" disabled><span class="glyphicon glyphicon-ok"></button>
 									    </span>
 									</div>
 								</div>
@@ -241,7 +242,7 @@
 								      		<button class="btn btn-default" type="button" style="height:34px;" onclick="fill_IMERIR_position()">
 								      			<img src="logos/icon_imerir.png" style="width:30px;">
 								      		</button>
-								      		<button class="btn btn-info" type="button" style="height:34px;" onclick="validate_position()">
+								      		<button class="btn btn-info" type="button" style="height:34px;" onclick="validate_position()" id="position_button" disabled>
 								      			<span class="glyphicon glyphicon-ok">
 								      		</button>
 								      	</span>
@@ -250,6 +251,11 @@
 							</div>							
 						</form>
 			      	</div>
+
+				    <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				    </div>
+
 			    </div>
 		  	</div>
 		</div>
