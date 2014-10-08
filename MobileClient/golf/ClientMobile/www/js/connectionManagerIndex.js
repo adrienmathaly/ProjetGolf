@@ -1,29 +1,30 @@
-
-/* Create this function for the connectionManager
-* Warning !! for unused function make something like "var doNothing = true;" to avoid bad behaviour
-*   function onDeviceReady();
-*   function onOnline();
-*   function onOffline();
-*   function onGeolocationSuccess()
-*   function onGeolocationError();
-*   function onResume();
-*   function onPause();
-*   function onOrientationChanged();
+/*
+* You have to create following function use in connection.js
+* Minium do something like var doNothing = true; to avoid bad behaviour
+*
+* onDeviceReady();
+* onOnline();
+* onOffline();
+* onGeolocationSuccess();
+* onGeolocationError();
+* onResume();
+* onPause();
+* onOrientationChanged();
 */
 
 /* Bolean use to check connection (create in connectionManager.js)
 *   connectedToDevice   
 *   connectedToInternet 
 *   connectedToGPS      
-*   connectedToServer   
 */
 
-var connectedToServer   = false;
+// Bolean use to check if user is succefull identify
+var identification   = false;
 
 //This id is delivery by the server
 var gameID = 0;
 
-//Display the correct information of the status connection
+//Display the correct information of id element according to the received status
 function receivedEvent(id, received) {
     var parentElement = document.getElementById(id);
     var listeningElement = parentElement.querySelector('.listening');
@@ -44,7 +45,6 @@ function onDeviceReady(){
     initializeId();
 
     receivedEvent('deviceready', true);
-    checkLocalisation(true);
     requestStartingGame();
 }
 
@@ -54,6 +54,7 @@ function onOnline(){
 
     //Connection statement
     var connectionStatement = {};
+    //Two first not really usefull but if appear something went wrong
     connectionStatement[Connection.UNKNOWN]  = 'Unknown connection';
     connectionStatement[Connection.NONE]     = 'No network connection';
     connectionStatement[Connection.ETHERNET] = 'Ethernet connection';
@@ -63,22 +64,18 @@ function onOnline(){
     connectionStatement[Connection.CELL_4G]  = 'Cell 4G connection';
     connectionStatement[Connection.CELL]     = 'Cell generic connection';
 
-    //update DOM connectivity information
+    //update DOM with connectivity information
     var element = document.getElementById('connectionType');
     element.innerHTML = connectionStatement[networkState];
     
+    connectedToInternet = true;
     receivedEvent('onOnline', true);
-
-    //Try to start the game if all connection is ready
     requestStartingGame();   
 }
 
 //On internet connection offline event handler
 function onOffline(){
     receivedEvent('onOnline', false);
-
-    connectedToServer = false;
-    receivedEvent('onServerConnection', false);
 }
 
 //On geolocalisation success event handler
@@ -109,7 +106,7 @@ function onOrientationChanged(){
 
 //Check if the device is ready to start the game
 function requestStartingGame(){
-    if(connectedToDevice && connectedToInternet && connectedToGPS && connectedToServer){
+    if(connectedToDevice && connectedToInternet && connectedToGPS && identification){
         location.replace('gameBoard.html?id=' + gameID);
     }
 }

@@ -1,10 +1,10 @@
+// game server's ip and port
 var serveurIp = 'http://172.31.1.191';
 var serveurPort = ':8081/';
 
-//Create a HTMLREQUEST object
+// Create a HTMLREQUEST object
 function getXMLHttpRequest() {
-	var xhr = null;
-	
+	var xhr = null;	
 	if (window.XMLHttpRequest || window.ActiveXObject) {
 		if (window.ActiveXObject) {
 			try {
@@ -19,25 +19,36 @@ function getXMLHttpRequest() {
 		alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
 		return null;
 	}
-	
 	return xhr;
 }
 
 
-//Ask for an ID
-function getIDConnection(callback){
-	//Create a connection
+// Ask for a server's information and send the JSON response to the callback
+function getInformation(info, callback){
+	// create an object able to communicate in http request
 	var xhr = getXMLHttpRequest();
+
+	// on state change event handler
 	xhr.onreadystatechange = function() {
-		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+		// if request finish, response ready and server response code OK
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			// stop the timer timeout
 			clearTimeout(xmlHttpTimeout); 
 			callback(JSON.parse(xhr.responseText));
 		}
+		// if request finish, response ready and server response code Ressource not available 
+		else if (xhr.readyState == 4 && xhr.status == 404) {
+			// stop the timer timeout
+			clearTimeout(xmlHttpTimeout); 
+			callback('Erreur 404, ressource not available');
+		}
 	};
 	
-	xhr.open("GET", serveurIp + serveurPort + "token", true);
+	// GET the information
+	xhr.open("GET", serveurIp + serveurPort + info, true);
 	xhr.send(null);
 
+	// create a timer to abord connection if request not receive in 5s
 	var xmlHttpTimeout=setTimeout(function(){
 												xhr.abort();
 												alert("Request timed out");
@@ -45,23 +56,31 @@ function getIDConnection(callback){
 											, 5000);
 }
 
-//Post a shot and receive info POI and ball position
+//Post a shot and transmit to callback information of POI and ball position
 function postShot(userLT, userLG, ballLT, ballLG, gamerId, callback){
-	//Create a connection
+	// create an object able to communicate in http request
 	var xhr = getXMLHttpRequest();
+
+	// on state change event handler
 	xhr.onreadystatechange = function() {
-		if (xhr.readyState == 4 && (xhr.status == 201 || xhr.status == 0)) {
+		// if request finish, response ready and server response code Ressource created
+		if (xhr.readyState == 4 && xhr.status == 201) {
+			// stop the timer timeout
 			clearTimeout(xmlHttpTimeout); 
 			callback(JSON.parse(xhr.responseText));
 		}
+		// if request finish, response ready and server response code Unauthorized
 		else if (xhr.readyState == 4 && xhr.status == 401) {
+			// stop the timer timeout
 			clearTimeout(xmlHttpTimeout); 
-			alert("Your gamer ID is not correct, please to delete golfChallengeSettings.txt (your session will be lost)");
+			alert("Your gamer ID is not correct, please reset the game (your session will be lost)");
 		}
 	};
+
 	xhr.open("POST", serveurIp + serveurPort + "shot", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 
+	// create JSON information for the server
 	var data = {
 			"userLt":userLT,
 			"userLg":userLG,
@@ -71,6 +90,7 @@ function postShot(userLT, userLG, ballLT, ballLG, gamerId, callback){
 		};
 	xhr.send(JSON.stringify(data));
 
+	// create a timer to abord connection if request not receive in 5s
 	var xmlHttpTimeout=setTimeout(function(){
 												xhr.abort();
 												alert("Request timed out");
@@ -78,30 +98,31 @@ function postShot(userLT, userLG, ballLT, ballLG, gamerId, callback){
 											, 5000);
 }
 
-function resetGame(){
-	alert('test');
-	requestDeleteToken(gameID);
-}
-
-//Post a shot and receive info POI and ball position
+//Post a request to delete the current game
 function requestDeleteToken(gamerId){
-	//Create a connection
+	// create an object able to communicate in http request
 	var xhr = getXMLHttpRequest();
+
+	// on state change event handler
 	xhr.onreadystatechange = function() {
+		// if request finish, response ready and server response code Request OK and No content send
 		if (xhr.readyState == 4 && xhr.status == 204) {
+			// stop the timer timeout
 			clearTimeout(xmlHttpTimeout); 
 			alert("Reset done");
 		}
 	};
+
 	xhr.open("DELETE", serveurIp + serveurPort + "eraseid", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 
+	// create JSON information for the server
 	var data = {
 			"token":gamerId,
 		};
-
 	xhr.send(JSON.stringify(data));
 
+	// create a timer to abord connection if request not receive in 5s
 	var xmlHttpTimeout=setTimeout(function(){
 												xhr.abort();
 												alert("Request timed out");

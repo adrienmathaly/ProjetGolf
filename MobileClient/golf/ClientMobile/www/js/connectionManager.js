@@ -18,7 +18,8 @@
  */
 
 /*
-* You have to create following function
+* You have to create following function use in connection.js
+* Minium do something like var doNothing = true; to avoid bad behaviour
 *
 * onDeviceReady();
 * onOnline();
@@ -30,43 +31,43 @@
 * onOrientationChanged();
 */
 
-//Timer used to make a loop of geolocalisation
+// Timer used to make a loop of geolocalisation
 var geoTimer = null;
 
-//Bolean use to check connection
+// Bolean use to check connection
 var connectedToDevice   = false;
 var connectedToInternet = false;
 var connectedToGPS      = false;
 
-//Remember in this scope use 'this' to function access, otherwise use 'connectionManager'
+// Remember in this scope use 'this' to function access, otherwise use 'connectionManager'
 var connectionManager = {
-    // Application Constructor
+    // application Constructor
     initialize: function() {
         this.bindEvents();
     },
-    // Bind Event Listeners
+    // bind Event Listeners
     bindEvents: function() {
-        //Event when Cordova is full loading
+        // event when Cordova is full loading
         document.addEventListener('deviceready', this.deviceReady, false);
-        //Event when a internet connection is found
+        // event when a internet connection is found
         document.addEventListener('online', this.online, false);
-        //Event when the internet connection is lost
+        // event when the internet connection is lost
         document.addEventListener('offline', this.offline, false);
-        //Event when the application is resumed/come of the background
+        // event when the application is resumed/come of the background
         document.addEventListener('resume', this.onGeolocalisationNeeded, false);
-        //Event when the application is paused/put in the background
+        // event when the application is paused/put in the background
         document.addEventListener('pause', this.onGeolocalisationNoNeeded, false);
-        //Event when the application is paused/put in the background
-        document.addEventListener('destroy', this.destroy, false);
-        //Event when the orientation change
+        // event when the orientation change
         window.addEventListener('resize', this.orientationchange);    
     },
     // deviceready Event Handler  
     deviceReady: function() {
         connectedToDevice = true;
+
+        checkLocalisation(true);
         onDeviceReady();
     },
-    // online Event Handler, update the connection name
+    // online Event Handler
     online: function() {
         connectedToInternet = true;
         onOnline();
@@ -76,32 +77,33 @@ var connectionManager = {
         connectedToInternet = false;
         onOffline();
     },
-    // localisation Event Handler
+    // sucess localisation Event Handler
     geolocationSuccess: function(position) {
         connectedToGPS = true;
         onGeolocationSuccess();
     },
-    // error of localisation Event Handler
+    // error localisation Event Handler
     geolocationError: function(error) {
         connectedToGPS = false;
         onGeolocationError();
     },
-    // resume the localisation Event Handler,
+    // resume Event Handler, resume localisation loop
     onGeolocalisationNeeded: function(){
         checkLocalisation(true);
         onResume();
     },
-    // pause the localisation Event Handler,
+    // pause Event Handler, stop localisation loop
     onGeolocalisationNoNeeded: function(){
         checkLocalisation(false);
         onPause();
     },
+    // orientation device Event Handler
     orientationchange: function(){
         onOrientationChanged();
     }
 };
 
-//Start or stop the loop of localisation
+// Start or stop the loop of localisation
 function checkLocalisation(start){
     if (start){
         geoTimer = setInterval(function () {getLocation()}, 6000);       
@@ -111,9 +113,13 @@ function checkLocalisation(start){
     }
 }
 
-//Request the current location (not use watchPosition because of no stable on android)
+// Request the current location (not use watchPosition because of no stable on android)
+// Create a localisation success or error in the connectionManager
 function getLocation(){
-    navigator.geolocation.getCurrentPosition(connectionManager.geolocationSuccess, connectionManager.geolocationError, { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true });
+    navigator.geolocation.getCurrentPosition(connectionManager.geolocationSuccess, 
+                                             connectionManager.geolocationError, 
+                                             { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true }
+    );
 }
 
 connectionManager.initialize();

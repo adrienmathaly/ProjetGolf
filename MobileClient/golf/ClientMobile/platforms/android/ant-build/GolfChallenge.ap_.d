@@ -58,6 +58,7 @@ C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\Clien
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\img\google_marker\default.png \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\img\google_marker\fast-food.png \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\img\google_marker\golf.png \
+C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\img\google_marker\greyMarker.png \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\img\google_marker\town.png \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\js\connection.js \
 C:\Users\Cedric\Desktop\GolfProjectRepository\ProjetGolf\MobileClient\golf\ClientMobile\platforms\android\assets\www\js\connectionManager.js \
