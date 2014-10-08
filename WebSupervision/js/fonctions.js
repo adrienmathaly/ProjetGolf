@@ -119,7 +119,7 @@ function submit_response()
 		//Unique information adding
 		document.getElementById("stats_amount").value = parse_JSON_request["amountOfUsers"];
 		document.getElementById("stats_distances").value = parseFloat(parse_JSON_request["totalDistances"] * 93.27).toFixed(1);
-		document.getElementById("stats_users_connected").value = parse_JSON_request["nbGames"];
+		document.getElementById("stats_users_connected").value = parse_JSON_request["currentGames"];
 		document.getElementById("stats_best_distance").value = parseFloat(parse_JSON_request["bestDistance"] * 93.27).toFixed(1);
 
 		//Reading each row of the table
