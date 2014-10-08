@@ -1,14 +1,4 @@
-//To remember we can access to position   
-    /*alert('Latitude: '        + position.coords.latitude          + '\n' +
-          'Longitude: '         + position.coords.longitude         + '\n' +
-          'Altitude: '          + position.coords.altitude          + '\n' +
-          'Accuracy: '          + position.coords.accuracy          + '\n' +
-          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-          'Heading: '           + position.coords.heading           + '\n' +
-          'Speed: '             + position.coords.speed             + '\n' +
-          'Timestamp: '         + position.timestamp                + '\n');*/
-
-//Variable to access to the map and projection
+//Variable to access to the map
 var map = null;
 
 //Marker
@@ -20,9 +10,8 @@ var pokeballPosition = null;
 
 //Tab of position (last POI) to fit auto
 var markersPoi = [];
-var infoMarkersPoi = [];
 
-//When the body is full loaded initialize carto on France
+// Create a google map center in France and display it
 function initializeCarto() {
   var mapOptions = {
       center: { lat: 46.5643202, lng: 2.5282764},
@@ -35,7 +24,7 @@ function initializeCarto() {
   bottomElement.style.display = 'block';
 }
 
-//Update the size on the html page
+//Update the size of the google map according to upper and bottom element
 function updateSizeCarto(){
   //get map element
   var divMap = document.getElementById("map-google");
@@ -49,33 +38,36 @@ function updateSizeCarto(){
   var displayWidth = window.innerWidth;
 
   divMap.style.width = displayWidth + "px";
-  divMap.style.height = displayHeight + "px";  
+  divMap.style.height = displayHeight + "px";
+
+  // indicate to the map the div is resized
   google.maps.event.trigger(map, 'resize'); 
 }
 
-//Update the size on the google map
-function updateSizeMap(){
-  
-}
-
-
-// change center of map
+// Change center of map according to a position (lat, lng)
 function changeMapCenterFromLatLng(position) {
   map.setCenter(new google.maps.LatLng(position.lat(), position.lng()));
 }
 
-// change center of map
+// Change center of map according to a marker
 function changeMapCenterFromMarker(marker) {
   changeMapCenterFromLatLng(marker.getPosition());
 }
 
+// Localise the device and callback the function to display
+function localiseOnMap() {
+  navigator.geolocation.getCurrentPosition(onLocaliseSuccess, onLocaliseError);
+}
+
 // onSucess localisation mark the position
 var onLocaliseSuccess = function(position) {
+  // erase the error marker if exist
   if(errorDevicePositionMarker !== null){
     errorDevicePositionMarker.setMap(null);
     errorDevicePositionMarker = null;
   }
 
+  // create a new device position marker if not exist
   if(devicePositionMarker === null){
       devicePositionMarker = new google.maps.Marker({
         position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
@@ -83,18 +75,20 @@ var onLocaliseSuccess = function(position) {
         title: 'Je te vois :D'
     });
   }
+  // if already exist update position
   else{
     devicePositionMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
   }
 
+  // if the map center was not initialized set it to the device position and update the zoom according to the device and ball
   if(! initializedCenter){
-    changeMapCenterFromMarker(devicePositionMarker);
-    pokeballPosition = devicePositionMarker.getPosition();
-    changePokeballFromLatLng(pokeballPosition);
+    
     initializedCenter = true;
 
     var bottomElement = document.getElementById('pokeball');
     bottomElement.style.display = 'inline';
+    
+    getInformation('lastlocation?token=' + gameID, initializeBall),
     updateSizeCarto();
   }
 };
@@ -105,13 +99,9 @@ function onLocaliseError(error) {
           'message: ' + error.message + '\n');
 }
 
-//Localise the mobile
-function localiseOnMap() {
-  navigator.geolocation.getCurrentPosition(onLocaliseSuccess, onLocaliseError);
-}
-
 //From latitute and longitute get the pixel position on screen
 function fromLatLngToPoint(latLng, map) {
+  //Thanks to http://krasimirtsonev.com/blog/article/google-maps-api-v3-convert-latlng-object-to-actual-pixels-point-object
   var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
   var bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
   var scale = Math.pow(2, map.getZoom());
@@ -140,14 +130,14 @@ function disableMovement(disable) {
     map.setOptions(mapOptions);
 }
 
-//function rezoom auto between device localisation and ball localisation
+// Rezoom auto according to listMarker localisation and ball localisation
 function zoomAutoListMarker(listMarker){
   var bounds = new google.maps.LatLngBounds();
   var indexMarker = null;
   for(indexMarker in listMarker){
     bounds.extend(listMarker[indexMarker].getPosition());
   }
-  //Add the ball to see all POI markers and the ball
+  //Add the ball to see all marker markers and the ball
   bounds.extend(pokeballPosition);
   map.fitBounds(bounds);
 }

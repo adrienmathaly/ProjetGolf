@@ -139,3 +139,10 @@ h1 {
 #bottom_map{
     display:none;
 }
+
+button, select{
+    margin:1px;
+    padding:1px;
+    height: 50px;
+    width: 80px;
+}
