@@ -118,26 +118,26 @@ function submit_response()
 	{
 		//Unique information adding
 		document.getElementById("stats_amount").value = parse_JSON_request["amountOfUsers"];
-		document.getElementById("stats_distances").value = (parse_JSON_request["totalDistances"] * 93.27);
-		document.getElementById("stats_users_connected").value = parse_JSON_request["nbConnected"];
-		document.getElementById("stats_best_distance").value = (parse_JSON_request["bestDistance"] * 93.27);
+		document.getElementById("stats_distances").value = parseFloat(parse_JSON_request["totalDistances"] * 93.27).toFixed(1);
+		document.getElementById("stats_users_connected").value = parse_JSON_request["currentGames"];
+		document.getElementById("stats_best_distance").value = parseFloat(parse_JSON_request["bestDistance"] * 93.27).toFixed(1);
 
 		//Reading each row of the table
 		var i = 0;
 		parse_JSON_request["usersDetails"].forEach(function(JSON_row)
 		{
 			//Insert into global variables the differents values
-			var lat_user = JSON_row["lat"];
-			var lng_user = JSON_row["lng"];
-			var dist_user = JSON_row["distance"] * 93.27;
+			var lat_user = parseFloat(JSON_row["lat"]).toFixed(5);
+			var lng_user = parseFloat(JSON_row["lng"]).toFixed(5);
+			var dist_user = parseFloat(JSON_row["distance"] * 93.27).toFixed(2);
 			var alive = JSON_row["alive"];
 
 			//Create a content which summarize all details
 			var content_title =
-			"Details user : \nLatitude : " + lat_user
-			+ "\nLongitude : "	+ lng_user
-			+ "\nDistance traveled : " + dist_user
-			+ "\nConnected : " + alive;
+			  "\nLatitude : \t\t" + lat_user
+			+ "\nLongitude : \t\t"	+ lng_user
+			+ "\nDistance traveled : \t" + dist_user
+			+ "\nConnected : \t\t" + alive;
 
 			//Change the marker logo depending on its "alive" status
 			if (alive == "true")	add_marker(lat_user,lng_user,content_title,"logos/location-icon.png");
@@ -154,9 +154,9 @@ function submit_response()
 
 			//Insert all details in the cells (with rounded values)
 			cell_user.innerHTML = "#"+(i+1);
-			cell_lat.innerHTML = parseFloat(JSON_row["lat"]).toFixed(5);
-			cell_lng.innerHTML = parseFloat(JSON_row["lng"]).toFixed(5);
-			cell_dist.innerHTML = parseFloat(JSON_row["distance"]).toFixed(2);
+			cell_lat.innerHTML = lat_user;
+			cell_lng.innerHTML = lng_user;
+			cell_dist.innerHTML = dist_user;
 
 			//Increment the row
 			i++;
