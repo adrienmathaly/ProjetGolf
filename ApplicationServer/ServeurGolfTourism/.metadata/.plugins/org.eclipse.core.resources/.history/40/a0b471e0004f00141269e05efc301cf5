@@ -31,12 +31,12 @@ public class HTTPGolfSupervisionServer extends HTTPGolfServer {
 	 * */
 	@Override
 	protected void createMultiEntriesContext() {
-		getServer().createContext("/users/lastknownlocations", new UsersLastKnownLocations());
-		getServer().createContext("/users/traveleddistances", new UsersTraveledDistances());
-		getServer().createContext("/amountofusers", new AmountOfUsersFromDaBeginnin());
-		getServer().createContext("/totaldistances", new TotalOfAllDistances());
-		getServer().createContext("/currentgames", new NumberOfActiveGames());
-		getServer().createContext("/bestdistance", new BestDistance());
+		getServer().createContext("/users/lastKnownLocations", new UsersLastKnownLocations());
+		getServer().createContext("/users/travelledDistances", new UsersTraveledDistances());
+		getServer().createContext("/amountOfUsers", new AmountOfUsersFromDaBeginnin());
+		getServer().createContext("/totalDistances", new TotalOfAllDistances());
+		getServer().createContext("/numberOfConnected", new NumberOfActiveGames());
+		getServer().createContext("/bestDistance", new BestDistance());
 		getServer().createContext("/all", new AllTheData());
 	}
 }

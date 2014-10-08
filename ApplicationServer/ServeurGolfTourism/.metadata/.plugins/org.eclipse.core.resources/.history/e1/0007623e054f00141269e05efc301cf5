@@ -7,15 +7,13 @@ package http.users;
  * */
 public class Point {
 	
-	/** the latitude of the user */
 	private Float latitude;
-	/** the longitude of the user */
 	private Float longitude;
 
 	/** 
-	 * \param Float latitude,Float longitude
-	 * \return void
-	 * \brief Constructor.
+	 * \param
+	 * \return
+	 * \brief 
 	 * */
 	public Point(Float latitude,Float longitude){
 		this.setLatitude(latitude);
@@ -23,36 +21,36 @@ public class Point {
 	}
 
 	/** 
-	 * \param none
-	 * \return Float
-	 * \brief returns the latitude of the user
+	 * \param
+	 * \return
+	 * \brief 
 	 * */
 	public Float getLatitude() {
 		return latitude;
 	}
 
 	/** 
-	 * \param none
-	 * \return void
-	 * \brief sets the latitude of the user
+	 * \param
+	 * \return
+	 * \brief 
 	 * */
 	public void setLatitude(Float latitude) {
 		this.latitude = latitude;
 	}
 
 	/** 
-	 * \param none
-	 * \return Float
-	 * \brief returns the longitude of the user
+	 * \param
+	 * \return
+	 * \brief 
 	 * */
 	public Float getLongitude() {
 		return longitude;
 	}
 
 	/** 
-	 * \param Float longitude
-	 * \return void
-	 * \brief sets the longitude of the user
+	 * \param
+	 * \return
+	 * \brief 
 	 * */
 	public void setLongitude(Float longitude) {
 		this.longitude = longitude;
@@ -60,7 +58,7 @@ public class Point {
 	
 	/** 
 	 * \param Point otherPoint
-	 * \return Float
+	 * \return Flaot
 	 * \brief calculates the distance between the current point and another one.
 	 * */
 	public Float distanceBetweenMeAnd(Point otherPoint){
